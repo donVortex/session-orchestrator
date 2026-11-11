@@ -5,7 +5,7 @@
 ref=$(cat skills/orchestrating/references/workflow-learning.md 2>/dev/null)
 assert_file skills/orchestrating/references/workflow-learning.md "workflow-learning.md exists"
 
-for tag in '[ask-user]' '[approval]' '[prompt]' '[start-click]' '[failed]' '[changes]' '[escalate]' '[worker-q]' '[event]'; do
+for tag in '[ask-user]' '[approval]' '[prompt]' '[start-click]' '[failed]' '[changes]' '[escalate]' '[worker-q]' '[expert]' '[event]'; do
   assert_contains "$ref" "$tag" "event kind $tag"
 done
 

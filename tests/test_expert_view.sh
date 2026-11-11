@@ -43,4 +43,20 @@ assert_contains "$p" "Decided not to:" "template: out of scope entry form"
 assert_contains "$p" "assumed" "template: needs name their source"
 assert_contains "$p" "never the data" "template: pointers, not data"
 
+orch=$(cat skills/orchestrating/SKILL.md 2>/dev/null)
+ledger=$(cat skills/orchestrating/references/ledger.md 2>/dev/null)
+tiers=$(cat skills/orchestrating/references/model-tiers.md 2>/dev/null)
+assert_contains "$orch" "references/expert-view.md" "orchestrator links expert-view"
+assert_contains "$orch" "Expert view: <experts> (<why>)" "plan line: runs"
+assert_contains "$orch" 'Expert view: skipped (<why>) — say "expert view" to run it' "plan line: skipped"
+assert_contains "$orch" 'Expert view: off in lite — say "expert view" to run it' "plan line: lite"
+assert_contains "$orch" "before the breakdown is shown" "runs before the plan"
+assert_contains "$orch" "always shown" "decision always shown"
+assert_contains "$orch" "references/knowledge.md#product-knowledge" "intake offers product knowledge"
+assert_contains "$orch" "as a follow-up" "adopted items reach running workers"
+assert_contains "$orch" "open checks" "wrap-up lists open checks"
+assert_contains "$ledger" "[expert] <target> <experts>: <n> proposed, <k> adopted" "ledger: expert line"
+assert_contains "$ledger" "[expert] declined E<n>: <reason>" "ledger: declined line"
+assert_contains "$tiers" "| Expert view | at planning, for goals that touch the product's field | only on request |" "lite row"
+
 finish

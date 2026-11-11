@@ -17,6 +17,7 @@ Every line in the ledger's Events list starts with one of these tags:
 | `[escalate]` | rework | a tier escalation, or you take a task over as `self` |
 | `[worker-q]` | rework | a worker blocks with a question to you |
 | `[env]` | — (feeds pre-flight) | a round lost to the environment, not the work: missing tool or login, permissions, an untrusted folder, a stale branch. Not a failure, not rework. |
+| `[expert]` | — | an expert view ran, and each recommendation the user declined ([expert-view.md](expert-view.md#adopt-and-decline)) |
 | `[event]` | — | everything else: started, report received, merge requested, merged, archived |
 
 **Expected stops are `[event]`, not `[approval]`:** the one breakdown approval, each merge request, and the knowledge-diff approval.

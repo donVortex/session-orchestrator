@@ -40,6 +40,7 @@ For projects and runs where speed matters more than depth: a simple codebase, a 
 | Subtask reviews | spec review, then code-quality review | one combined review (spec and quality in one pass), never below sonnet |
 | Verifying findings | every `critical` or `important` finding, before it goes back | only for guarded work ([reviews.md](reviews.md#verify-before-sending-work-back)) |
 | `orch-specialist` review of the PR | every `deep` task | only guarded work (below) |
+| Expert view | at planning, for goals that touch the product's field | only on request |
 | Knowledge bootstrap | when the project has none | no bootstrap; at wrap-up, say in one line that a full run would set up project knowledge |
 
 **Guarded work keeps the full treatment:** a task or subtask that touches security, authentication, money, deleting data or migrations keeps its planned tier and the `orch-specialist` review, in lite too.

@@ -51,6 +51,7 @@ Other skills and plugins work inside this workflow, judged by what they would do
   - **Present** → use it exactly as it is, whatever its layout; the project owns it and plugin updates never migrate or reformat it ([the project owns it](references/knowledge.md#the-project-owns-it)). Tell the user which entries bear on the goal. If an entry contradicts `CLAUDE.md` or the code, say so, record it in the ledger's Events, follow `CLAUDE.md` or the code (precedence: brief > `CLAUDE.md` > knowledge), and never quote the contradicted entry into a brief.
   - Check the goal against the rule entries: a rule the goal changes goes on the plan as `Changes rule: …` and only its new version reaches briefs ([rule changes](references/knowledge.md#rule-changes)). Flag entries that name a path or function missing on the base branch as stale, and don't quote them as fact ([stale entries](references/knowledge.md#stale-entries)).
 - **Mode:** lite or full ([lite mode](references/model-tiers.md#lite-mode)). Lite when the user asks for it (in the goal, or "lite" in the command) or the project's calibration has a `Mode: lite` entry, unless the user says "full"; otherwise full. The user may switch at any time during the run. In lite, skip the bootstrap below.
+- **Expert view** ([expert-view.md](references/expert-view.md)): decide whether the goal touches the product's field ([when it runs](references/expert-view.md#when-it-runs)). If it does and the mode is full, start one `orch-specialist` in expert mode and finish it **before the breakdown is shown**: its adopted items shape the breakdown. When the project has no product knowledge, offer it once, per [knowledge.md](references/knowledge.md#product-knowledge).
 - **Workflow learning** ([workflow-learning.md](references/workflow-learning.md#using-what-was-learned)): run every **Pre-flight** check in the project's calibration (by section or `Pre-flight:` prefix) before planning, tell the user up front what they'll need to do, and log it as `[event] pre-flight: …` — a planned ask, not an interruption.
 - **Skills look** ([coexistence.md](references/coexistence.md#intake-plan-and-briefs)): from this session's skill list, note overlapping workflow skills (they plan, run a whole feature, finish or merge branches, or review) and skills that fit the goal's tasks; log `[event] skills: overlap <name> (<stage>); fit <names>`.
 
@@ -60,7 +61,10 @@ Split per [splitting.md](references/splitting.md), following the project's `map.
 
 ## 3. Approval gate
 
+When an expert view ran, show its recommendations first, numbered, and ask the user to adopt or decline each ([adopt and decline](references/expert-view.md#adopt-and-decline)); the breakdown reflects their answers.
+
 Show the breakdown as a table — `| id | task | owns | depends | tier | risk | placement |` — then, under it:
+- the expert-view decision, always shown: `Expert view: <experts> (<why>)`, `Expert view: skipped (<why>) — say "expert view" to run it`, or in lite `Expert view: off in lite — say "expert view" to run it`;
 - `Mode: <lite|full> (<source>)` — only when lite is on or the user forced full, followed in lite by `— say "full" to switch`; in lite, mark tasks kept on `deep` as guarded work;
 - `Following recipe: <name>` for each task that matches a recipe;
 - `Assumed from project knowledge: <default>` for each **Learned default** you rely on. Never assume one that decides safety, data handling, money or a destructive action ([what counts](references/workflow-learning.md#guardrails)), or contradicts `CLAUDE.md`, a project rule or the goal — ask or flag it instead.
@@ -79,7 +83,7 @@ Ledger status → `running`. Then, for every task whose dependencies are merged:
 
 ## 5. Track
 
-On every event, update the ledger first ([ledger.md](references/ledger.md)), starting the line with its [kind tag](references/workflow-learning.md#event-kinds) (`[ask-user] <question> → <answer>` — one line per question, the answer added to it — `[prompt]`, `[failed]`, `[env]`, `[event]`, …). Read each report in full from `.orchestration/reports/` (desktop: copy it there from the shared notes folder first, [how](references/backend-desktop.md#reports-and-permissions)); a worker whose report write was refused ends with the report in its final message — save that to `reports/T<n>.md` yourself. Append its retro to `retros.md`. Answer worker questions you can answer; ask the user the rest. Use early retros to improve the briefs of tasks not yet started.
+On every event, update the ledger first ([ledger.md](references/ledger.md)), starting the line with its [kind tag](references/workflow-learning.md#event-kinds) (`[ask-user] <question> → <answer>` — one line per question, the answer added to it — `[prompt]`, `[failed]`, `[env]`, `[event]`, …). Read each report in full from `.orchestration/reports/` (desktop: copy it there from the shared notes folder first, [how](references/backend-desktop.md#reports-and-permissions)); a worker whose report write was refused ends with the report in its final message — save that to `reports/T<n>.md` yourself. Append its retro to `retros.md`. Answer worker questions you can answer; ask the user the rest. Use early retros to improve the briefs of tasks not yet started. The user may ask for an expert view at any time, on the plan, a task or PR, or a question ([on request](references/expert-view.md#on-request)); an adopted item for a task in progress goes to its worker **as a follow-up**, and one that changes a project rule is logged as a `rule change` ([adopt and decline](references/expert-view.md#adopt-and-decline)).
 
 ## 6. Review
 
@@ -101,7 +105,7 @@ Batch the `reviewed` PRs and ask the user to merge them, grouped by risk, highes
 ## 7. Wrap up
 
 When every task is `merged`, `failed` or `dropped`:
-1. Results: each task, its PR, its outcome, and the final [base-branch check](references/reviews.md#check-the-base-branch-after-merges).
+1. Results: each task, its PR, its outcome, and the final [base-branch check](references/reviews.md#check-the-base-branch-after-merges); then the expert checks still to do, as **open checks** (what, who, when).
 2. Retro digest: group all points in `retros.md` by tag; call out patterns that repeat across tasks.
    **Counts:** the [counts table](references/workflow-learning.md#counts-table) of attention and rework per task and for the run; turn what it shows into proposals per [findings to proposals](references/workflow-learning.md#findings-to-proposals) — learned defaults, pre-flight checks, brief rules or checklist items, recipes — and include them in the knowledge diff below.
 3. **Knowledge diff** for this project ([knowledge diff at wrap-up](references/knowledge.md#knowledge-diff-at-wrap-up)): additions, edits and removals, each with its source (`T<n> / PR #<n>`). If the project has no `.claude/skills/project-rules/` and never declined it, offer it as an optional extra file ([project-rules skill](references/knowledge.md#the-project-rules-skill)).
