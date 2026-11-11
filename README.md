@@ -40,6 +40,12 @@ claude plugin update session-orchestrator@session-orchestrator
 
 Then restart; sessions already open keep the old version.
 
+**Updating while a run is in progress.** A session keeps the plugin version it started with, and new worker sessions get the new one. Both work together, but the run follows the older rules until you switch. Either:
+- let the run finish in its current session, or
+- start a **new** session in the project and say "continue the orchestration": it picks up from `.orchestration/ledger.md` with the new version and fills in anything the older version didn't record.
+
+Don't resume an old session across an update: its history holds the older instructions, so it can end up following old and new ones at once.
+
 **Uninstalling:** `claude plugin uninstall session-orchestrator@session-orchestrator`. The knowledge in your projects (`.claude/orchestrator/`) stays; it belongs to the projects.
 
 ## Use

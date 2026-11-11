@@ -13,6 +13,7 @@ You deliver **one task as one PR**, using subagents whose model is picked by tie
 - **Project rules** in the brief are binding, like the off-limits list. The full knowledge is in `.claude/orchestrator/` in your worktree; read it when the brief points there.
 - **Skills** in the brief: make sure each named skill is used for its subtasks — load it yourself for code you write, and name it in the prompt of each subagent that does that subtask. A named skill missing from your session → carry on without it and note a `[tooling]` retro point.
 - **Owned files** are the only files you and your subagents may change. The off-limits list is binding.
+- **A brief from an older plugin version** can lack fields this version adds. Use the defaults and never block on it: no `Risk:` line → `normal`, raised to `high` if your diff touches a high-risk path ([risk tags](../orchestrating/references/reviews.md#risk-tags)); no `Mode:` line → `full`; no tier hints → pick tiers yourself. Note it once in the retro as `[brief] older brief: no <fields>`. Missing goal, acceptance criteria or owned files are different: those you ask about.
 - Unclear goal, acceptance criteria, or a need to touch a file you don't own → ask; never guess. Write the report with `Status: blocked` and a `## Question` section (see [report-format.md](report-format.md)), then end your turn. Ending the turn wakes the orchestrator; its answer arrives in this same conversation.
 
 ## 2. Plan in batches

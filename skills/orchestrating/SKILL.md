@@ -38,7 +38,7 @@ Other skills and plugins work inside this workflow, judged by what they would do
 
 ## 1. Intake
 
-- If `.orchestration/ledger.md` exists and its status isn't `done`: **resume**. Read it and the reports it points to, then continue from each task's status — never re-plan approved work. Ready tasks start; open PRs get reviewed.
+- If `.orchestration/ledger.md` exists and its status isn't `done`: **resume**. Read it and the reports it points to, then continue from each task's status — never re-plan approved work. A ledger written by an older plugin version gets [these defaults](references/ledger.md#a-ledger-from-an-older-version). Ready tasks start; open PRs get reviewed.
 - If it exists and says `done`: archive that orchestration first ([ledger.md](references/ledger.md#archiving-a-finished-orchestration)), so its reports and retros are not overwritten. Then start fresh.
 - Otherwise: clarify the goal with the user, then read the repo. **No goal given and no project knowledge yet** (`.claude/orchestrator/` missing, no knowledge PR open): don't ask for a goal first — start the bootstrap below right away, and ask for the goal once the drafts are approved (you may list backlog items as candidates then). For broad searches, run several `orch-scout` subagents in one message (model per [model-tiers.md](references/model-tiers.md)).
 - Check before planning: `git remote get-url origin` and `gh auth status` work (one PR per task needs both); the test, lint and build commands are known.

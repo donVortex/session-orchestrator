@@ -104,3 +104,14 @@ Append each report's `## Retro` section under a heading naming the task:
 ```
 
 Write one for every `self` task too, in the same format.
+
+## A ledger from an older version
+
+The plugin may be updated while a run is in progress, and a new session then resumes a ledger an older version wrote. Fill in what it lacks and never re-plan approved work:
+
+- **no `risk` column:** add one and tag every task right away, each by its own change: from its PR's diff if it has one, otherwise from its owned files ([risk tags](reviews.md#risk-tags)). There is no default here: authentication, security, money, deleting data, migrations and CI files are `high`.
+- **no `Mode:` in the header:** the run is `full`, unless the user asked for lite. Add `Mode: full` to the header.
+- **older event lines** without kind tags: the counts at wrap-up are partial ([workflow learning](workflow-learning.md#counts-table)).
+- **briefs already sent** keep their older fields; workers on the new version fill in the defaults themselves.
+
+Log it once as `[event] ledger from an older plugin version: added <what>`.
