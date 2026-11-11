@@ -70,7 +70,7 @@ Run the full test, lint and build commands and read the output. If your worktree
 
 ## 8. Report
 
-Write the report in [report-format.md](report-format.md) to the brief's report path. When the brief names "the shared notes folder your session instructions name" instead of a path, use that folder. Then end your turn with one line: `T<n> done, PR <url>, report at <path>`.
+Write the report in [report-format.md](report-format.md) to the brief's report path. On the desktop backend, read your own context fill first with `mcp__ccd_session_mgmt__get_usage` (`session_id: "self"`) for its Work line; if the tool isn't there or reports it unavailable, write `n/a`. When the brief names "the shared notes folder your session instructions name" instead of a path, use that folder. Then end your turn with one line: `T<n> done, PR <url>, report at <path>`.
 
 The report path is outside your worktree. If the write is refused, don't route around the refusal with another tool: end your turn with the full report in your final message, then the line `T<n> done, PR <url>, report in final message`. The orchestrator saves it.
 

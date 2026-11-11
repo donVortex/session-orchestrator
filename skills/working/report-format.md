@@ -12,6 +12,7 @@ PR: <url, or "none">
 - Verified by: <command> → <real outcome>   (one line per command: tests, lint, build)
 - Risks / follow-ups: <anything the reviewer should look at, plus the `minor` and `pre-existing` review findings; "none" if none>
 - Review findings: fixed <n> · refuted <n> · answered <n> · pre-existing <n> · minor <n>   (the `critical` and `important` findings of all your reviews, by what happened to them; [reviews.md](../orchestrating/references/reviews.md#finding-outcomes))
+- Work: native · subagents: <list or none> · review: <model> ×<n>, <k> round(s) · context at report: <p>% | n/a · compacted: yes | no
 
 ## Subtasks
 | Subtask | Kind | Tier | Outcome | Review found |
@@ -27,7 +28,9 @@ PR: <url, or "none">
 - [tag] <a concrete change to a brief, the split, the rubric, tooling or the codebase>
 ```
 
-One row per subtask you dispatched (a small task has one row; work you did yourself is not a row). **Tier** is the tier it started on; **Outcome** says whether that tier passed its review on the first try; **Review found** is the most serious finding of its review. The orchestrator learns subtask tiers from this table, so keep the kind of work comparable across tasks.
+**Work** says how the task was done, so the orchestrator can compare native work across runs. List subagents as `<role> <model> ×<n>` (`scout haiku ×2`), adding the piece and its reason for anything but a scout (`implementer sonnet ×3 (D: too big)`); `review` is the whole-diff review. **Context at report** is your context window's fill as the app reports it; write `n/a` on the CLI backend or when the app reports it unavailable, never an estimate. **Compacted** is `yes` if your context was compacted during the task.
+
+One row per piece a subagent did (work you did yourself is not a row). **Tier** is the tier it started on; **Outcome** says whether that tier passed its review on the first try; **Review found** is the most serious finding of its review. The orchestrator learns subtask tiers from this table, so keep the kind of work comparable across tasks.
 
 For `Status: blocked`, add a `## Question` section after `## Result` with the one question you need answered and the options you see.
 
@@ -39,6 +42,7 @@ For `Status: blocked`, add a `## Question` section after `## Result` with the on
 | `split` | the task boundary or file ownership was wrong |
 | `tier` | a model was too weak or more than needed; escalations |
 | `parallelism` | parallel batches helped, or collided |
+| `context` | your context was compacted mid-task, and what you handed off after it |
 | `tooling` | commands, permissions, scripts, CI, and skills that helped, got in the way, or were missing — e.g. "stripe-best-practices caught a missing idempotency key", "X tried to write a plan file; skipped", "named skill X not available in this session" |
 | `codebase` | the code itself made the work harder or easier |
 | `process` | anything about the working loop itself |

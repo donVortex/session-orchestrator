@@ -25,4 +25,16 @@ for s in "Mode: lite" "one combined review" "no nested reviewers" "the approved 
   assert_contains "$w" "$s" "worker: kept [$s]"
 done
 
+fmt=$(cat skills/working/report-format.md 2>/dev/null)
+orch=$(cat skills/orchestrating/SKILL.md 2>/dev/null)
+ledger=$(cat skills/orchestrating/references/ledger.md 2>/dev/null)
+assert_contains "$fmt" "- Work: native · subagents:" "report: Work line"
+assert_contains "$fmt" "context at report: <p>% | n/a" "report: context fill or n/a"
+assert_contains "$fmt" '| `context` |' "report: context tag"
+assert_contains "$fmt" "never an estimate" "report: unavailable context is n/a"
+assert_contains "$w" "get_usage" "worker: reads its own context fill (desktop)"
+assert_contains "$orch" "the Work line" "orchestrator reads the Work line"
+assert_contains "$orch" "total_cost_usd" "orchestrator: CLI cost from the result JSON"
+assert_contains "$ledger" "[event] T<n> work: native, <k> subagents, context <p>%, compacted <yes|no>" "ledger: work line"
+
 finish
