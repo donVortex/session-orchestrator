@@ -59,7 +59,12 @@ Then restart; sessions already open keep the old version.
    - **CLI:** workers run headless in their own git worktrees ([permissions](#cli-workers-and-permissions)).
    - The orchestrator does small or critical tasks itself. Before the first one it asks you once to run `/add-dir <repo>-wt`, so its worktrees don't prompt for every edit.
    - Workers that get stuck ask the orchestrator; it asks you only what it can't answer.
-6. **Reviews and merging:** each task ends in one pull request. The orchestrator reviews it (diff, tests, CI) and sends problems back to the worker. Clean PRs are batched and you're asked to merge them. **You merge; it never does.** After a merge it starts the tasks that were waiting on it.
+6. **Reviews and merging:** each task ends in one pull request. The orchestrator reviews it (diff, tests, CI).
+   - Each finding is `critical`, `important` or `minor`, with the file and line. A finding that was already on the base branch is tagged `pre-existing` and never becomes the worker's job.
+   - Before an `important` finding goes back to the worker, a fresh reviewer double-checks it, so false alarms don't cost a round. `minor` findings are listed, not sent back.
+   - After 3 rounds with a problem still open, it asks you how to proceed instead of looping.
+   - Clean PRs are batched and you're asked to merge them, grouped by risk (`low`, `normal`, `high`). For `high`-risk PRs (security, money, data deletion, migrations, CI files) it tells you which files to read yourself. **You merge; it never does.**
+   - After merges it runs the tests on the updated base branch, then starts the tasks that were waiting on them.
 7. **Wrap-up:** when every task is done it shows the results, what went well or badly, and a **knowledge diff**: what it learned about the project, each change with its source. Approve it and it opens a knowledge PR.
 
 ### Every run after that

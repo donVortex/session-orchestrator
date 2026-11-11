@@ -24,12 +24,12 @@ Pick from [model-tiers.md](model-tiers.md) by the hardest thing in the task. Sch
 
 Goal: add user profiles (table, endpoints, UI page, API docs).
 
-| id | task | owns | depends | tier | placement |
-|---|---|---|---|---|---|
-| T1 | `profiles` table + migration | `src/db/schema.ts`, `src/db/migrations/**` | — | deep | self |
-| T2 | GET/PUT profile endpoints + tests | `src/api/users/**` | T1 | standard | worker |
-| T3 | profile page + tests | `src/ui/profile/**` | T1 | standard | worker |
-| T4 | API docs | `docs/api.md` | T2 | fast | worker |
+| id | task | owns | depends | tier | risk | placement |
+|---|---|---|---|---|---|---|
+| T1 | `profiles` table + migration | `src/db/schema.ts`, `src/db/migrations/**` | — | deep | high | self |
+| T2 | GET/PUT profile endpoints + tests | `src/api/users/**` | T1 | standard | normal | worker |
+| T3 | profile page + tests | `src/ui/profile/**` | T1 | standard | normal | worker |
+| T4 | API docs | `docs/api.md` | T2 | fast | low | worker |
 
 T2 and T3 run at the same time and share no files. T4 waits for T2 because it documents T2's behaviour.
 

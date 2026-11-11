@@ -137,10 +137,10 @@ If the user declines the bootstrap, run without knowledge for this orchestration
 
 | Step | Use |
 |---|---|
-| Intake | Read every file in the folder from the base branch. Tell the user which entries bear on the goal. Flag contradictions (see Precedence), the rules the goal changes ([rule changes](#rule-changes)) and [stale entries](#stale-entries). |
+| Intake | Read every file in the folder from the base branch. Tell the user which entries bear on the goal. Flag contradictions (see Precedence), the rules the goal changes ([rule changes](#rule-changes)) and [stale entries](#stale-entries). If the project has a `REVIEW.md` (repo root or `.claude/`), read it too: it joins the review checklist and wins where they differ ([reviews](reviews.md#the-projects-own-review-rules)). |
 | Breakdown | The map's feature flows for where the change belongs; the calibration's tiers and split sizes. |
 | Briefs | **Project rules:** quote the rule entries relevant to the task (never a contradicted or stale one, and only the new version of a rule the goal changes). **Review checklist:** name the project's checklist file and the sections that apply; when the knowledge isn't on the base branch yet (open bootstrap PR, approved draft), quote the checklist items themselves. Write the calibration's "briefs need" items into the brief's fields, plus a matched recipe's must-haves and the learned defaults the task relies on ([workflow learning](workflow-learning.md#using-what-was-learned)). |
-| Reviews | Your own review and every `orch-specialist` pass, `deep` tasks included, check the same checklist items. |
+| Reviews | Your own review and every `orch-specialist` pass, `deep` tasks included, check the same checklist items (and `REVIEW.md`), with the finding rules in [reviews.md](reviews.md). |
 
 ## The project-rules skill
 

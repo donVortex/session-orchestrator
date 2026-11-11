@@ -36,6 +36,7 @@ For projects and runs where speed matters more than depth: a simple codebase, a 
 | Placement | per [splitting.md](splitting.md#placement) | small and sequential tasks as `self`; `worker` only for tasks too big for this session or ones that should run in parallel |
 | Worker plan | batch loop, or the small-task path for one subtask | the small-task path whenever the task fits one subtask |
 | Subtask reviews | spec review, then code-quality review | one combined review (spec and quality in one pass), never below sonnet |
+| Verifying findings | every `critical` or `important` finding, before it goes back | only for guarded work ([reviews.md](reviews.md#verify-before-sending-work-back)) |
 | `orch-specialist` review of the PR | every `deep` task | only guarded work (below) |
 | Knowledge bootstrap | when the project has none | no bootstrap; at wrap-up, say in one line that a full run would set up project knowledge |
 
