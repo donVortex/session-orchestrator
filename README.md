@@ -126,7 +126,7 @@ Your other skills and plugins keep working alongside it ([how](#alongside-other-
 
 | | Full | Lite |
 |---|---|---|
-| Models | opus for `deep` work | sonnet for everything (`deep` runs as `standard`) |
+| Models | opus for `deep` work | sonnet for everything except an expert view you ask for (`deep` runs as `standard`) |
 | Tasks | PR-sized, one worker session each | as few tasks as the work allows; small ones done in the orchestrator session |
 | Reviews | spec review + quality review per subtask, specialist review of `deep` PRs | one combined review per subtask, no specialist PR review |
 | Expert view | at planning, when the goal touches the product's field | only when you ask |
@@ -157,7 +157,7 @@ Worker sessions and subagents get their models from the task tiers, whatever you
 
 Each project keeps what the orchestrator has learned about it in `.claude/orchestrator/`, committed to the project's repo: domain rules and glossary, who your users are and what they need, a codebase map, a review checklist, and tier and split calibration. A healthcare team's orchestrator becomes expert in their healthcare product; an insurtech team's in theirs.
 
-- **First run in a project:** scouts read the repo, the orchestrator asks you up to 5 domain questions (one at a time), shows you the drafts, and opens a knowledge PR after you approve. Start it without a goal (`/session-orchestrator:orchestrate`) and it learns the project first, then asks what to build.
+- **First run in a project:** scouts read the repo, the orchestrator asks you up to 5 questions (one at a time), two of them about your users and experts, shows you the drafts, and opens a knowledge PR after you approve. Start it without a goal (`/session-orchestrator:orchestrate`) and it learns the project first, then asks what to build.
 - **Project-rules skill (optional):** the orchestrator offers a small `.claude/skills/project-rules/SKILL.md` that points every session in the repo, even ones not using the orchestrator, to the project's rules. Decline it once and it isn't offered again.
 - **Every run:** briefs quote the relevant rules, reviews use the checklist, and splits follow the codebase map.
 - **Every wrap-up:** proposes additions, edits and removals, each with its source. After you approve, it opens (or extends) a knowledge PR for the team to review.
@@ -174,7 +174,7 @@ Each project keeps what the orchestrator has learned about it in `.claude/orches
 From that, the **expert view** looks at the work the way those professionals would. For each goal that touches your product's field, before showing the plan, a fresh specialist answers four things:
 
 1. What a top professional would do here that you didn't ask for.
-2. The raw material they'd start from: primary sources and your own data, not someone's summary. Each source is marked *opened* (read now), *recalled* (from the model's training, not checked) or *unreachable*.
+2. The raw material they'd start from: primary sources and your own data, not someone's summary. Each source is marked *opened* (read now), *recalled* (not read now: known from the model's training, or only cited) or *unreachable*.
 3. The methods and tools they'd use.
 4. What, other than you and Claude, would show the result is right: a professional's sign-off, a user test, numbers from your logs.
 
@@ -247,7 +247,7 @@ On Windows, workers use Git Bash for shell commands (the PowerShell tool is turn
 - worktrees for tasks, and `orch/T<n>` branches with their pull requests;
 - `.claude/orchestrator/` and the optional project-rules skill, only through pull requests you approve and merge.
 
-**Network.** Your own `git` and `gh` talking to GitHub, Claude Code's own model calls, and, for the expert view, up to 5 fetches of public sources (guidelines, standards, papers) per view, found with general search terms only: never your code, your data or your product's name. No telemetry: nothing is sent to the plugin's author or anyone else.
+**Network.** Your own `git` and `gh` talking to GitHub, Claude Code's own model calls, and, for the expert view, up to 5 web requests per view (searches and fetches of public sources such as guidelines, standards and papers), found with general search terms only: never your code, your data or your product's name. No telemetry: nothing is sent to the plugin's author or anyone else.
 
 ## Contributing
 

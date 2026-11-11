@@ -60,6 +60,7 @@ Worker sessions coordinate, plan and review, so they never run below **sonnet**,
 | `orch-scout` | read-only search and summaries | `fast` |
 | `orch-implementer` | implement one subtask test-first | `fast`, `standard` |
 | `orch-specialist` | design, hard debugging, security, code review | `deep` (and reviews of `standard` work when asked) |
+| `orch-specialist` (expert mode) | the expert view | opus, in lite too |
 
 ## Parallelism caps
 

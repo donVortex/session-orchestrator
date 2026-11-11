@@ -23,7 +23,7 @@ Each project keeps what the orchestrator has learned about it in `.claude/orches
 | `product.md` | Who the users are, what they need, what's out of scope, whose professional eye matters and their sources ([expert view](expert-view.md)) | 80 |
 | `calibration.md` | Which task types need which tier here; typical split sizes; brief details workers keep needing; proven recipes, learned defaults and pre-flight checks ([workflow learning](workflow-learning.md)) | 120 |
 
-A new file's first line states its budget: `<!-- budget: N lines -->`. Starter files are in [knowledge-templates/](knowledge-templates/README.md): [domain.md](knowledge-templates/domain.md), [map.md](knowledge-templates/map.md), [review-checklist.md](knowledge-templates/review-checklist.md), [calibration.md](knowledge-templates/calibration.md).
+A new file's first line states its budget: `<!-- budget: N lines -->`. Starter files are in [knowledge-templates/](knowledge-templates/README.md): [domain.md](knowledge-templates/domain.md), [map.md](knowledge-templates/map.md), [review-checklist.md](knowledge-templates/review-checklist.md), [calibration.md](knowledge-templates/calibration.md), [product.md](knowledge-templates/product.md).
 
 ## The project owns it
 
@@ -44,6 +44,8 @@ One line, or a short block, ending with its source and date:
 - **PHI never appears in logs.** Use `redact()` from `src/phi/redact.ts`. _(bootstrap, 2026-11-03)_
 - **Premiums are integer cents**, never floats. _(T2 / PR #42, 2026-11-10)_
 ```
+
+A source is `bootstrap`, `user`, `T<n> / PR #<n>`, a raw-material path (`docs/research/interviews-2026-10.md`) for a need, or `expert view, declined by user` for an Out of scope entry.
 
 Sources: `bootstrap`, `user`, or `T<n> / PR #<n>`.
 
@@ -122,7 +124,7 @@ GitHub's `head:` search can match more loosely than the prefix; the `--jq` filte
 
 1. **Scan.** In one message, start parallel `orch-scout` subagents to read the README, `docs/`, `CLAUDE.md`, the folder structure, the test layout and the last 50 commits. Ask each for draft entries with `path:line` sources, and also for the project's **raw material** (research notes, data exports, fixtures, analytics docs) as pointers for the product knowledge.
 2. **Interview.** Ask the user at most **5** questions, **one at a time** — each one thing to answer, never a bundle of sub-questions. Two of them are always the product questions, asked separately: *"Who uses this?"* and *"Whose professional eye matters most here?"* Pick the rest from: rules that aren't written down; risky or regulated areas; terms with a specific meaning here; what reviewers must always check; work that has gone wrong before.
-3. **Draft.** Fill `README.md` and the five files from the templates (`product.md` from the product answer and the scouts' raw material), applying the content rules. Remove a template heading that ends up with no entries (e.g. an unused `## When touching <area>`), except calibration's `## Recipes`, `## Learned defaults` and `## Pre-flight`, which stay for workflow learning to fill. Also offer the [project-rules skill](#the-project-rules-skill) as part of the same PR; the user may decline it.
+3. **Draft.** Fill `README.md` and the five files from the templates (`product.md` from the product answers and the scouts' raw material), applying the content rules. Remove a template heading that ends up with no entries (e.g. an unused `## When touching <area>`), except calibration's `## Recipes`, `## Learned defaults` and `## Pre-flight`, and product's `## Out of scope`, which stay for workflow learning to fill. Also offer the [project-rules skill](#the-project-rules-skill) as part of the same PR; the user may decline it.
 4. **Approve.** Show the drafts and ask the user to approve or edit them. Write nothing to the repo before they do.
 5. **PR.** The worktree sits outside your working directories: if the user hasn't run `/add-dir <$root>-wt` yet, ask them to now. Then:
    ```bash
@@ -150,7 +152,7 @@ Who the users are, what they need, what was decided against, and whose professio
 
 - **Found by purpose.** A project that keeps this in another file, or under other headings, has product knowledge: use it as it is, and don't offer to start one.
 - **Projects bootstrapped before product knowledge existed** (they have knowledge, but none of it is product knowledge): at the intake of a fresh full-mode orchestration (never in lite, and never to a project with no knowledge at all) whose goal touches the product's field ([when](expert-view.md#when-it-runs)), offer once, in one line of the approval message, to start it. On yes, once the plan is approved, ask the two product questions, one at a time (*"Who uses this?"*, then *"Whose professional eye matters most here?"*), and add the draft `product.md` to this run's knowledge diff (the user's yes is what allows a new file here). On no, log `[event] product knowledge: declined` and never offer again; skip the offer too when this or an archived ledger records that line.
-- **At wrap-up,** the knowledge diff carries: adopted expert recommendations that are product decisions (a hard rule goes to the rules file instead); declined ones, as Out of scope entries; needs that turned out different (an edit of the entry, as with [rule changes](#rule-changes)); new raw material found this run, as pointers.
+- **At wrap-up,** the knowledge diff carries: adopted expert recommendations that are product decisions (a hard rule goes to the rules file instead); declined ones, as Out of scope entries; needs that turned out different (an edit of the entry, as with [rule changes](#rule-changes)); new raw material found this run, as pointers. When the user declined product knowledge, declines go into the rules file as `Decided not to:` entries (a product decision is a rule there), with no new file and no new offer.
 - **Content rules apply in full:** pointers to raw material, never the data; interview findings summarised without names; no personal or health records.
 
 ## The project-rules skill

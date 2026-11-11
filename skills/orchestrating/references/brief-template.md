@@ -8,7 +8,7 @@ The brief is the worker's whole contract; it sees nothing else from this convers
 Load the session-orchestrator:working skill and follow it.
 Canonical brief: `<$root>/.orchestration/briefs/T<n>.md`. The app may deliver `@` as `＠` in this prompt; where the prompt and the file differ, the file wins.
 
-- Goal: <one or two sentences, with the concrete names and values the work needs: field names, setting names, request/response and error shapes>
+- Goal: <one or two sentences, for whom: the users and needs from the product knowledge it serves, when there is any; with the concrete names and values the work needs: field names, setting names, request/response and error shapes>
 - Acceptance: <checkable criteria, each with how it is verified>; checks that need people or time (from an expert view) are marked `still to do: <check> — <who> — <when>`
 - Style reference: <an existing file whose patterns to follow, or "none">
 - Project rules: <the project's rule entries relevant to this task, quoted (never one that contradicts `CLAUDE.md`, never a stale one, and only the new version of a rule the goal changes), or "none"> (binding, like the off-limits list)

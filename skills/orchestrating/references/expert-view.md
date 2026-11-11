@@ -29,14 +29,14 @@ The user asks in plain words at any point in a run: "expert view", "what would a
 ## Expert mode
 
 - **A fresh `orch-specialist`, read-only.** It never edits files.
-- **Model:** opus / medium; opus / high when the target is guarded work (security, authentication, money, deleting data, migrations) or health and safety.
+- **Model:** opus, in lite too, per the [roles table](model-tiers.md#roles). A subagent has no effort setting; give guarded work (security, authentication, money, deleting data, migrations) and health and safety the most care in the prompt instead.
 - **One call covers up to 3 experts.** When more apply, it takes the 3 that bear most on the target and names the ones it skipped.
 - **Input:** the target; `product.md`, `domain.md` and `map.md` (or the project's files serving those purposes); the decisions already made this run, adopted and declined. Never the orchestrator's own reasoning about the plan, so the view isn't anchored on it.
 
 ## Raw material and sources
 
 - **The project's own material** (logs, exports, fixtures, research notes, support-ticket exports): read with read-only tools, from the Experts pointers in the product knowledge or what it finds in the repo. It works from aggregates ("38% of week-1 users stop by day 3") and never quotes records: no rows, names, identifiers or personal data.
-- **Public primary sources** (guidelines, standards, papers): at most 5 web fetches per view. Search terms are general ("ACSM resistance training progression"), never code, data or the product's name.
+- **Public primary sources** (guidelines, standards, papers): at most 5 web requests (searches and fetches together) per view. Search terms are general ("ACSM resistance training progression"), never code, data or the product's name.
 - **Every source carries a mark:**
   - `opened` — read in this call; give the URL or path and the section;
   - `recalled` — known from training, not read now; give the name and year as remembered;
@@ -70,8 +70,10 @@ The user asks in plain words at any point in a run: "expert view", "what would a
 Save each view to `.orchestration/expert/<target>.md` (`plan`, `T4`, or `q<n>` for a question) and link it rather than pasting it. Show the recommendations numbered; the user adopts or declines each.
 
 - **Adopted, for work not started:** change the plan (a new task, or new acceptance criteria) and show it as a plan change before anything starts.
-- **Adopted, for a task in progress:** send it to that task's worker as a follow-up, the same way as review findings. If it changes a project rule, log it as a `rule change` ([rule changes](knowledge.md#rule-changes)).
-- **Declined:** record the user's reason. At wrap-up it goes into the product knowledge's Out of scope as `Decided not to: <thing>. <reason>.`
+- **Adopted, for a task in progress, or reviewed but not merged:** send it to that task's worker as a follow-up, the same way as review findings. It is logged as `[expert]`, not `[changes]`: new advice, not a failed round, so it doesn't count as rework.
+- **Adopted, for a task already merged:** add a new task for it, shown as a plan change.
+- **Adopted, and it changes a project rule:** log it as a `rule change` ([rule changes](knowledge.md#rule-changes)), and send the new rule as a follow-up to every other running worker whose brief quotes the old rule.
+- **Declined:** record the user's reason. At wrap-up it goes into the product knowledge's Out of scope as `Decided not to: <thing>. <reason>.` When the user declined product knowledge, it goes into the rules file instead ([how](knowledge.md#product-knowledge)).
 - **Ledger:** `[expert] <target> <experts>: <n> proposed, <k> adopted → expert/<target>.md`, and for each decline `[expert] declined <target> E<n> "<thing>": <reason>`, so the decline survives a resume and reaches the wrap-up.
 
 ## If it fails
