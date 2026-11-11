@@ -30,4 +30,9 @@ assert_contains "$readme" "say \"expert view\"" "README: how to ask for it"
 assert_contains "$readme" "general search terms" "README: web fetches disclosed"
 assert_not_contains "$readme" "The only connections are your own" "README: network line updated for web fetches"
 
+# README: native workers (v0.8.0)
+assert_contains "$readme" "### How workers work" "README: workers section"
+assert_contains "$readme" "one review of the whole change" "README: whole-diff review"
+assert_not_contains "$readme" "spec review + quality review per subtask" "README: old review row gone"
+
 finish
