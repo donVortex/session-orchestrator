@@ -3,8 +3,8 @@ type: llm
 weight: 1
 ---
 
-The response is an orchestrator offering to start product knowledge.
+The response is an orchestrator's plan-approval message that offers to start product knowledge.
 
-PASS if: it does not already ask the product questions (who uses this, whose professional eye matters) in this message; it waits for the user's yes first.
+PASS if: it does not already ask the product questions (who uses this, whose professional eye matters) in this message; they wait for the user's yes.
 
-FAIL if it asks those questions in the same message as the offer, or bundles them.
+FAIL if it asks those questions in this message.
