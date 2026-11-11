@@ -61,7 +61,7 @@ Where each value comes from, on both sides:
 - PR findings come from the ledgers' `findings:` lines of your PR reviews (since v0.6.0); a run without them gives `n/a`.
 - **rework** from the counts table (or the archived ledger's tags).
 - **compacted before is always `n/a`**: it wasn't measured before native workers.
-- **subagents counts the delegated pieces**: before, the old reports' Subtasks rows; now, the Subtasks rows a subagent did. Scouts and reviews aren't counted on either side, since old runs didn't record them.
+- **subagents counts the delegated pieces**: before, the old reports' Subtasks rows; now, the Subtasks rows a subagent did. Both are pieces of work done by a subagent: the same unit on both sides, so compare them. Scouts and reviews aren't counted on either side, since old runs didn't record them.
 - Never fill a missing value with an estimate: write `n/a`.
 
 With no archived run from before, show no comparison line: there is nothing to compare with. The `Worker plan:` proposals need no baseline from before: two runs with native workers are enough. A run that mixed older and native workers (one updated mid-run) counts on neither side.
@@ -88,7 +88,7 @@ At wrap-up, compare each task's counts with its recipe (or with zero if it had n
 | A stall from the environment: a `[prompt]`, a `[start-click]`, or an `[env]` round | A **pre-flight check** for intake, with what to tell the user up front | `calibration.md` → Pre-flight |
 | A `[failed]`, `[changes]` or `[worker-q]` caused by the work or the brief | A **brief rule** (what the worker needed to be told) or a **checklist item** (what review should catch earlier) | `calibration.md` → Briefs need, or `review-checklist.md` |
 | A task with zero rework and no attention except product decisions that this same diff records as `domain.md` rules, of a kind with no recipe | A **new recipe** | `calibration.md` → Recipes |
-| More PR findings or rework than the baseline for the same kind of work in the same area, in two runs with native workers. The baseline is the area's own earlier tasks of that kind, native or not, or else the project's average per task. This proposal comes before a brief rule or checklist item for the same findings: propose the `Worker plan:` entry, and add those only as well, never instead | `Worker plan: per-piece reviews for <kind> in <area>` | `calibration.md` → Tiers by task type (or where `Tier:` entries live) |
+| More PR findings or rework than the baseline for the same kind of work in the same area, in two runs with native workers. The baseline is the area's own tasks of that kind from before native workers, or else the project's average per task from before native workers; in a project that started with native workers, the project's average per task across its runs. Never the area's own earlier native runs: those are what is being judged. This proposal comes before a brief rule or checklist item for the same findings: propose the `Worker plan:` entry, and add those only as well, never instead | `Worker plan: per-piece reviews for <kind> in <area>` | `calibration.md` → Tiers by task type (or where `Tier:` entries live) |
 | A worker compacted on the same kind of work in the same area, in two runs | `Worker plan: subagents for <kind> in <area>` | `calibration.md`, next to the `Tier:` entries |
 | A task that followed its recipe and did as well or better | Update the recipe's track record | `calibration.md` → Recipes |
 | A task that did clearly worse than its recipe | The cause, and a fix to the recipe or the brief | as above |

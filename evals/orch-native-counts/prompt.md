@@ -21,6 +21,6 @@ You are the orchestrator of github.com/acme/shop (desktop backend, mode full, st
 
 **Archived runs:**
 - The previous run (T14–T19) also used native workers. Its `src/billing/` state machine tasks (T15, T17) each had 2 important PR findings and 1 rework. No search task compacted.
-- Two older runs (T1–T13), from before native workers: their reports have no Work line. Per task they averaged 0.4 PR findings (critical + important), 0.9 rework, 0 compacted, and 7.0 subagents (implementers plus their per-subtask reviews).
+- Two older runs (T1–T13), from before native workers: their reports have no Work line. From their ledgers' `findings:` lines and counts, per task: 0.4 PR findings (critical + important) and 0.9 rework. Their reports' Subtasks tables show 2.6 delegated subtasks per task. None of their billing tasks were state machine changes. Compaction and review counts weren't recorded.
 
 Write the counts part of your wrap-up message and the knowledge-diff proposals that come from these numbers. Don't write the rest of the wrap-up.

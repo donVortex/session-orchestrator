@@ -56,7 +56,7 @@ assert_contains "$tiers" "| Worker reviews | one whole-diff review; per-piece re
 assert_contains "$tiers" "delegated pieces" "cap covers delegated pieces"
 assert_contains "$(cat skills/orchestrating/references/reviews.md)" "the worker's whole-diff review" "reviews: names the worker review"
 
-assert_contains "$wl" "the area's own earlier tasks of that kind, native or not, or else the project's average per task" "learning: what 'more than the baseline' means"
+assert_contains "$wl" "the area's own tasks of that kind from before native workers" "learning: what 'more than the baseline' means"
 assert_contains "$wl" "comes before a brief rule or checklist item for the same findings" "learning: Worker plan proposal takes precedence"
 
 # final review fixes
@@ -80,5 +80,10 @@ assert_not_contains "$(cat README.md)" "Workers build with subagents whose model
 assert_not_contains "$(cat .claude-plugin/plugin.json)" "tiered parallel subagents" "R8: plugin description"
 assert_not_contains "$(cat .claude-plugin/marketplace.json)" "tiered, parallel subagents" "R8: marketplace description"
 assert_not_contains "$(cat docs/e2e-checklist.md)" "batch plan" "R8: e2e checklist"
+
+assert_contains "$orch" "logged as \`[escalate] T<n> effort <from> → <to>\`" "failed round: effort escalation is logged"
+
+assert_contains "$orch" "propose its \`Worker plan:\` entry first" "wrap-up: Worker plan proposal first"
+assert_contains "$wl" "the same unit on both sides" "learning: delegated pieces are one unit"
 
 finish
