@@ -64,7 +64,7 @@ Where each value comes from, on both sides:
 - **subagents counts the delegated pieces**: before, the old reports' Subtasks rows; now, the Subtasks rows a subagent did. Both are pieces of work done by a subagent: the same unit on both sides, so compare them. Scouts and reviews aren't counted on either side, since old runs didn't record them.
 - Never fill a missing value with an estimate: write `n/a`.
 
-With no archived run from before, show no comparison line: there is nothing to compare with. The `Worker plan:` proposals need no baseline from before: two runs with native workers are enough. A run that mixed older and native workers (one updated mid-run) counts on neither side.
+With no archived run from before, show no comparison line: there is nothing to compare with. The `Worker plan:` proposals need no baseline from before: two runs with native workers are enough. A run that mixed older and native workers (one updated mid-run) counts on neither side. Tasks whose Work line says `self` count in the run's totals but not in the comparison or the `Worker plan:` proposals: they measure your session, not a worker's.
 
 ## Recipes
 

@@ -28,7 +28,7 @@ PR: <url, or "none">
 - [tag] <a concrete change to a brief, the split, the rubric, tooling or the codebase>
 ```
 
-**Work** says how the task was done, so the orchestrator can compare native work across runs. List subagents as `<role> <model> ×<n>` (`scout haiku ×2`), adding the piece and its reason for anything but a scout (`implementer sonnet ×3 (D: too big)`); `review` is the whole-diff review. **Context at report** is your context window's fill as the app reports it; write `n/a` on the CLI backend or when the app reports it unavailable, never an estimate. **Compacted** is `yes` if your context was compacted during the task.
+**Work** says how the task was done (`Work: self · …` when the orchestrator did a `self` task), so the orchestrator can compare native work across runs. List subagents as `<role> <model> ×<n>` (`scout haiku ×2`), adding the piece and its reason for anything but a scout (`implementer sonnet ×3 (D: too big)`); `review` is the whole-diff review. **Context at report** is your context window's fill as the app reports it; write `n/a` on the CLI backend or when the app reports it unavailable, never an estimate. **Compacted** is `yes` if your context was compacted during the task.
 
 One row per piece, yours included: **Tier** is the tier the piece ran on (your session's tier for a piece you wrote), so the orchestrator keeps learning tiers per kind of work. **Tier** is the tier it started on; **Outcome** says whether that tier passed its review on the first try; **Review found** is the most serious finding of its review. The orchestrator learns subtask tiers from this table, so keep the kind of work comparable across tasks.
 
