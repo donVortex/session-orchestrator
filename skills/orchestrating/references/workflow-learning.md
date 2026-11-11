@@ -57,7 +57,7 @@ Workers write their pieces themselves since v0.8.0. The baseline is the project'
 
 `Native vs before (per task): PR findings <a> → <b> · rework <a> → <b> · compacted <a> → <b> of <n> · subagents <a> → <b>`
 
-Subagents before are counted from the old reports' Subtasks tables, plus their reviews. On a project's first run, or with no archived run from before, show no comparison line and no `Worker plan:` proposal: there is nothing to compare with.
+`subagents` counts every subagent call, reviews included, on both sides: before, the old reports' Subtasks rows plus their per-subtask reviews; now, the Work line's subagents plus its review. So the numbers are comparable; never leave them out. On a project's first run, or with no archived run from before, show no comparison line and no `Worker plan:` proposal: there is nothing to compare with.
 
 ## Recipes
 
@@ -81,7 +81,7 @@ At wrap-up, compare each task's counts with its recipe (or with zero if it had n
 | A stall from the environment: a `[prompt]`, a `[start-click]`, or an `[env]` round | A **pre-flight check** for intake, with what to tell the user up front | `calibration.md` → Pre-flight |
 | A `[failed]`, `[changes]` or `[worker-q]` caused by the work or the brief | A **brief rule** (what the worker needed to be told) or a **checklist item** (what review should catch earlier) | `calibration.md` → Briefs need, or `review-checklist.md` |
 | A task with zero rework and no attention except product decisions that this same diff records as `domain.md` rules, of a kind with no recipe | A **new recipe** | `calibration.md` → Recipes |
-| More PR findings or rework than the baseline for the same kind of work in the same area, in two runs with native workers | `Worker plan: per-piece reviews for <kind> in <area>` | `calibration.md` → Tiers by task type (or where `Tier:` entries live) |
+| More PR findings or rework than the baseline for the same kind of work in the same area, in two runs with native workers. The baseline is the area's own earlier tasks of that kind, or else the baseline's average per task. This proposal comes before a brief rule or checklist item for the same findings: propose the `Worker plan:` entry, and add those only as well, never instead | `Worker plan: per-piece reviews for <kind> in <area>` | `calibration.md` → Tiers by task type (or where `Tier:` entries live) |
 | A worker compacted on the same kind of work in the same area, in two runs | `Worker plan: subagents for <kind> in <area>` | `calibration.md`, next to the `Tier:` entries |
 | A task that followed its recipe and did as well or better | Update the recipe's track record | `calibration.md` → Recipes |
 | A task that did clearly worse than its recipe | The cause, and a fix to the recipe or the brief | as above |

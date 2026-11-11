@@ -57,4 +57,8 @@ assert_contains "$tiers" "| Worker reviews | one whole-diff review; per-piece re
 assert_contains "$tiers" "delegated pieces" "cap covers delegated pieces"
 assert_contains "$(cat skills/orchestrating/references/reviews.md)" "the worker's whole-diff review" "reviews: names the worker review"
 
+assert_contains "$wl" "counts every subagent call, reviews included, on both sides" "learning: subagent counts comparable"
+assert_contains "$wl" "the area's own earlier tasks of that kind, or else the baseline's average per task" "learning: what 'more than the baseline' means"
+assert_contains "$wl" "comes before a brief rule or checklist item for the same findings" "learning: Worker plan proposal takes precedence"
+
 finish
