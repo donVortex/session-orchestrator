@@ -61,7 +61,7 @@ Run the full test, lint and build commands and read the output. If your worktree
 
 ## 6. Open the PR
 
-`git push -u origin HEAD:<branch>`, where `<branch>` is the one the brief names (default `orch/<task-id>`; your local branch name may differ). Then write the PR body — Goal, Changes, Verification (commands → results), Risk (the brief's tag, raised if your diff touches a high-risk path, and why), How to revert, Follow-ups (`minor` and `pre-existing` findings) — ([details](../orchestrating/references/reviews.md#risk-tags)) to `<report dir>/T<n>-pr.md` and run `gh pr create --base <base> --head <branch> --title "T<n>: <task>" --body-file <that file>`. Never pass the body inline: a line starting with `#` gets the command rejected. Never force-push, and never push to the base branch.
+`git push -u origin HEAD:<branch>`, where `<branch>` is the one the brief names (default `orch/<task-id>`; your local branch name may differ). Then write the PR body — Goal, Changes, Verification (commands → results, then the brief's `still to do` checks under that label, never as passed), Risk (the brief's tag, raised if your diff touches a high-risk path, and why), How to revert, Follow-ups (`minor` and `pre-existing` findings) — ([details](../orchestrating/references/reviews.md#risk-tags)) to `<report dir>/T<n>-pr.md` and run `gh pr create --base <base> --head <branch> --title "T<n>: <task>" --body-file <that file>`. Never pass the body inline: a line starting with `#` gets the command rejected. Never force-push, and never push to the base branch.
 
 ## 7. Report
 

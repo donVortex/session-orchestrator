@@ -9,7 +9,7 @@ Load the session-orchestrator:working skill and follow it.
 Canonical brief: `<$root>/.orchestration/briefs/T<n>.md`. The app may deliver `@` as `＠` in this prompt; where the prompt and the file differ, the file wins.
 
 - Goal: <one or two sentences, with the concrete names and values the work needs: field names, setting names, request/response and error shapes>
-- Acceptance: <checkable criteria, each with how it is verified>
+- Acceptance: <checkable criteria, each with how it is verified>; checks that need people or time (from an expert view) are marked `still to do: <check> — <who> — <when>`
 - Style reference: <an existing file whose patterns to follow, or "none">
 - Project rules: <the project's rule entries relevant to this task, quoted (never one that contradicts `CLAUDE.md`, never a stale one, and only the new version of a rule the goal changes), or "none"> (binding, like the off-limits list)
 - Review checklist: <the project's checklist file — sections: its always-check section, the areas this task touches; plus `REVIEW.md` if the project has one>; if the knowledge isn't on the base branch yet, quote the items themselves; "none" if the project has no knowledge

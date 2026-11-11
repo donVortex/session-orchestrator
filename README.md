@@ -129,6 +129,7 @@ Your other skills and plugins keep working alongside it ([how](#alongside-other-
 | Models | opus for `deep` work | sonnet for everything (`deep` runs as `standard`) |
 | Tasks | PR-sized, one worker session each | as few tasks as the work allows; small ones done in the orchestrator session |
 | Reviews | spec review + quality review per subtask, specialist review of `deep` PRs | one combined review per subtask, no specialist PR review |
+| Expert view | at planning, when the goal touches the product's field | only when you ask |
 | Knowledge setup | interview and drafts on a project's first run | skipped (the wrap-up mentions it) |
 
 **Turning it on**
@@ -154,7 +155,7 @@ Worker sessions and subagents get their models from the task tiers, whatever you
 
 ## Project knowledge
 
-Each project keeps what the orchestrator has learned about it in `.claude/orchestrator/`, committed to the project's repo: domain rules and glossary, a codebase map, a review checklist, and tier and split calibration. A healthcare team's orchestrator becomes expert in their healthcare product; an insurtech team's in theirs.
+Each project keeps what the orchestrator has learned about it in `.claude/orchestrator/`, committed to the project's repo: domain rules and glossary, who your users are and what they need, a codebase map, a review checklist, and tier and split calibration. A healthcare team's orchestrator becomes expert in their healthcare product; an insurtech team's in theirs.
 
 - **First run in a project:** scouts read the repo, the orchestrator asks you up to 5 domain questions (one at a time), shows you the drafts, and opens a knowledge PR after you approve. Start it without a goal (`/session-orchestrator:orchestrate`) and it learns the project first, then asks what to build.
 - **Project-rules skill (optional):** the orchestrator offers a small `.claude/skills/project-rules/SKILL.md` that points every session in the repo, even ones not using the orchestrator, to the project's rules. Decline it once and it isn't offered again.
@@ -164,7 +165,24 @@ Each project keeps what the orchestrator has learned about it in `.claude/orches
 
 **The project owns its knowledge.** Plugin updates never rewrite, reformat or migrate it, whatever its layout. The plugin's templates only shape a brand-new bootstrap; after that, the knowledge changes only through PRs you approve.
 
-**Standalone by design.** Installed from GitHub, the plugin works on its own and improves only within each project, through that project's knowledge. It never proposes changes to the plugin itself and never sends anything anywhere. Lessons about tooling that help your project become entries in its own knowledge (for example a pre-flight check).
+**Standalone by design.** Installed from GitHub, the plugin works on its own and improves only within each project, through that project's knowledge. It never proposes changes to the plugin itself and never sends anything to its author or anyone else; the only outside requests it adds are the expert view's fetches of public sources ([details](#what-it-runs-and-sends)). Lessons about tooling that help your project become entries in its own knowledge (for example a pre-flight check).
+
+### Product knowledge and the expert view
+
+`product.md` holds who uses your product, what they need (and where that's known from: interviews, support tickets, analytics, or an assumption nobody has checked yet), what you decided not to do, and whose professional eye matters: for a fitness app, say, a strength coach and a physiotherapist, with their primary sources and where your own data lives.
+
+From that, the **expert view** looks at the work the way those professionals would. For each goal that touches your product's field, before showing the plan, a fresh specialist answers four things:
+
+1. What a top professional would do here that you didn't ask for.
+2. The raw material they'd start from: primary sources and your own data, not someone's summary. Each source is marked *opened* (read now), *recalled* (from the model's training, not checked) or *unreachable*.
+3. The methods and tools they'd use.
+4. What, other than you and Claude, would show the result is right: a professional's sign-off, a user test, numbers from your logs.
+
+You adopt or decline each recommendation. Adopted ones change the plan, or go to the worker if the task is already running; declined ones go into `product.md` as out of scope, so they don't come back every run. Checks nobody can run during the session are listed in the PR as still to do; they never block a merge.
+
+- **When it runs:** automatically at planning, unless the goal has nothing to do with the product (refactors, CI, dependencies). The plan always says whether it ran and why. In lite mode it runs only when you ask.
+- **Asking for it:** say "expert view" at any time, about the plan, a task or PR, or a question, or name the professional ("what would a physio say about T4?").
+- **Projects set up before v0.7.0:** the first time a goal touches the product, the orchestrator offers once to start `product.md` with two questions. Decline and it doesn't ask again.
 
 ## Workflow learning
 
@@ -229,7 +247,7 @@ On Windows, workers use Git Bash for shell commands (the PowerShell tool is turn
 - worktrees for tasks, and `orch/T<n>` branches with their pull requests;
 - `.claude/orchestrator/` and the optional project-rules skill, only through pull requests you approve and merge.
 
-**Network.** The only connections are your own `git` and `gh` talking to GitHub, plus Claude Code's own model calls. No telemetry: nothing is sent to the plugin's author or anyone else.
+**Network.** Your own `git` and `gh` talking to GitHub, Claude Code's own model calls, and, for the expert view, up to 5 fetches of public sources (guidelines, standards, papers) per view, found with general search terms only: never your code, your data or your product's name. No telemetry: nothing is sent to the plugin's author or anyone else.
 
 ## Contributing
 

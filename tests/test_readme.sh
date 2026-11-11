@@ -24,4 +24,10 @@ assert_contains "$readme" "No telemetry" "README: no telemetry"
 assert_contains "$readme" "It never changes your permission settings" "README: never changes permission settings"
 assert_contains "$readme" "**Works in Claude Code**" "README: Claude Code only"
 
+# README: product knowledge and the expert view (v0.7.0)
+assert_contains "$readme" "### Product knowledge and the expert view" "README: expert view section"
+assert_contains "$readme" "say \"expert view\"" "README: how to ask for it"
+assert_contains "$readme" "general search terms" "README: web fetches disclosed"
+assert_not_contains "$readme" "The only connections are your own" "README: network line updated for web fetches"
+
 finish
