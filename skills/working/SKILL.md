@@ -29,6 +29,8 @@ Read [model-tiers.md](../orchestrating/references/model-tiers.md). The brief's `
 | `independent, run in parallel`: pieces with no shared files or dependencies, worth doing at the same time | `parallel`: `orch-implementer`, one per piece | the piece's tier |
 | `harder than the task's tier`: one piece that needs more than your session's model | `specialist (opus)`: `orch-specialist` in build mode | opus |
 
+When the orchestrator works a `self` task with this loop, it writes only trivial pieces itself and gives every other piece to a subagent with the reason `orchestrator context`: its session has to last the whole run.
+
 If the brief says `Mode: lite`: give no piece `deep` unless it touches security, authentication, money, deleting data or migrations, and delegated pieces get one combined review (spec and quality in one pass) instead of two. Escalation on failure stays as it is.
 
 Before writing or dispatching anything, post the plan:
@@ -48,7 +50,7 @@ Before writing or dispatching anything, post the plan:
 3. **Fix** — first verify each `critical` or `important` finding with `orch-specialist` in verify mode, all in one message ([how](../orchestrating/references/reviews.md#verify-before-sending-work-back)); send only the confirmed ones back, with every place the finding lists. Re-review only the fix. `minor` and `pre-existing` findings don't go back: list them as follow-ups. After [3 rounds](../orchestrating/references/reviews.md#rounds) with a confirmed finding still open, escalate the piece once; if it still doesn't converge, report `Status: blocked` with the open findings.
 4. **Gate** — commit the batch, run the full test suite. Not green → fix before the next piece.
 
-**If your context is compacted mid-task:** note a `[context]` retro point (what was handed off, and why), and hand the remaining pieces to subagents (`too big for one context`): details lost to compaction shouldn't decide the rest of the task.
+**If your context is compacted mid-task** (you can tell: your earlier conversation has been replaced by a summary): note a `[context]` retro point (what was handed off, and why), and hand the remaining non-trivial pieces to subagents (`too big for one context`): details lost to compaction shouldn't decide the rest of the task. Trivial pieces (a few lines in a file you have open) stay with you.
 
 **Other skills and plugins.** The brief is your contract, and the brief is the approved plan: skip other skills' own brainstorming, planning and confirmation steps (the approved brief is the confirmation; your plan in step 2 still applies), and plan documents never go into the PR. You are already in your worktree: never create a worktree, and never merge, discard or remove the worktree — you push and open a PR (step 7). Questions go into the report (step 1), never to the user. Skills that change how a step is done inside your owned files (test-driven development, framework and domain skills) are welcome; the plan and model rules here win ([coexistence.md](../orchestrating/references/coexistence.md)). With or without other skills, every piece — including code you write yourself — runs the new test and sees it fail for the right reason **before** any implementation exists; then minimal code, then the test passes.
 

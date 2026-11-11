@@ -74,7 +74,7 @@ Every Events line starts with a kind tag after the time; the tags and what each 
 - `session/run`: the desktop session id (`local_…`) or the CLI `session_id`.
 - `branch`: the PR's branch on GitHub: `orch/T<n>`, or `orch/T<n>-<slug>` when that name was taken (see Branch names). A desktop worker's local branch has an app-chosen name; note it in the Events line when the session starts.
 - An expert view logs `[expert] <target> <experts>: <n> proposed, <k> adopted`, and each recommendation the user declines `[expert] declined <target> E<n> "<thing>": <reason>` ([expert-view.md](expert-view.md#adopt-and-decline)).
-- Each report's Work line becomes `[event] T<n> work: native, <k> subagents, context <p>%, compacted <yes|no>`, plus `, $<cost>` on the CLI backend (from the worker's result JSON); a report without a Work line (an older worker) logs `work: not recorded`.
+- Each report's Work line becomes `[event] T<n> work: native, <k> subagents, context <p>%, compacted <yes|no>`, plus `, $<cost>, <tokens>k tokens (<cached>k cached)` on the CLI backend (from the worker's result JSON, summed over its rounds; [how](backend-cli.md)); a report without a Work line (an older worker) logs `work: not recorded`.
 - Log a `[failed] T<n> …` line each time a task fails a round (see the two-failure limit); a round lost to the environment is `[env]`, not `[failed]`.
 
 ## Task statuses

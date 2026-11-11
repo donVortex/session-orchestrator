@@ -14,7 +14,7 @@ assert_contains "$w" "the full suite runs and the piece is committed" "worker: g
 assert_contains "$w" "keep per-piece reviews" "worker: delegated pieces keep their reviews"
 assert_contains "$w" "Worker plan:" "worker: follows Worker plan hints"
 assert_contains "$w" "[context]" "worker: compaction noted"
-assert_contains "$w" "hand the remaining pieces to subagents" "worker: compaction fallback"
+assert_contains "$w" "non-trivial pieces to subagents" "worker: compaction fallback"
 assert_contains "$w" "## 4. Review the whole diff" "worker: whole-diff review heading"
 assert_contains "$w" 'sonnet for `low` and `normal` risk, opus for `high` risk' "worker: review depth by risk"
 assert_contains "$w" "opus for \`high\` risk, in lite too" "worker: lite keeps opus for high risk"
@@ -85,5 +85,22 @@ assert_contains "$orch" "logged as \`[escalate] T<n> effort <from> → <to>\`" "
 
 assert_contains "$orch" "propose its \`Worker plan:\` entry first" "wrap-up: Worker plan proposal first"
 assert_contains "$wl" "the same unit on both sides" "learning: delegated pieces are one unit"
+
+# follow-ups: self tasks, CLI tokens, compaction hand-off
+cli=$(cat skills/orchestrating/references/backend-cli.md 2>/dev/null)
+assert_contains "$orch" "writing only trivial pieces itself" "self: orchestrator keeps its context lean"
+assert_contains "$w" '`orchestrator context`' "self: delegation reason for self tasks"
+assert_contains "$fmt" "Work: self" "self: Work line marked self"
+assert_contains "$wl" 'Tasks whose Work line says `self` count in the run'"'"'s totals but not in the comparison or the `Worker plan:` proposals' "self: left out of the comparison"
+assert_contains "$orch" "input and output tokens" "cli: tokens next to cost"
+assert_contains "$ledger" ', $<cost>, <tokens>k tokens (<cached>k cached)' "cli: ledger tokens format"
+assert_contains "$cli" "summed over the start and every resume" "cli: cost and tokens summed across rounds"
+assert_contains "$cli" "cache_read_input_tokens" "cli: cached tokens field named"
+assert_contains "$w" "hand the remaining non-trivial pieces to subagents" "compaction: only non-trivial pieces"
+assert_contains "$w" "earlier conversation has been replaced by a summary" "compaction: how the worker knows"
+
+assert_contains "$orch" 'in its exact format, compaction included (`compacted n/a → <b> of <n>` when the baseline didn'"'"'t record it)' "wrap-up: exact comparison line"
+assert_contains "$orch" "the area's own tasks of that kind from before native workers, or else the project's average per task from before them" "wrap-up: baseline spelled out"
+assert_contains "$orch" 'worded exactly `Worker plan: per-piece reviews for <kind> in <area>`' "wrap-up: exact entry wording"
 
 finish

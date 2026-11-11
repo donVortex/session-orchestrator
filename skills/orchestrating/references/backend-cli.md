@@ -29,6 +29,7 @@ The script lives at `<plugin root>/scripts/cli-worker.sh` — two levels up from
 - **Always** launch `start` and `resume` with the Bash tool's `run_in_background: true`. You are notified when the worker exits; never poll or sleep.
 - Respect `max_parallel_workers` from [model-tiers.md](model-tiers.md): count running background workers before starting another.
 - The launcher's stdout is the worker's JSON result. Read `session_id` from it and record it in the ledger's `session/run` column; `resume` needs it.
+- The same JSON gives the round's cost and tokens: `total_cost_usd`, and `usage` with `input_tokens`, `output_tokens` and `cache_read_input_tokens`. Keep a running total per task, summed over the start and every resume (review fixes, answers, an effort raise), and log it with the task's Work line as `$<cost>, <tokens>k tokens (<cached>k cached)`, where tokens are input plus output plus cache reads. A field missing from the JSON is `n/a`, never an estimate.
 - The JSON's `result` is only a summary. The full report is at `.orchestration/reports/<task-id>.md` in the main checkout — read that.
 
 ## After a worker exits
