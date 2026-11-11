@@ -56,7 +56,6 @@ assert_contains "$orch" "references/knowledge.md#product-knowledge" "intake offe
 assert_contains "$orch" "as a follow-up" "adopted items reach running workers"
 assert_contains "$orch" "open checks" "wrap-up lists open checks"
 assert_contains "$ledger" "[expert] <target> <experts>: <n> proposed, <k> adopted" "ledger: expert line"
-assert_contains "$ledger" "[expert] declined E<n>: <reason>" "ledger: declined line"
 assert_contains "$tiers" "| Expert view | at planning, for goals that touch the product's field | only on request |" "lite row"
 
 brief=$(cat skills/orchestrating/references/brief-template.md 2>/dev/null)
@@ -74,7 +73,7 @@ assert_contains "$orch" "wait for the user's yes before asking the product quest
 assert_contains "$ev" "Use only these three marks" "only three source marks"
 assert_contains "$ev" "opened (given by the caller)" "caller-supplied material"
 
-assert_contains "$orch" "offer once, in one line, to start its product knowledge" "intake: the offer names product knowledge"
+assert_contains "$orch" "offer once, in one line of the approval message, to start its product knowledge" "intake: the offer names product knowledge"
 assert_contains "$ev" "ends with exactly \`(recalled only)\`" "recalled-only label is exact"
 
 assert_contains "$ev" "rests on S1, S3 [(recalled only) when every source it rests on is recalled]" "format template carries the recalled-only label"
@@ -82,5 +81,23 @@ assert_contains "$ev" "rests on S1, S3 [(recalled only) when every source it res
 assert_contains "$spec" "Before you return, check each recommendation" "specialist: final label self-check"
 
 assert_contains "$ev" "Before returning, check each recommendation" "expert-view: final label self-check"
+
+
+# final review fixes
+readme=$(cat README.md 2>/dev/null)
+assert_contains "$ev" ".orchestration/expert/" "I1: each view is saved and linked"
+assert_contains "$ev" '[expert] declined <target> E<n> "<thing>": <reason>' "I1: decline line names what was declined"
+assert_contains "$ledger" '[expert] declined <target> E<n> "<thing>": <reason>' "I1: ledger decline line"
+assert_contains "$k" 'the `[expert]` lines' "I1: wrap-up candidates include expert lines"
+assert_contains "$ev" "sent to the worker with the follow-up" "I1: still-to-do checks for an open PR reach it"
+assert_contains "$orch" "the absolute path of \`references/expert-view.md\`" "I2: the orchestrator hands the subagent its rules"
+assert_contains "$spec" "never code, data or the product's name" "I2: privacy rules inline in expert mode"
+assert_contains "$spec" "never quote records" "I2: aggregates only, inline"
+assert_contains "$spec" "at most 5 web fetches" "I2: fetch limit inline"
+assert_contains "$orch" "in the same message as the breakdown" "I3: adopt/decline is part of the one routine stop"
+assert_not_contains "$readme" "never sends anything anywhere" "README no longer says nothing is sent"
+assert_contains "$k" "Projects bootstrapped before" "offer only to projects with older knowledge"
+assert_contains "$k" "never in lite" "no offer in lite"
+assert_not_contains "$ev" "afterwards, offer" "no second offer from the expert view"
 
 finish

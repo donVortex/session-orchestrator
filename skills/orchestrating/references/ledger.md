@@ -73,7 +73,7 @@ Every Events line starts with a kind tag after the time; the tags and what each 
 - The header's `Status:` must stay on line 2 — the hook reads the first lines, and stays silent once it says `done`.
 - `session/run`: the desktop session id (`local_…`) or the CLI `session_id`.
 - `branch`: the PR's branch on GitHub: `orch/T<n>`, or `orch/T<n>-<slug>` when that name was taken (see Branch names). A desktop worker's local branch has an app-chosen name; note it in the Events line when the session starts.
-- An expert view logs `[expert] <target> <experts>: <n> proposed, <k> adopted`, and each recommendation the user declines `[expert] declined E<n>: <reason>` ([expert-view.md](expert-view.md#adopt-and-decline)).
+- An expert view logs `[expert] <target> <experts>: <n> proposed, <k> adopted`, and each recommendation the user declines `[expert] declined <target> E<n> "<thing>": <reason>` ([expert-view.md](expert-view.md#adopt-and-decline)).
 - Log a `[failed] T<n> …` line each time a task fails a round (see the two-failure limit); a round lost to the environment is `[env]`, not `[failed]`.
 
 ## Task statuses

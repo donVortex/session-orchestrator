@@ -21,10 +21,10 @@ The user asks in plain words at any point in a run: "expert view", "what would a
 | Target | It reads | Its checks (part 4) become |
 |---|---|---|
 | The plan, before or after approval | the goal, the breakdown, the product knowledge | acceptance criteria on the tasks |
-| A task or PR (`T4`, `#52`) | the brief, the diff, the worker's report | checks in that PR's Verification; ones the session can't run are listed as `still to do` |
+| A task or PR (`T4`, `#52`) | the brief, the diff, the worker's report | checks in that PR's Verification, sent to the worker with the follow-up (it updates the PR body); ones the session can't run are listed as `still to do` |
 | A question ("is our progression safe for beginners?") | the code and data needed to answer | a list of checks to run or hand off |
 
-**No product knowledge yet:** infer the fitting professional from the goal and say so in one line; afterwards, offer to start product knowledge with what was decided ([how](knowledge.md#product-knowledge)).
+**No product knowledge yet:** infer the fitting professional from the goal and say so in one line. Starting product knowledge is the intake's one-time offer, never a second one from here ([how](knowledge.md#product-knowledge)).
 
 ## Expert mode
 
@@ -67,12 +67,12 @@ The user asks in plain words at any point in a run: "expert view", "what would a
 
 ## Adopt and decline
 
-Show the recommendations numbered; the user adopts or declines each.
+Save each view to `.orchestration/expert/<target>.md` (`plan`, `T4`, or `q<n>` for a question) and link it rather than pasting it. Show the recommendations numbered; the user adopts or declines each.
 
 - **Adopted, for work not started:** change the plan (a new task, or new acceptance criteria) and show it as a plan change before anything starts.
 - **Adopted, for a task in progress:** send it to that task's worker as a follow-up, the same way as review findings. If it changes a project rule, log it as a `rule change` ([rule changes](knowledge.md#rule-changes)).
 - **Declined:** record the user's reason. At wrap-up it goes into the product knowledge's Out of scope as `Decided not to: <thing>. <reason>.`
-- **Ledger:** `[expert] <target> <experts>: <n> proposed, <k> adopted`, and for each decline `[expert] declined E<n>: <reason>`.
+- **Ledger:** `[expert] <target> <experts>: <n> proposed, <k> adopted → expert/<target>.md`, and for each decline `[expert] declined <target> E<n> "<thing>": <reason>`, so the decline survives a resume and reaches the wrap-up.
 
 ## If it fails
 

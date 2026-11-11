@@ -165,7 +165,7 @@ Each project keeps what the orchestrator has learned about it in `.claude/orches
 
 **The project owns its knowledge.** Plugin updates never rewrite, reformat or migrate it, whatever its layout. The plugin's templates only shape a brand-new bootstrap; after that, the knowledge changes only through PRs you approve.
 
-**Standalone by design.** Installed from GitHub, the plugin works on its own and improves only within each project, through that project's knowledge. It never proposes changes to the plugin itself and never sends anything anywhere. Lessons about tooling that help your project become entries in its own knowledge (for example a pre-flight check).
+**Standalone by design.** Installed from GitHub, the plugin works on its own and improves only within each project, through that project's knowledge. It never proposes changes to the plugin itself and never sends anything to its author or anyone else; the only outside requests it adds are the expert view's fetches of public sources ([details](#what-it-runs-and-sends)). Lessons about tooling that help your project become entries in its own knowledge (for example a pre-flight check).
 
 ### Product knowledge and the expert view
 
