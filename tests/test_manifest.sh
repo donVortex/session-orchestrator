@@ -12,7 +12,7 @@ attrs=$(cat .gitattributes 2>/dev/null)
 assert_contains "$plugin" '"name": "session-orchestrator"' "plugin name"
 assert_contains "$market" '"name": "session-orchestrator"' "marketplace name"
 assert_contains "$market" '"source": "./"' "plugin source is the repo root"
-assert_contains "$plugin" '"version": "0.8.0"' "plugin version 0.8.0"
+assert_contains "$plugin" '"version": "0.9.0"' "plugin version 0.9.0"
 readme=$(cat README.md 2>/dev/null)
 assert_contains "$readme" "claude plugin marketplace add donVortex/session-orchestrator" "README installs from GitHub"
 assert_not_contains "$readme" 'marketplace add D:' "README has no local-path install"
