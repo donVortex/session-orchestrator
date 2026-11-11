@@ -10,6 +10,7 @@ Each project keeps what the orchestrator has learned about it in `.claude/orches
 ├─ domain.md            ## Rules  ## Glossary
 ├─ map.md               ## Areas  ## Feature flows
 ├─ review-checklist.md  ## Always check  ## When touching <area>
+├─ product.md           ## Users  ## Needs  ## Out of scope  ## Experts
 └─ calibration.md       ## Tiers by task type  ## Split patterns  ## Briefs need
                         ## Recipes  ## Learned defaults  ## Skills  ## Pre-flight
 ```
@@ -19,6 +20,7 @@ Each project keeps what the orchestrator has learned about it in `.claude/orches
 | `domain.md` | Business and regulatory rules; terms that mean something specific here | 150 |
 | `map.md` | Where things live; how a typical feature flows through the layers | 100 |
 | `review-checklist.md` | What every review must check; extra checks per area | 60 |
+| `product.md` | Who the users are, what they need, what's out of scope, whose professional eye matters and their sources ([expert view](expert-view.md)) | 80 |
 | `calibration.md` | Which task types need which tier here; typical split sizes; brief details workers keep needing; proven recipes, learned defaults and pre-flight checks ([workflow learning](workflow-learning.md)) | 120 |
 
 A new file's first line states its budget: `<!-- budget: N lines -->`. Starter files are in [knowledge-templates/](knowledge-templates/README.md): [domain.md](knowledge-templates/domain.md), [map.md](knowledge-templates/map.md), [review-checklist.md](knowledge-templates/review-checklist.md), [calibration.md](knowledge-templates/calibration.md).
@@ -27,7 +29,7 @@ A new file's first line states its budget: `<!-- budget: N lines -->`. Starter f
 
 The knowledge belongs to the project, not to the plugin. Plugin updates never change it. Once the folder exists, its own files are the layout:
 
-- **Read every file in the folder**, whatever its name, headings or extra files. Map each to the purpose it serves (rules, map, checklist, calibration) by its content, not its name.
+- **Read every file in the folder**, whatever its name, headings or extra files. Map each to the purpose it serves (rules, map, checklist, product, calibration) by its content, not its name.
 - **A file's budget is the one in its own first line.** A file without a budget header has no budget: never apply the table's numbers to it, and never trim it for length.
 - **Add entries to the existing file whose purpose fits**, under its existing headings. If no file fits, say so and ask the user whether to add one. Never create a template file in an existing folder on your own.
 - **Never migrate.** Don't rename, reformat, restructure, re-template or add budget headers to existing knowledge, and don't propose it, even if the plugin's templates have changed. A layout change happens only when the user asks for it.
@@ -118,9 +120,9 @@ GitHub's `head:` search can match more loosely than the prefix; the `--jq` filte
 - **More than one is open:** treat the newest as the knowledge PR (as above), and list the others to the user, suggesting they merge or close them. Never open another knowledge PR while any is open.
 - **None is open:** bootstrap.
 
-1. **Scan.** In one message, start parallel `orch-scout` subagents to read the README, `docs/`, `CLAUDE.md`, the folder structure, the test layout and the last 50 commits. Ask each for draft entries with `path:line` sources.
-2. **Interview.** Ask the user at most **5** questions, **one at a time** — each one thing to answer, never a bundle of sub-questions — picking from: rules that aren't written down; risky or regulated areas; terms with a specific meaning here; what reviewers must always check; work that has gone wrong before.
-3. **Draft.** Fill `README.md` and the four files from the templates, applying the content rules. Remove a template heading that ends up with no entries (e.g. an unused `## When touching <area>`), except calibration's `## Recipes`, `## Learned defaults` and `## Pre-flight`, which stay for workflow learning to fill. Also offer the [project-rules skill](#the-project-rules-skill) as part of the same PR; the user may decline it.
+1. **Scan.** In one message, start parallel `orch-scout` subagents to read the README, `docs/`, `CLAUDE.md`, the folder structure, the test layout and the last 50 commits. Ask each for draft entries with `path:line` sources, and also for the project's **raw material** (research notes, data exports, fixtures, analytics docs) as pointers for the product knowledge.
+2. **Interview.** Ask the user at most **5** questions, **one at a time** — each one thing to answer, never a bundle of sub-questions. Two of them are always the product questions, asked separately: *"Who uses this?"* and *"Whose professional eye matters most here?"* Pick the rest from: rules that aren't written down; risky or regulated areas; terms with a specific meaning here; what reviewers must always check; work that has gone wrong before.
+3. **Draft.** Fill `README.md` and the five files from the templates (`product.md` from the product answer and the scouts' raw material), applying the content rules. Remove a template heading that ends up with no entries (e.g. an unused `## When touching <area>`), except calibration's `## Recipes`, `## Learned defaults` and `## Pre-flight`, which stay for workflow learning to fill. Also offer the [project-rules skill](#the-project-rules-skill) as part of the same PR; the user may decline it.
 4. **Approve.** Show the drafts and ask the user to approve or edit them. Write nothing to the repo before they do.
 5. **PR.** The worktree sits outside your working directories: if the user hasn't run `/add-dir <$root>-wt` yet, ask them to now. Then:
    ```bash
@@ -137,10 +139,19 @@ If the user declines the bootstrap, run without knowledge for this orchestration
 
 | Step | Use |
 |---|---|
-| Intake | Read every file in the folder from the base branch. Tell the user which entries bear on the goal. Flag contradictions (see Precedence), the rules the goal changes ([rule changes](#rule-changes)) and [stale entries](#stale-entries). If the project has a `REVIEW.md` (repo root or `.claude/`), read it too: it joins the review checklist and wins where they differ ([reviews](reviews.md#the-projects-own-review-rules)). |
+| Intake | Read every file in the folder from the base branch. Decide whether the goal gets an [expert view](expert-view.md#when-it-runs). Tell the user which entries bear on the goal. Flag contradictions (see Precedence), the rules the goal changes ([rule changes](#rule-changes)) and [stale entries](#stale-entries). If the project has a `REVIEW.md` (repo root or `.claude/`), read it too: it joins the review checklist and wins where they differ ([reviews](reviews.md#the-projects-own-review-rules)). |
 | Breakdown | The map's feature flows for where the change belongs; the calibration's tiers and split sizes. |
-| Briefs | **Project rules:** quote the rule entries relevant to the task (never a contradicted or stale one, and only the new version of a rule the goal changes). **Review checklist:** name the project's checklist file and the sections that apply; when the knowledge isn't on the base branch yet (open bootstrap PR, approved draft), quote the checklist items themselves. Write the calibration's "briefs need" items into the brief's fields, plus a matched recipe's must-haves and the learned defaults the task relies on ([workflow learning](workflow-learning.md#using-what-was-learned)). |
+| Briefs | **Goal:** the users and needs the task serves, from the product knowledge. **Project rules:** quote the rule entries relevant to the task (never a contradicted or stale one, and only the new version of a rule the goal changes). **Review checklist:** name the project's checklist file and the sections that apply; when the knowledge isn't on the base branch yet (open bootstrap PR, approved draft), quote the checklist items themselves. Write the calibration's "briefs need" items into the brief's fields, plus a matched recipe's must-haves and the learned defaults the task relies on ([workflow learning](workflow-learning.md#using-what-was-learned)). |
 | Reviews | Your own review and every `orch-specialist` pass, `deep` tasks included, check the same checklist items (and `REVIEW.md`), with the finding rules in [reviews.md](reviews.md). |
+
+## Product knowledge
+
+Who the users are, what they need, what was decided against, and whose professional eye matters, with their sources: what the [expert view](expert-view.md) works from. New bootstraps write it as `product.md` ([template](knowledge-templates/product.md)).
+
+- **Found by purpose.** A project that keeps this in another file, or under other headings, has product knowledge: use it as it is, and don't offer to start one.
+- **Projects without it:** at the intake of a fresh orchestration whose goal touches the product's field ([when](expert-view.md#when-it-runs)), offer once, in one line, to start it. On yes, ask the two product questions, one at a time (*"Who uses this?"*, then *"Whose professional eye matters most here?"*), and add the draft `product.md` to this run's knowledge diff (the user's yes is what allows a new file here). On no, log `[event] product knowledge: declined` and never offer again; skip the offer too when this or an archived ledger records that line.
+- **At wrap-up,** the knowledge diff carries: adopted expert recommendations that are product decisions (a hard rule goes to the rules file instead); declined ones, as Out of scope entries; needs that turned out different (an edit of the entry, as with [rule changes](#rule-changes)); new raw material found this run, as pointers.
+- **Content rules apply in full:** pointers to raw material, never the data; interview findings summarised without names; no personal or health records.
 
 ## The project-rules skill
 

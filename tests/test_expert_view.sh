@@ -32,4 +32,15 @@ assert_contains "$spec" "**Expert mode**" "specialist: expert mode"
 assert_contains "$spec" "references/expert-view.md" "specialist points to expert-view.md"
 assert_contains "$spec" "four modes" "specialist: four modes"
 
+k=$(cat skills/orchestrating/references/knowledge.md 2>/dev/null)
+p=$(cat skills/orchestrating/references/knowledge-templates/product.md 2>/dev/null)
+assert_contains "$k" "## Product knowledge" "knowledge: product section"
+assert_contains "$k" '*"Who uses this?"* and *"Whose professional eye matters most here?"*' "bootstrap: two product questions, asked separately"
+assert_contains "$k" "[event] product knowledge: declined" "offer declined once"
+assert_contains "$k" "by purpose" "product knowledge found by purpose"
+assert_contains "$k" "raw material" "bootstrap scouts look for raw material"
+assert_contains "$p" "Decided not to:" "template: out of scope entry form"
+assert_contains "$p" "assumed" "template: needs name their source"
+assert_contains "$p" "never the data" "template: pointers, not data"
+
 finish

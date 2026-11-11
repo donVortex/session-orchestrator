@@ -21,11 +21,12 @@ check_template() {
 check_template domain.md 150 "## Rules" "## Glossary"
 check_template map.md 100 "## Areas" "## Feature flows"
 check_template review-checklist.md 60 "## Always check" "## When touching <area>"
+check_template product.md 80 "## Users" "## Needs" "## Out of scope" "## Experts"
 check_template calibration.md 120 "## Tiers by task type" "## Split patterns" "## Briefs need" "## Recipes" "## Learned defaults" "## Skills" "## Pre-flight"
 
 readme=$(cat "$T/README.md" 2>/dev/null)
 assert_file "$T/README.md" "README.md exists"
-for f in domain.md map.md review-checklist.md calibration.md; do
+for f in domain.md map.md review-checklist.md calibration.md product.md; do
   assert_contains "$readme" "$f" "README mentions $f"
 done
 
@@ -62,5 +63,8 @@ assert_contains "$(cat skills/working/SKILL.md 2>/dev/null)" "Review checklist" 
 
 # the layout table gives new calibration files a 120-line budget
 assert_contains "$(grep '^| `calibration.md`' skills/orchestrating/references/knowledge.md 2>/dev/null)" "| 120 |" "knowledge.md: calibration budget 120"
+
+# the layout table gives new product files an 80-line budget
+assert_contains "$(grep '^| `product.md`' skills/orchestrating/references/knowledge.md 2>/dev/null)" "| 80 |" "knowledge.md: product budget 80"
 
 finish
