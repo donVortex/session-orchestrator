@@ -4,7 +4,7 @@ Workers are real Claude desktop app sessions, each in its own git worktree. The 
 
 ## When to use it
 
-Use it when `mcp__ccd_session__start_session` can be loaded (ToolSearch `select:mcp__ccd_session__start_session`). Load the session tools you need in one ToolSearch call: `start_session`, `mcp__ccd_session_mgmt__set_session_model`, `mcp__ccd_session_mgmt__set_session_effort`, `mcp__ccd_session_mgmt__list_sessions`, `mcp__ccd_session_mgmt__get_session`, `SendMessage`. Record `Backend: desktop` in the ledger header.
+Use it when `mcp__ccd_session__start_session` can be loaded (ToolSearch `select:mcp__ccd_session__start_session`). Load the session tools you need in one ToolSearch call: `start_session`, `mcp__ccd_session_mgmt__set_session_model`, `mcp__ccd_session_mgmt__set_session_effort`, `mcp__ccd_session_mgmt__list_sessions`, `mcp__ccd_session_mgmt__get_session`, `mcp__ccd_session_mgmt__set_session_title`, `SendMessage`. Record `Backend: desktop` in the ledger header.
 
 ## Starting a worker
 
@@ -15,7 +15,7 @@ Use it when `mcp__ccd_session__start_session` can be loaded (ToolSearch `select:
    - `source_branch`: `orch/base-<base>`, a local helper branch you point at GitHub's latest base right before each start: `git fetch origin <base> && git branch -f orch/base-<base> origin/<base>`. The app can only cut worktrees from a local branch, and the user's own `<base>` may be behind; the helper branch never touches their checkout.
    - `branch_name`: `orch-T<n>` (the app adds its own prefix and suffix)
    - `model` and `effort`: the task tier's **worker session** values from [model-tiers.md](model-tiers.md), set here so they apply to the worker's first turn (setting them after the start only applies from the next turn). `model` takes a full model id, not an alias: use the current id of that family (e.g. `claude-sonnet-5-5` for `sonnet`).
-   - `title`: `T<n> · <short task>`
+   - `title`: `⏳ T<n> · <short task>` (see [Status in the title](#status-in-the-title))
    - `prompt`: the brief
    - `background` (required, 80+ characters): the orchestration goal in one sentence, how this task fits (what it depends on, what depends on it), and "You are a session-orchestrator worker; the brief is your contract."
 3. The app only allows a model and effort **at or below this session's own**. If a tier asks for more (e.g. a `deep` task while you run on sonnet), tell the user before starting it: they can raise this session's model, or accept the lower tier.
@@ -32,6 +32,25 @@ Start independent ready tasks in the same turn, up to `max_parallel_workers`.
 - Review fixes go back with `SendMessage` to the same worker.
 - Liveness: `list_sessions {"linked": true}` or `get_session`. A worker that ended its turn without a report, or errored, counts as a failure round.
 - Never poll or sleep; wait for the app's wake-up.
+
+## Status in the title
+
+Each worker's title starts with a symbol for its status, so the user can see the run at a glance in the sidebar.
+
+| Symbol | Set when |
+|---|---|
+| ⏳ | the worker starts, or resumes with a follow-up: review fixes, an answer, an effort raise |
+| ❓ | it is blocked on a question, or stopped at the review round cap and needs the user to rethink |
+| ⛔ | the task failed: a second failed round, or an environment problem that stops it |
+| 🔀 | its PR is reviewed and the merge request has gone to the user |
+| ✅ | its PR is merged |
+
+- Rename only when the status changes, with the same event that updates the ledger: `<symbol> T<n> · <short task>`, replacing a leading symbol and keeping the rest.
+- **Only titles you wrote.** Rename a worker only while its title still matches the form you wrote: an optional status symbol, then `T<n> · `. If the user renamed it, leave it alone for the rest of the run.
+- **If a rename is refused** or the app asks the user to approve it, stop renaming that session for the run and log `[event] T<n> title: left as is (<why>)`. Never retry.
+- A dropped task loses its symbol.
+- Rename workers only, never your own session: the user started it, and the sidebar already shows when it waits for them.
+- The CLI backend has no session titles; skip all of this there.
 
 ## Reports and permissions
 

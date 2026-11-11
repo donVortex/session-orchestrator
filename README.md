@@ -145,6 +145,9 @@ Your other skills and plugins keep working alongside it ([how](#alongside-other-
 
 ### How workers work
 
+In the desktop app, each worker's title starts with its status: ⏳ working · ❓ needs you · ⛔ failed · 🔀 waiting for your merge · ✅ merged. Only titles the orchestrator wrote change; a worker you renamed keeps your name.
+
+
 A worker does its task in its own session: it writes each piece itself, test-first, and runs the full test suite after each one. It hands a piece to a subagent only for:
 - a wide search through the code (a cheap read-only scout);
 - a piece too big to do in one session, such as a 40-file migration;
