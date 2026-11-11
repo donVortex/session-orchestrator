@@ -41,15 +41,23 @@ Add the task id after the tag when an event belongs to one task: `[failed] T2 te
 At wrap-up, count the tags per task and for the whole run. Write the full table to `.orchestration/counts.md`; in your message show only the `run` row and the rows of tasks with any non-zero count, and link the file:
 
 ```markdown
-| task | recipe | ask-user | approval | prompt | start-click | failed | changes | escalate | worker-q |
-|------|--------|----------|----------|--------|-------------|--------|---------|----------|----------|
-| T1   | Money helper | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
-| run  |        | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| task | recipe | ask-user | approval | prompt | start-click | failed | changes | escalate | worker-q | findings | compacted |
+|------|--------|----------|----------|--------|-------------|--------|---------|----------|----------|----------|-----------|
+| T1   | Money helper | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| run  |        | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 ```
 
-The `run` row is the total over all events; events with no task id (intake, the interview) appear only there. Attention is the sum of the first four counts, rework the sum of the last four. The recipe column comes from the `following recipe:` lines.
+The `run` row is the total over all events; events with no task id (intake, the interview) appear only there. Attention is the sum of ask-user, approval, prompt and start-click; rework the sum of failed, changes, escalate and worker-q. **findings** counts the `critical` and `important` findings of the orchestrator's PR review of the task; **compacted** is 1 when the task's Work line says `compacted: yes`. A task whose report has no Work line (an older worker) shows `—` in both, not 0. The recipe column comes from the `following recipe:` lines.
 
 If the ledger has untagged lines (an orchestration started before tags existed and resumed after), say the counts are partial, and propose no recipe or track-record update from them.
+
+### Native vs before
+
+Workers write their pieces themselves since v0.8.0. The baseline is the project's archived runs from before that (their workers' reports have no Work line). When a baseline exists, show one line after the counts, each value averaged per task:
+
+`Native vs before (per task): PR findings <a> → <b> · rework <a> → <b> · compacted <a> → <b> of <n> · subagents <a> → <b>`
+
+Subagents before are counted from the old reports' Subtasks tables, plus their reviews. On a project's first run, or with no archived run from before, show no comparison line and no `Worker plan:` proposal: there is nothing to compare with.
 
 ## Recipes
 
@@ -73,6 +81,8 @@ At wrap-up, compare each task's counts with its recipe (or with zero if it had n
 | A stall from the environment: a `[prompt]`, a `[start-click]`, or an `[env]` round | A **pre-flight check** for intake, with what to tell the user up front | `calibration.md` → Pre-flight |
 | A `[failed]`, `[changes]` or `[worker-q]` caused by the work or the brief | A **brief rule** (what the worker needed to be told) or a **checklist item** (what review should catch earlier) | `calibration.md` → Briefs need, or `review-checklist.md` |
 | A task with zero rework and no attention except product decisions that this same diff records as `domain.md` rules, of a kind with no recipe | A **new recipe** | `calibration.md` → Recipes |
+| More PR findings or rework than the baseline for the same kind of work in the same area, in two runs with native workers | `Worker plan: per-piece reviews for <kind> in <area>` | `calibration.md` → Tiers by task type (or where `Tier:` entries live) |
+| A worker compacted on the same kind of work in the same area, in two runs | `Worker plan: subagents for <kind> in <area>` | `calibration.md`, next to the `Tier:` entries |
 | A task that followed its recipe and did as well or better | Update the recipe's track record | `calibration.md` → Recipes |
 | A task that did clearly worse than its recipe | The cause, and a fix to the recipe or the brief | as above |
 | A skill helped on a task that passed with no rework (a `[tooling]` retro point) | `Skill: use <skill> for <area / kind of task>`; also add it to a matching recipe's must-haves | `calibration.md` → Skills |
@@ -95,6 +105,8 @@ At wrap-up, compare each task's counts with its recipe (or with zero if it had n
 - **Plugin lessons** (tooling, scripts, the skills, how other plugins coexist): in development mode they become plugin edits (including to [coexistence.md](coexistence.md)); standalone, they become project entries (a pre-flight check, a "briefs need" item) only where they help this project, and are otherwise left out (see the orchestrating skill's wrap-up).
 
 ## Using what was learned
+
+- **`Worker plan:` entries** go into the briefs of matching tasks as hints, next to the `Tier:` hints; the worker follows them.
 
 | Step | Use |
 |---|---|

@@ -24,7 +24,7 @@ Canonical brief: `<$root>/.orchestration/briefs/T<n>.md`. The app may deliver `@
 - Mode: full | lite — lite: no `deep` subtasks except guarded work (security, authentication, money, deleting data, migrations); one combined review per subtask; the small-task path whenever the task fits one subtask ([lite mode](model-tiers.md#lite-mode))
 - Orchestrator: desktop | CLI mode
 - Report path: CLI mode: `<$root>/.orchestration/reports/T<n>.md` (absolute; `$root` as resolved in ledger.md). Desktop: `<notes>/T<n>-report.md` in the app's shared notes folder ([backend-desktop.md](backend-desktop.md#reports-and-permissions)). It is outside your worktree: if the write is refused, put the full report in your final message instead, and the orchestrator saves it.
-- Subtasks (files, tier hint, dependencies):
+- Subtasks (files, tier hint, dependencies), plus any `Worker plan:` entries for these kinds and areas:
   - A. <what> — <files> — <tier> — depends on: none
   - B. <what> — <files> — <tier> — depends on: A
 - Context: <what earlier tasks produced that this one uses: signatures, table columns, endpoints, with file paths>

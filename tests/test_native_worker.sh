@@ -37,4 +37,15 @@ assert_contains "$orch" "the Work line" "orchestrator reads the Work line"
 assert_contains "$orch" "total_cost_usd" "orchestrator: CLI cost from the result JSON"
 assert_contains "$ledger" "[event] T<n> work: native, <k> subagents, context <p>%, compacted <yes|no>" "ledger: work line"
 
+wl=$(cat skills/orchestrating/references/workflow-learning.md 2>/dev/null)
+cal=$(cat skills/orchestrating/references/knowledge-templates/calibration.md 2>/dev/null)
+brief=$(cat skills/orchestrating/references/brief-template.md 2>/dev/null)
+assert_contains "$wl" "Native vs before (per task): PR findings <a> → <b>" "learning: comparison line"
+assert_contains "$wl" "no comparison line and no \`Worker plan:\` proposal" "learning: nothing without a baseline"
+assert_contains "$wl" "Worker plan: per-piece reviews for <kind> in <area>" "learning: back off to per-piece reviews"
+assert_contains "$wl" "Worker plan: subagents for <kind> in <area>" "learning: back off to subagents"
+assert_contains "$cal" "Worker plan:" "calibration template: Worker plan example"
+assert_contains "$brief" "Worker plan:" "brief carries Worker plan hints"
+assert_contains "$orch" "comparison line" "wrap-up shows the comparison"
+
 finish

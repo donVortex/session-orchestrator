@@ -9,7 +9,7 @@ for tag in '[ask-user]' '[approval]' '[prompt]' '[start-click]' '[failed]' '[cha
   assert_contains "$ref" "$tag" "event kind $tag"
 done
 
-assert_contains "$ref" "| task | recipe | ask-user | approval | prompt | start-click | failed | changes | escalate | worker-q |" "counts table header"
+assert_contains "$ref" "| task | recipe | ask-user | approval | prompt | start-click | failed | changes | escalate | worker-q | findings | compacted |" "counts table header"
 assert_contains "$ref" "Assumed from project knowledge:" "plan label for learned defaults"
 assert_contains "$ref" "Following recipe:" "plan label for recipes"
 
