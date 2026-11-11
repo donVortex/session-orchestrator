@@ -10,7 +10,8 @@ PR: <url, or "none">
 ## Result
 - Changed: <files and what changed, one line each>
 - Verified by: <command> → <real outcome>   (one line per command: tests, lint, build)
-- Risks / follow-ups: <anything the reviewer should look at; "none" if none>
+- Risks / follow-ups: <anything the reviewer should look at, plus the `minor` and `pre-existing` review findings; "none" if none>
+- Review findings: fixed <n> · refuted <n> · answered <n> · pre-existing <n> · minor <n>   (the `critical` and `important` findings of all your reviews, by what happened to them; [reviews.md](../orchestrating/references/reviews.md#finding-outcomes))
 
 ## Subtasks
 | Subtask | Kind | Tier | Outcome | Review found |

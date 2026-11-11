@@ -57,10 +57,10 @@ A task's branch is `orch/T<n>`. If that name is already taken (locally or on `or
 # Orchestration: <goal>
 Started: <date> · Backend: desktop|cli · Base branch: <branch> · Mode: full|lite · Status: planning|running|wrap-up|done
 
-| id | task | owns (files/globs) | depends | tier | placement | session/run | branch | PR | status |
-|----|------|--------------------|---------|------|-----------|-------------|--------|----|--------|
-| T1 | ... | src/db/schema.ts | — | deep | self | — | orch/T1 | #12 | merged |
-| T2 | ... | src/api/users/** | T1 | standard | worker | local_ab12 | orch/T2 | #13 | in-review |
+| id | task | owns (files/globs) | depends | tier | risk | placement | session/run | branch | PR | status |
+|----|------|--------------------|---------|------|------|-----------|-------------|--------|----|--------|
+| T1 | ... | src/db/schema.ts | — | deep | high | self | — | orch/T1 | #12 | merged |
+| T2 | ... | src/api/users/** | T1 | standard | normal | worker | local_ab12 | orch/T2 | #13 | in-review |
 
 ## Events
 - <time> [event] T2 started (local_ab12, sonnet/medium)

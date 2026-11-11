@@ -12,7 +12,7 @@ Canonical brief: `<$root>/.orchestration/briefs/T<n>.md`. The app may deliver `@
 - Acceptance: <checkable criteria, each with how it is verified>
 - Style reference: <an existing file whose patterns to follow, or "none">
 - Project rules: <the project's rule entries relevant to this task, quoted (never one that contradicts `CLAUDE.md`, never a stale one, and only the new version of a rule the goal changes), or "none"> (binding, like the off-limits list)
-- Review checklist: <the project's checklist file — sections: its always-check section, the areas this task touches>; if the knowledge isn't on the base branch yet, quote the items themselves; "none" if the project has no knowledge
+- Review checklist: <the project's checklist file — sections: its always-check section, the areas this task touches; plus `REVIEW.md` if the project has one>; if the knowledge isn't on the base branch yet, quote the items themselves; "none" if the project has no knowledge
 - Skills: <skill> (<subtask / why>) · review: <review skill or none> — only skills from the skills look or the project's `Skill:` entries; the review skill only from a `Skill:` entry or the user (default `none`)
 - Owned files: <files/globs, including their test files>
 - Off-limits: every other file (name tempting neighbours explicitly, e.g. `src/db/schema.ts`)
@@ -20,6 +20,7 @@ Canonical brief: `<$root>/.orchestration/briefs/T<n>.md`. The app may deliver `@
 - Base branch: `<branch>` (already contains: <merged dependency PRs, or "nothing extra">)
 - PR branch: `orch/T<n>` (or `orch/T<n>-<slug>` if that name was taken; see ledger.md). Your worktree folder and local branch may have other names (the app picks them, and may reuse an old folder); this PR branch is the one that counts.
 - Tier: <fast|standard|deep> — session <model> / <effort>
+- Risk: low | normal | high — <why, in a few words> ([risk tags](reviews.md#risk-tags)); goes into the PR body with How to revert
 - Mode: full | lite — lite: no `deep` subtasks except guarded work (security, authentication, money, deleting data, migrations); one combined review per subtask; the small-task path whenever the task fits one subtask ([lite mode](model-tiers.md#lite-mode))
 - Orchestrator: desktop | CLI mode
 - Report path: CLI mode: `<$root>/.orchestration/reports/T<n>.md` (absolute; `$root` as resolved in ledger.md). Desktop: `<notes>/T<n>-report.md` in the app's shared notes folder ([backend-desktop.md](backend-desktop.md#reports-and-permissions)). It is outside your worktree: if the write is refused, put the full report in your final message instead, and the orchestrator saves it.

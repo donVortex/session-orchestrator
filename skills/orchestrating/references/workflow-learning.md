@@ -26,6 +26,9 @@ Every line in the ledger's Events list starts with one of these tags:
 - `[event] T<n> following recipe: <name>` — at the approval gate, per matched task;
 - `[event] assumed default: <default>` — at the approval gate, per default relied on;
 - `[event] user overrode default: <default> → <what they chose>`;
+- `[changes] T<n> round <k>: <count line>` — each review round that sends work back ([reviews.md](reviews.md#rounds));
+- `[event] T<n> findings: fixed <n>, refuted <n>, answered <n>, pre-existing <n>, minor <n>` — when a task's PR is reviewed ([reviews.md](reviews.md#finding-outcomes));
+- `[event] base check: green @ <sha>` and `[failed] base red after merging T<n>, T<m>` — after merges ([reviews.md](reviews.md#check-the-base-branch-after-merges));
 - `[event] rule change: <old> → <new>` — at the approval gate, per project rule the goal changes ([knowledge.md](knowledge.md#rule-changes));
 - `[event] stale entry: <entry, shortened> (<what's missing>)` — at intake ([knowledge.md](knowledge.md#stale-entries));
 - `[event] skills: overlap <name> (<stage>); fit <names>` — at intake, from the skills look ([coexistence.md](coexistence.md#intake-plan-and-briefs)).
@@ -81,6 +84,8 @@ At wrap-up, compare each task's counts with its recipe (or with zero if it had n
 | A subtask on a tier lowered by a `Tier:` entry escalated | Raise the entry back to the tier it had before | `calibration.md` → Tiers by task type |
 | The user chose lite mode for this project in two runs (`[event] mode: lite (you asked)` in this and the archived ledgers) | `Mode: lite` — every run is lite unless the user says "full" | `calibration.md` → Mode |
 | The user forced full on a project with `Mode: lite` in two runs | Remove the `Mode: lite` entry | `calibration.md` → Mode |
+| A bug reached the base branch: a red base check, or a later task fixing merged work | A checklist entry for its class of bug, with where it slipped through | `review-checklist.md` → the area it touched, or Always check |
+| Reviews were noisy: a third or more of the run's `critical` and `important` findings were refuted or answered (the `findings:` lines) | Narrow the checklist items they came from, or add a "don't flag" note for what keeps coming up | `review-checklist.md` |
 | A learned default the user overrode in two runs (the `user overrode default:` lines in this and the archived ledgers) | Remove it | `calibration.md` → Learned defaults |
 
 - **Don't propose what's already there.** If an existing recipe, default, pre-flight check or brief rule already covers a finding, don't propose it again; if it's there and the problem still happened, propose a fix to that entry.

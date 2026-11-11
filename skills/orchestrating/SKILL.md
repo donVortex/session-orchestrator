@@ -56,11 +56,11 @@ Other skills and plugins work inside this workflow, judged by what they would do
 
 ## 2. Break down
 
-Split per [splitting.md](references/splitting.md), following the project's `map.md` feature flows and `calibration.md` tiers and split sizes when they exist ([using it](references/knowledge.md#using-it)). Every task gets an id, what it does, owned files, dependencies, tier and placement (`self`, `subagent`, `worker`). Foundations go first as `self`; tasks that can run at the same time never own the same file. In lite mode, follow its tiers, split and placement ([lite mode](references/model-tiers.md#lite-mode)). Match each task to at most one of the project's **Recipes** (same area **and** same kind of change; a different kind of change in the same area matches nothing) and follow its split, tier, placement and brief must-haves unless the goal needs otherwise.
+Split per [splitting.md](references/splitting.md), following the project's `map.md` feature flows and `calibration.md` tiers and split sizes when they exist ([using it](references/knowledge.md#using-it)). Every task gets an id, what it does, owned files, dependencies, tier, risk (`low`, `normal`, `high`; [risk tags](references/reviews.md#risk-tags)) and placement (`self`, `subagent`, `worker`). Foundations go first as `self`; tasks that can run at the same time never own the same file. In lite mode, follow its tiers, split and placement ([lite mode](references/model-tiers.md#lite-mode)). Match each task to at most one of the project's **Recipes** (same area **and** same kind of change; a different kind of change in the same area matches nothing) and follow its split, tier, placement and brief must-haves unless the goal needs otherwise.
 
 ## 3. Approval gate
 
-Show the breakdown as a table — `id | task | owns | depends | tier | placement` — then, under it:
+Show the breakdown as a table — `| id | task | owns | depends | tier | risk | placement |` — then, under it:
 - `Mode: <lite|full> (<source>)` — only when lite is on or the user forced full, followed in lite by `— say "full" to switch`; in lite, mark tasks kept on `deep` as guarded work;
 - `Following recipe: <name>` for each task that matches a recipe;
 - `Assumed from project knowledge: <default>` for each **Learned default** you rely on. Never assume one that decides safety, data handling, money or a destructive action ([what counts](references/workflow-learning.md#guardrails)), or contradicts `CLAUDE.md`, a project rule or the goal — ask or flag it instead.
@@ -84,7 +84,7 @@ On every event, update the ledger first ([ledger.md](references/ledger.md)), sta
 ## 6. Review
 
 For each report with a PR:
-1. Read the diff against the brief, including its Project rules and Review checklist sections. `gh pr diff <n> --name-only` lists only owned files.
+1. Read the diff against the brief, including its Project rules and Review checklist sections (and the project's `REVIEW.md`, if it has one). `gh pr diff <n> --name-only` lists only owned files. Check the risk tag against the diff and raise it if the diff touches a high-risk path ([risk tags](references/reviews.md#risk-tags)).
 2. Check CI with `gh pr checks <n>`. `no checks reported` (exit 1) means the repo has no CI: run the test and lint commands yourself on the PR head in a temporary detached worktree, then remove it:
    ```bash
    git fetch origin <branch> && git worktree add --detach "$root-wt/review-T<n>" FETCH_HEAD
@@ -94,14 +94,14 @@ For each report with a PR:
    A fresh worktree has no installed dependencies. If you link them from the main checkout (a `node_modules` junction or symlink), never install through the link, and remove the link first, before `git worktree remove` ([how](references/knowledge.md#linked-dependencies)).
    The same holds for every worktree you work in (`self` tasks, knowledge PRs): run commands with `git -C`, `--prefix` or a `( cd … )` subshell, never a bare `cd` ([why](references/knowledge.md#working-in-a-worktree)).
 3. `deep` tasks: also run an `orch-specialist` review (review mode, model per rubric), giving it the brief's Review checklist items. When the brief names a review skill, this review and your own diff read apply its criteria too, without adding a review for it ([how](references/coexistence.md#reviews)). In lite mode only guarded work keeps `deep`, so only it gets this review ([lite mode](references/model-tiers.md#lite-mode)).
-4. Problems → send them to the same worker and mark `changes-requested`; clean → `reviewed`.
+4. Findings follow [reviews.md](references/reviews.md#findings), for your own read and the specialist's alike. Before one goes back, have each `critical` or `important` finding checked by a fresh `orch-specialist` in verify mode, all in one message, not by re-reading the code yourself ([how](references/reviews.md#verify-before-sending-work-back)); send the confirmed ones to the same worker and mark `changes-requested`; `minor` and `pre-existing` ones never send work back (they go into the PR body's Follow-ups). Re-review only the fix, never repeat a finding, and after [3 rounds](references/reviews.md#rounds) ask the user instead of sending it back again. Clean → `reviewed`. Log the finding outcomes (`[event] T<n> findings: …`).
 
-Batch the `reviewed` PRs and ask the user to merge them. **Never merge yourself.** After merges, start the tasks they unblocked (step 4).
+Batch the `reviewed` PRs and ask the user to merge them, grouped by risk, highest first: say which `high` PRs they should read themselves and which files ([risk tags](references/reviews.md#risk-tags)). **Never merge yourself.** After merges, [check the base branch](references/reviews.md#check-the-base-branch-after-merges), then start the tasks they unblocked (step 4).
 
 ## 7. Wrap up
 
 When every task is `merged`, `failed` or `dropped`:
-1. Results: each task, its PR, its outcome.
+1. Results: each task, its PR, its outcome, and the final [base-branch check](references/reviews.md#check-the-base-branch-after-merges).
 2. Retro digest: group all points in `retros.md` by tag; call out patterns that repeat across tasks.
    **Counts:** the [counts table](references/workflow-learning.md#counts-table) of attention and rework per task and for the run; turn what it shows into proposals per [findings to proposals](references/workflow-learning.md#findings-to-proposals) — learned defaults, pre-flight checks, brief rules or checklist items, recipes — and include them in the knowledge diff below.
 3. **Knowledge diff** for this project ([knowledge diff at wrap-up](references/knowledge.md#knowledge-diff-at-wrap-up)): additions, edits and removals, each with its source (`T<n> / PR #<n>`). If the project has no `.claude/skills/project-rules/` and never declined it, offer it as an optional extra file ([project-rules skill](references/knowledge.md#the-project-rules-skill)).
@@ -121,7 +121,7 @@ Only for:
 2. A decision only the user can make.
 3. A task that needs files beyond what it owns.
 4. A task that failed twice.
-5. Merge approval for reviewed PRs.
+5. Merge approval for reviewed PRs (grouped by risk), a PR whose review hit the [3-round cap](references/reviews.md#rounds), and a red base branch after merges whose cause isn't clear.
 6. Retro-driven edits at wrap-up.
 7. A worker start the app refused (desktop).
 8. Before the first `self` task: running `/add-dir` for the worktrees folder (step 4) — at intake already, if the project's Pre-flight lists it.
@@ -133,7 +133,9 @@ Only for:
 
 | Situation | Do |
 |---|---|
-| Review asks for changes (style, naming, readability, small gaps) | `changes-requested`, send to the same worker. **Not** a failure |
+| Review asks for changes | Confirmed `critical` or `important` findings only: `changes-requested`, send to the same worker. **Not** a failure. `minor` and `pre-existing` findings never send work back |
+| Review rounds reach the cap | After 3 rounds with a confirmed finding open, ask the user: rethink the approach, accept with the findings listed, or drop it ([rounds](references/reviews.md#rounds)) |
+| Base branch red after merges | Start nothing that depends on it; fix it as a `self` task and tell the user ([base check](references/reviews.md#check-the-base-branch-after-merges)) |
 | A round fails: the code is broken, tests or CI are red, the worker errors or ends without a report | Send it back once with what went wrong; a second failure → `failed`, and the user chooses: re-tier to `deep`, you take it as `self`, or drop it |
 | A round is lost to the environment (missing tool, permissions), not the work | Not a failure: fix or escalate the cause, then resume |
 | Worker changed files it doesn't own | Send the PR back; if the task truly needs them, re-split with the user |
