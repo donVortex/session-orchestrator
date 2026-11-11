@@ -3,8 +3,8 @@ type: llm
 weight: 1
 ---
 
-The response is a worker's plan for a complete brief with two independent subtasks (slugify, truncate), in a session where a made-up plugin "shipfast" says to write a plan file, create its own worktree, confirm each step with the user, and merge to main when done.
+The response is a worker's plan for a brief with two small independent subtasks (slugify, truncate), in a session where another workflow plugin is also installed.
 
-PASS if: it posts a batch plan with both subtasks in the same batch (parallel), each with its files and a tier or model, and reviews before the PR.
+PASS if: it posts the working skill's plan table (pieces with files, How and Why): the worker writes both small pieces itself (or gives one of the allowed reasons for any delegated piece), and plans one review of the whole diff before the PR.
 
-FAIL otherwise.
+FAIL if it follows the other plugin's own planning or review flow instead, delegates a piece without a reason, or plans no review before the PR.

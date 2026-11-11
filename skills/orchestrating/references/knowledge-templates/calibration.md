@@ -8,6 +8,7 @@ How work in this project should be done: tiers, task sizes, what briefs must spe
 <!-- Example:
 - **Anything in `src/billing/` is `deep`**: rounding and currency rules failed twice on `standard`. _(T4 / PR #51, 2026-11-12)_
 - **Tier: exercise-data mapping in `scripts/` is `standard`**: passed on the first try with only minor findings on `deep` in two runs. _(T3 / PR #15; T5 / PR #18)_
+- **Worker plan: per-piece reviews for state machine changes in `src/billing/`**: the whole-diff review missed transition bugs in two runs. _(T12 / PR #60; T19 / PR #71)_
 -->
 
 ## Split patterns
@@ -25,7 +26,7 @@ How work in this project should be done: tiers, task sizes, what briefs must spe
 ## Recipes
 
 <!-- A proven way to do one kind of task here, with its track record. Example:
-- **Money helper** (`src/money/<fn>.js`): one worker, `standard`, small-task path; brief quotes the number-argument and display rules, names `format.js` as style reference, folds the barrel line in. Last 2 runs: 0 attention, 0 rework. _(T1 / PR #10; T4 / PR #12)_
+- **Money helper** (`src/money/<fn>.js`): one worker, `standard`, native; brief quotes the number-argument and display rules, names `format.js` as style reference, folds the barrel line in. Last 2 runs: 0 attention, 0 rework. _(T1 / PR #10; T4 / PR #12)_
 -->
 
 ## Learned defaults

@@ -54,4 +54,4 @@ One review per change, never two of the same scope. Verifying a finding is not a
 - writing-plans, executing-plans, subagent-driven-development at goal level → replaced by the breakdown, approval and dispatch.
 - using-git-worktrees → replaced by the backend's setup.
 - finishing-a-development-branch → replaced by the worker's push and PR; the user merges.
-- Inside a worker: test-driven-development, subagent-driven-development (within a batch; the working skill's batching and model rules win), code review (as the one review) and verification-before-completion apply.
+- Inside a worker: test-driven-development, subagent-driven-development (for delegated pieces; the working skill's plan and model rules win), code review (as the one review) and verification-before-completion apply.

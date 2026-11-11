@@ -1,6 +1,6 @@
 # session-orchestrator
 
-A Claude Code plugin that turns the session you talk to into an **orchestrator**. It plans the work with you, splits it into PR-sized tasks, and runs them in **worker sessions** (desktop app sessions, or headless `claude -p` runs). Workers build with subagents whose model is picked by effort, run independent subagents in parallel, open one PR per task, and report back with a short retro. The orchestrator does critical tasks itself, reviews every PR, and leaves merging to you. Each project it works on builds up its own knowledge, so it gets better at that project with every feature.
+A Claude Code plugin that turns the session you talk to into an **orchestrator**. It plans the work with you, splits it into PR-sized tasks, and runs them in **worker sessions** (desktop app sessions, or headless `claude -p` runs). Workers write their task themselves, test-first, use subagents only where they pay off, get one fresh review of the whole change, open one PR per task, and report back with a short retro. The orchestrator does critical tasks itself, reviews every PR, and leaves merging to you. Each project it works on builds up its own knowledge, so it gets better at that project with every feature.
 
 **Works in Claude Code**: the desktop app's Code tab and the `claude` CLI. It needs a local git checkout and starts other Claude Code sessions, so it doesn't run in claude.ai chat or cloud sessions.
 
@@ -128,7 +128,7 @@ Your other skills and plugins keep working alongside it ([how](#alongside-other-
 |---|---|---|
 | Models | opus for `deep` work | sonnet for everything except an expert view you ask for (`deep` runs as `standard`) |
 | Tasks | PR-sized, one worker session each | as few tasks as the work allows; small ones done in the orchestrator session |
-| Reviews | spec review + quality review per subtask, specialist review of `deep` PRs | one combined review per subtask, no specialist PR review |
+| Reviews | one review of the whole change per task, specialist review of `deep` PRs | one review of the whole change per task, on sonnet except high-risk work; no specialist PR review |
 | Expert view | at planning, when the goal touches the product's field | only when you ask |
 | Knowledge setup | interview and drafts on a project's first run | skipped (the wrap-up mentions it) |
 
@@ -142,6 +142,18 @@ Your other skills and plugins keep working alongside it ([how](#alongside-other-
 **Lite never cuts the safety net.** Work that touches security, authentication, money, deleting data or migrations keeps its normal model and the specialist review. A subtask that fails can still move up to opus once. Tests, one PR per task, your plan approval, your merges and the wrap-up learning all stay.
 
 **Tip:** the orchestrator session can't change its own model, so for lite runs start that session on sonnet. If it runs on opus, the plan reminds you once.
+
+### How workers work
+
+A worker does its task in its own session: it writes each piece itself, test-first, and runs the full test suite after each one. It hands a piece to a subagent only for:
+- a wide search through the code (a cheap read-only scout);
+- a piece too big to do in one session, such as a 40-file migration;
+- independent pieces worth running at the same time;
+- one piece harder than the rest of the task.
+
+Before the PR, one fresh reviewer checks the whole change (Opus for high-risk work, Sonnet otherwise), then the orchestrator reviews the PR as before.
+
+Each worker's report says how much it delegated, how full its context got, and whether its context was compacted; on the CLI backend it also gives the cost. The wrap-up compares this with the project's earlier runs: PR findings, rework, compaction and subagent use per task. In an area where the change does worse in two runs, it proposes going back to per-piece reviews or subagents there, through a knowledge entry you approve.
 
 ### Which model to start the orchestrator on
 

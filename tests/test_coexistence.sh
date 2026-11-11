@@ -58,7 +58,7 @@ assert_contains "$(cat README.md)" "## Alongside other skills and plugins" "READ
 
 # final review fixes
 orch=$(cat skills/orchestrating/SKILL.md); work=$(cat skills/working/SKILL.md); c=$(cat skills/orchestrating/references/coexistence.md)
-assert_contains "$work" "the skills the brief names for this subtask" "I1: implementer prompts carry the named skills"
+assert_contains "$work" "the skills the brief names for this piece" "I1: implementer prompts carry the named skills"
 assert_not_contains "$work" "still one review per subtask" "I2: no contradiction with the two-stage batch review"
 assert_contains "$work" "doesn't add another review on top" "I2: review skill adds no extra review"
 assert_contains "$c" "Default \`review: none\`" "I3: review skill defaults to none"
@@ -67,7 +67,7 @@ assert_contains "$orch" "3. \`deep\` tasks: also run" "I3: PR specialist review 
 assert_not_contains "$orch" "one review, not two" "I3: no misleading phrase in PR review"
 assert_contains "$c" "no nested reviewers" "I4: no nested reviewers (contract)"
 assert_contains "$work" "no nested reviewers" "I4: no nested reviewers (worker)"
-assert_contains "$work" "your batch plan in step 2 still applies" "M1: own batch plan kept"
+assert_contains "$work" "your plan in step 2 still applies" "M1: own batch plan kept"
 assert_contains "$orch" "never let another skill create worktrees or branches" "M2: own worktrees allowed"
 assert_contains "$c" "the approved brief is the confirmation" "M3: foreign confirmations skipped"
 assert_contains "$work" "the approved brief is the confirmation" "M3: foreign confirmations skipped (worker)"
