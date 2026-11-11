@@ -59,4 +59,12 @@ assert_contains "$ledger" "[expert] <target> <experts>: <n> proposed, <k> adopte
 assert_contains "$ledger" "[expert] declined E<n>: <reason>" "ledger: declined line"
 assert_contains "$tiers" "| Expert view | at planning, for goals that touch the product's field | only on request |" "lite row"
 
+brief=$(cat skills/orchestrating/references/brief-template.md 2>/dev/null)
+worker=$(cat skills/working/SKILL.md 2>/dev/null)
+reviews=$(cat skills/orchestrating/references/reviews.md 2>/dev/null)
+assert_contains "$brief" "still to do" "brief: outside checks marked"
+assert_contains "$worker" "still to do" "worker: PR lists outside checks"
+assert_contains "$reviews" "still to do" "reviews: PR body lists outside checks"
+assert_not_contains "$worker" "expert view" "workers never run the expert view"
+
 finish

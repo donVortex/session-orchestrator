@@ -62,7 +62,7 @@ Every task has a risk tag, and the change sets it, not the author:
   - `high`: one PR at a time, with "read this diff yourself, especially <files>", because the reviews don't replace your reading of a high-risk change;
   - `normal`: skim the diff;
   - `low`: safe to merge after a glance.
-- **The PR body** has Goal, Changes, Verification (commands → results), Risk (the tag and why), How to revert (revert the merge commit, plus any data or migration steps; just "revert the merge commit" when nothing else is needed), and Follow-ups (the `minor` and `pre-existing` findings).
+- **The PR body** has Goal, Changes, Verification (commands → results, then the brief's `still to do` checks under that label, never as passed), Risk (the tag and why), How to revert (revert the merge commit, plus any data or migration steps; just "revert the merge commit" when nothing else is needed), and Follow-ups (the `minor` and `pre-existing` findings).
 
 ## Check the base branch after merges
 
