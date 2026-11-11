@@ -41,7 +41,6 @@ wl=$(cat skills/orchestrating/references/workflow-learning.md 2>/dev/null)
 cal=$(cat skills/orchestrating/references/knowledge-templates/calibration.md 2>/dev/null)
 brief=$(cat skills/orchestrating/references/brief-template.md 2>/dev/null)
 assert_contains "$wl" "Native vs before (per task): PR findings <a> → <b>" "learning: comparison line"
-assert_contains "$wl" "no comparison line and no \`Worker plan:\` proposal" "learning: nothing without a baseline"
 assert_contains "$wl" "Worker plan: per-piece reviews for <kind> in <area>" "learning: back off to per-piece reviews"
 assert_contains "$wl" "Worker plan: subagents for <kind> in <area>" "learning: back off to subagents"
 assert_contains "$cal" "Worker plan:" "calibration template: Worker plan example"
@@ -57,8 +56,29 @@ assert_contains "$tiers" "| Worker reviews | one whole-diff review; per-piece re
 assert_contains "$tiers" "delegated pieces" "cap covers delegated pieces"
 assert_contains "$(cat skills/orchestrating/references/reviews.md)" "the worker's whole-diff review" "reviews: names the worker review"
 
-assert_contains "$wl" "counts every subagent call, reviews included, on both sides" "learning: subagent counts comparable"
-assert_contains "$wl" "the area's own earlier tasks of that kind, or else the baseline's average per task" "learning: what 'more than the baseline' means"
+assert_contains "$wl" "the area's own earlier tasks of that kind, native or not, or else the project's average per task" "learning: what 'more than the baseline' means"
 assert_contains "$wl" "comes before a brief rule or checklist item for the same findings" "learning: Worker plan proposal takes precedence"
+
+# final review fixes
+assert_contains "$w" 'A piece whose tier hint is `deep` in a task that isn'"'"'t goes to `specialist (opus)`' "R1: learned deep tiers still apply"
+assert_contains "$fmt" "One row per piece, yours included" "R1: tier learning keeps a row per piece"
+assert_contains "$w" "A piece you wrote that stays red, or still has a confirmed finding after 3 rounds, goes once to the next tier up" "R2: escalation for your own pieces"
+assert_contains "$wl" "show no comparison line" "R3: no comparison without a baseline"
+assert_contains "$wl" 'The `Worker plan:` proposals need no baseline from before: two runs with native workers are enough' "R3: back-off works for new projects"
+assert_not_contains "$wl" "and no \`Worker plan:\` proposal" "R3: old gate removed"
+assert_contains "$wl" 'PR findings come from the ledgers'"'"' `findings:` lines' "R4: source of findings"
+assert_contains "$wl" 'compacted before is always `n/a`' "R4: compaction wasn't measured before"
+assert_contains "$wl" "subagents counts the delegated pieces" "R4: one definition of subagents"
+assert_not_contains "$wl" "never leave them out" "R4: no estimated before-values"
+assert_contains "$wl" 'its `findings` still count' "R4: old workers keep their findings"
+assert_not_contains "$(cat evals/worker-superpowers/graders/1-batch-plan.md)" "same batch" "R5: superpowers eval expects the native plan"
+assert_not_contains "$(cat evals/worker-coexist-foreign/graders/1-batch-plan.md)" "same batch" "R5: foreign-plugin eval expects the native plan"
+assert_contains "$w" 'counts as `too big for one context`' "R6: Worker plan subagents hint is an allowed reason"
+assert_contains "$w" "If the whole-diff review still has a confirmed" "R7: whole-diff round cap"
+assert_contains "$(cat skills/orchestrating/references/reviews.md)" "**worker, for its whole-diff review:**" "R7: reviews.md covers the whole-diff review"
+assert_not_contains "$(cat README.md)" "Workers build with subagents whose model is picked by effort" "R8: README tagline"
+assert_not_contains "$(cat .claude-plugin/plugin.json)" "tiered parallel subagents" "R8: plugin description"
+assert_not_contains "$(cat .claude-plugin/marketplace.json)" "tiered, parallel subagents" "R8: marketplace description"
+assert_not_contains "$(cat docs/e2e-checklist.md)" "batch plan" "R8: e2e checklist"
 
 finish

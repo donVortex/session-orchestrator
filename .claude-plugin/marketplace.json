@@ -8,7 +8,7 @@
     {
       "name": "session-orchestrator",
       "source": "./",
-      "description": "Orchestrator session that delegates PR-sized tasks to worker sessions using tiered, parallel subagents."
+      "description": "Orchestrator session that delegates PR-sized tasks to worker sessions, each writing its task and getting one fresh review."
     }
   ]
 }

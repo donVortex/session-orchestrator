@@ -27,7 +27,8 @@ In a new desktop session opened on the sandbox folder: `/session-orchestrator:or
 - [ ] `.orchestration/` exists and is listed in `.git/info/exclude`
 - [ ] After approval, workers appear as sessions titled `T<n> · …` with the tier's model and effort
 - [ ] Workers load `session-orchestrator:working` (confirms plugins load in sessions started by another session)
-- [ ] A worker's batch plan runs independent subagents in one message (parallel)
+- [ ] A worker posts its plan table, writes `me` pieces itself, and delegates only with a reason (parallel calls in one message)
+- [ ] A worker runs one whole-diff review before the PR, and its report has a Work line
 - [ ] Each worker opens a PR and writes `.orchestration/reports/T<n>.md`
 - [ ] `retros.md` gains one entry per finished task
 - [ ] The orchestrator reviews each PR and asks you to merge; it never merges

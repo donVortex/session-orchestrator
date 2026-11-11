@@ -43,7 +43,8 @@ A round is one review and the fix it asks for.
 - After the first round, re-review only the fix (`git diff <reviewed commit>..HEAD`), and check that each finding sent back is fixed.
 - **Never repeat a finding** already reported. A finding the author answered with a reason (intentional, out of scope) stays closed, unless the reason is wrong: then it comes back once, as a new finding with that evidence.
 - **Cap: 3 rounds.** When a `critical` or `important` finding is still open after the third review, stop sending the work back:
-  - **worker, for a subtask:** escalate it once ([escalation](model-tiers.md#escalation)); if it still doesn't converge, report `Status: blocked` with the open findings and that the approach needs rethinking;
+  - **worker, for its whole-diff review:** don't open the PR; report `Status: blocked` with the open findings and that the approach needs rethinking;
+  - **worker, for a piece:** escalate it once ([escalation](model-tiers.md#escalation)); if it still doesn't converge, report `Status: blocked` with the open findings and that the approach needs rethinking;
   - **orchestrator, for a PR:** ask the user, with the open findings: rethink the approach (re-split, re-tier to `deep`, take it as `self`), accept the PR with the findings listed in its body, or drop it. Log it as `[ask-user]`.
 - Log each round that sends work back as `[changes] T<n> round <k>: <count line>`.
 
