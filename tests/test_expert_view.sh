@@ -67,4 +67,20 @@ assert_contains "$worker" "still to do" "worker: PR lists outside checks"
 assert_contains "$reviews" "still to do" "reviews: PR body lists outside checks"
 assert_not_contains "$worker" "expert view" "workers never run the expert view"
 
+# from the eval run: rules the orchestrator and the specialist missed
+assert_contains "$orch" "become the tasks' acceptance criteria" "plan: expert checks become acceptance criteria"
+assert_contains "$orch" "log it as \`[expert]" "track: expert ledger lines named in the skill"
+assert_contains "$orch" "wait for the user's yes before asking the product questions" "intake: offer first, questions after yes"
+assert_contains "$ev" "Use only these three marks" "only three source marks"
+assert_contains "$ev" "opened (given by the caller)" "caller-supplied material"
+
+assert_contains "$orch" "offer once, in one line, to start its product knowledge" "intake: the offer names product knowledge"
+assert_contains "$ev" "ends with exactly \`(recalled only)\`" "recalled-only label is exact"
+
+assert_contains "$ev" "rests on S1, S3 [(recalled only) when every source it rests on is recalled]" "format template carries the recalled-only label"
+
+assert_contains "$spec" "Before you return, check each recommendation" "specialist: final label self-check"
+
+assert_contains "$ev" "Before returning, check each recommendation" "expert-view: final label self-check"
+
 finish

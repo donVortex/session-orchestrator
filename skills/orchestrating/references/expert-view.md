@@ -41,14 +41,15 @@ The user asks in plain words at any point in a run: "expert view", "what would a
   - `opened` — read in this call; give the URL or path and the section;
   - `recalled` — known from training, not read now; give the name and year as remembered;
   - `unreachable` — tried, but paywalled or the fetch failed.
-- A source is never marked `opened` unless it was read in this call. A recommendation that rests only on recalled sources ends with `(recalled only)`.
+- Use only these three marks. Material the caller hands you (an aggregate it already read) is `opened (given by the caller)`. A project file you cite but didn't read, such as one named in the product knowledge, is `recalled`.
+- A source is never marked `opened` unless it was read in this call. A recommendation that rests only on recalled sources ends with exactly `(recalled only)`, with nothing added inside the brackets.
 
 ## Output format
 
 ```markdown
 ## Expert view: <target> — <expert>, <expert>
 ### 1. What a top professional would do that wasn't asked
-- E1. <recommendation> — <why> — rests on S1, S3
+- E1. <recommendation> — <why> — rests on S1, S3 [(recalled only) when every source it rests on is recalled]
 ### 2. Raw material
 - S1. <source> — opened (<url or path>, <section>) | recalled | unreachable — <what it gives>
 ### 3. Methods and tools
@@ -59,6 +60,7 @@ The user asks in plain words at any point in a run: "expert view", "what would a
 
 ## Rules
 
+- **Before returning, check each recommendation** against its `rests on` list: if every source there is `recalled`, the line ends with `(recalled only)`. Fix any line that doesn't.
 - **At most 5 recommendations**, the most important first. `Nothing to add` is a valid answer; never pad.
 - **Nothing from Out of scope comes back** (the product knowledge's list of what was decided against), unless new raw material changes the reason; then say what changed.
 - **Part 4 is checks outside the orchestrator's review and the user's approval:** a professional's sign-off, a user test, numbers from the logs, a published guideline met. Checks the session can run become acceptance criteria. Checks that need people or time go into the PR's Verification as `still to do: <check> — <who> — <when>` and into the wrap-up summary as open checks. They never block a merge; the user decides.
