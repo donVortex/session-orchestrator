@@ -1,6 +1,6 @@
 # Reviews
 
-How every review in a run works: a worker's subtask reviews, the small-task review, and the orchestrator's PR review. The same rules apply at every level. The aim is to catch real bugs in as few rounds as possible, and to spend the user's attention where a missed bug costs most.
+How every review in a run works: the worker's whole-diff review, per-piece reviews of delegated pieces, and the orchestrator's PR review. The same rules apply at every level. The aim is to catch real bugs in as few rounds as possible, and to spend the user's attention where a missed bug costs most.
 
 ## Findings
 

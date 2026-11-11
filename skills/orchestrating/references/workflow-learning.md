@@ -64,7 +64,7 @@ Subagents before are counted from the old reports' Subtasks tables, plus their r
 A recipe is a proven way to do one kind of task in this project, kept in `calibration.md` → Recipes:
 
 ```markdown
-- **Money helper** (`src/money/<fn>.js`): one worker, `standard`, small-task path; brief quotes the number-argument and display rules, names `format.js` as style reference, folds the barrel line in. Last 2 runs: 0 attention, 0 rework. _(T1 / PR #10; T4 / PR #12)_
+- **Money helper** (`src/money/<fn>.js`): one worker, `standard`, native; brief quotes the number-argument and display rules, names `format.js` as style reference, folds the barrel line in. Last 2 runs: 0 attention, 0 rework. _(T1 / PR #10; T4 / PR #12)_
 ```
 
 - **Match by area and kind of change.** At breakdown, match each task to at most one recipe. A task in the same area but of a different kind (an export instead of a helper) has no recipe.

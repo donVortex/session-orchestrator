@@ -36,8 +36,8 @@ For projects and runs where speed matters more than depth: a simple codebase, a 
 | Tiers | as planned | `deep` runs as `standard` (sonnet subagents, sonnet / medium session); `fast` unchanged |
 | Split | PR-sized tasks | as few tasks as the work allows: one PR per coherent change, not one per layer |
 | Placement | per [splitting.md](splitting.md#placement) | small and sequential tasks as `self`; `worker` only for tasks too big for this session or ones that should run in parallel |
-| Worker plan | batch loop, or the small-task path for one subtask | the small-task path whenever the task fits one subtask |
-| Subtask reviews | spec review, then code-quality review | one combined review (spec and quality in one pass), never below sonnet |
+| Worker plan | native: the worker writes the pieces itself, subagents only for the four cases | the same |
+| Worker reviews | one whole-diff review; per-piece reviews for delegated pieces | one whole-diff review; one combined review (spec and quality in one pass) per delegated piece, never below sonnet |
 | Verifying findings | every `critical` or `important` finding, before it goes back | only for guarded work ([reviews.md](reviews.md#verify-before-sending-work-back)) |
 | `orch-specialist` review of the PR | every `deep` task | only guarded work (below) |
 | Expert view | at planning, for goals that touch the product's field | only on request |
@@ -70,7 +70,7 @@ max_parallel_implementers_per_session: 3
 ```
 
 - `max_parallel_workers`: worker sessions the orchestrator runs at the same time.
-- `max_parallel_implementers_per_session`: implementer subagents one session runs at the same time. Read-only scouts and reviews are not counted.
+- `max_parallel_implementers_per_session`: implementer subagents one session runs at the same time, for delegated pieces. Read-only scouts and reviews are not counted.
 
 ## Escalation
 

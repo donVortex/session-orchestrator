@@ -48,4 +48,13 @@ assert_contains "$cal" "Worker plan:" "calibration template: Worker plan example
 assert_contains "$brief" "Worker plan:" "brief carries Worker plan hints"
 assert_contains "$orch" "comparison line" "wrap-up shows the comparison"
 
+tiers=$(cat skills/orchestrating/references/model-tiers.md 2>/dev/null)
+for f in skills/orchestrating/SKILL.md skills/orchestrating/references/*.md skills/orchestrating/references/knowledge-templates/*.md skills/working/*.md; do
+  assert_not_contains "$(cat "$f")" "small-task path" "no small-task path left in $f"
+done
+assert_contains "$tiers" "| Worker plan | native: the worker writes the pieces itself, subagents only for the four cases | the same |" "lite row: worker plan"
+assert_contains "$tiers" "| Worker reviews | one whole-diff review; per-piece reviews for delegated pieces |" "lite row: reviews"
+assert_contains "$tiers" "delegated pieces" "cap covers delegated pieces"
+assert_contains "$(cat skills/orchestrating/references/reviews.md)" "the worker's whole-diff review" "reviews: names the worker review"
+
 finish

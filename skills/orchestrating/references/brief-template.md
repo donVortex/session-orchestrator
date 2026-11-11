@@ -21,7 +21,7 @@ Canonical brief: `<$root>/.orchestration/briefs/T<n>.md`. The app may deliver `@
 - PR branch: `orch/T<n>` (or `orch/T<n>-<slug>` if that name was taken; see ledger.md). Your worktree folder and local branch may have other names (the app picks them, and may reuse an old folder); this PR branch is the one that counts.
 - Tier: <fast|standard|deep> — session <model> / <effort>
 - Risk: low | normal | high — <why, in a few words> ([risk tags](reviews.md#risk-tags)); goes into the PR body with How to revert
-- Mode: full | lite — lite: no `deep` subtasks except guarded work (security, authentication, money, deleting data, migrations); one combined review per subtask; the small-task path whenever the task fits one subtask ([lite mode](model-tiers.md#lite-mode))
+- Mode: full | lite — lite: no `deep` subtasks except guarded work (security, authentication, money, deleting data, migrations); one combined review per delegated piece ([lite mode](model-tiers.md#lite-mode))
 - Orchestrator: desktop | CLI mode
 - Report path: CLI mode: `<$root>/.orchestration/reports/T<n>.md` (absolute; `$root` as resolved in ledger.md). Desktop: `<notes>/T<n>-report.md` in the app's shared notes folder ([backend-desktop.md](backend-desktop.md#reports-and-permissions)). It is outside your worktree: if the write is refused, put the full report in your final message instead, and the orchestrator saves it.
 - Subtasks (files, tier hint, dependencies), plus any `Worker plan:` entries for these kinds and areas:
@@ -46,4 +46,4 @@ Report in the format of the working skill's report-format.md, then send: `T<n> d
 | Report path: CLI → absolute, in the main checkout's `.orchestration/reports/`; desktop → the app's shared notes folder | Workers run in their own worktrees, and the desktop app blocks their writes to the main checkout |
 | The brief names its canonical file path | The desktop app rewrites `@` in prompts |
 | Project rules quote the `domain.md` entries for this task's area | Workers can't follow rules they weren't given |
-| A dependent change of a few lines (a re-export, a barrel line) is folded into the subtask it depends on | A one-subtask plan takes the working skill's small-task path (one implementer, one review) instead of the full batch loop |
+| A dependent change of a few lines (a re-export, a barrel line) is folded into the subtask it depends on | The worker writes it with the piece it belongs to, instead of a separate piece with its own commit and test run |

@@ -26,7 +26,7 @@ How work in this project should be done: tiers, task sizes, what briefs must spe
 ## Recipes
 
 <!-- A proven way to do one kind of task here, with its track record. Example:
-- **Money helper** (`src/money/<fn>.js`): one worker, `standard`, small-task path; brief quotes the number-argument and display rules, names `format.js` as style reference, folds the barrel line in. Last 2 runs: 0 attention, 0 rework. _(T1 / PR #10; T4 / PR #12)_
+- **Money helper** (`src/money/<fn>.js`): one worker, `standard`, native; brief quotes the number-argument and display rules, names `format.js` as style reference, folds the barrel line in. Last 2 runs: 0 attention, 0 rework. _(T1 / PR #10; T4 / PR #12)_
 -->
 
 ## Learned defaults
