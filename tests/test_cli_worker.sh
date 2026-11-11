@@ -133,6 +133,17 @@ assert_eq "s-1" "$(arg_after --resume)" "resume_runs_in_worktree: --resume id"
 assert_contains "$(cat "$STUB_LOG")" "STDIN=Answer: use 404" "resume_runs_in_worktree: message arrives on stdin"
 assert_contains "$(arg_after --add-dir)" "/.orchestration" "resume_runs_in_worktree: state dir added"
 
+# resume_with_effort
+: > "$STUB_LOG"
+cw "$repo" resume T1 s-1 "$base/msg.txt" high
+assert_eq 0 "$code" "resume_with_effort: exit 0"
+assert_eq "high" "$(arg_after --effort)" "resume_with_effort: --effort passed"
+
+# resume_without_effort
+: > "$STUB_LOG"
+cw "$repo" resume T1 s-1 "$base/msg.txt"
+assert_eq "" "$(arg_after --effort)" "resume_without_effort: no --effort"
+
 # resume_message_starting_with_dash
 setup
 cw "$repo" start T1 main sonnet medium "$base/brief.md"

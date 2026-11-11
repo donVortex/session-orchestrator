@@ -136,6 +136,16 @@ Your other skills and plugins keep working alongside it ([how](#alongside-other-
 
 **Tip:** the orchestrator session can't change its own model, so for lite runs start that session on sonnet. If it runs on opus, the plan reminds you once.
 
+### Which model to start the orchestrator on
+
+The orchestrator plans, briefs workers and reviews their PRs; it keeps the model you start it with, and worker sessions can't run above it.
+
+- **Opus 5.5** (Claude Code's default): most runs.
+- **Fable 5.2:** big migrations or refactors, architecture work, and runs with many tasks at once. It's the model best at leading many sessions, at about twice Opus's price.
+- **Sonnet 5.5:** lite runs and small, clear goals.
+
+Worker sessions and subagents get their models from the task tiers, whatever you pick here: Haiku only for searching and reading, Sonnet for well-scoped code, Opus for design, hard bugs and security.
+
 ## Project knowledge
 
 Each project keeps what the orchestrator has learned about it in `.claude/orchestrator/`, committed to the project's repo: domain rules and glossary, a codebase map, a review checklist, and tier and split calibration. A healthcare team's orchestrator becomes expert in their healthcare product; an insurtech team's in theirs.

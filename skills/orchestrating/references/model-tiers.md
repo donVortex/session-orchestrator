@@ -6,11 +6,13 @@ The single source for which model and effort each piece of work gets. Edit this 
 
 | Tier | Subagent model | Worker session model / effort | Use for |
 |---|---|---|---|
-| `fast` | haiku | sonnet / low | search, lookups, renames, boilerplate, docs, mechanical edits |
+| `fast` | sonnet for edits; haiku for read-only work | sonnet / low | renames, boilerplate, docs, mechanical edits; search and lookups |
 | `standard` | sonnet | sonnet / medium | features with a clear spec, tests, bugs with a known cause |
-| `deep` | opus | opus / high | design, cross-cutting changes, bugs with an unknown cause, security, reviewing deep work |
+| `deep` | opus | opus / medium for design and cross-cutting changes; opus / high for bugs with an unknown cause, security and guarded work | design, cross-cutting changes, migrations and performance work, bugs with an unknown cause, security, reviewing deep work |
 
 - **Subagent model**: the `model` passed on every Agent call for a subtask of this tier.
+- **Haiku only reads.** It runs search, lookups, log reading and summaries (`orch-scout`). Every code edit runs on sonnet or above, `fast` subtasks included: a weak edit costs a retry, which is more than the stronger model saves.
+- **`deep` effort follows the kind of work.** Design and cross-cutting changes start at medium and climb on a failed round (see [Escalation](#escalation)); bugs with an unknown cause, security and guarded work (security, authentication, money, deleting data, migrations) start at high.
 - **Worker session model / effort**: what the orchestrator sets on a worker session (desktop: `set_session_model` + `set_session_effort`; CLI: `--model` + `--effort`) for a task of this tier.
 - A task's tier sets its session. Each subtask inside it gets its own tier, so one worker can mix models.
 - The orchestrator session keeps whatever model the user started it with.
@@ -48,7 +50,7 @@ For projects and runs where speed matters more than depth: a simple codebase, a 
 
 ## Session floor
 
-Worker sessions coordinate, plan and review, so they never run below **sonnet**, even for `fast` tasks. Only the subagents doing the work drop to haiku.
+Worker sessions coordinate, plan and review, so they never run below **sonnet**, even for `fast` tasks. Only read-only subagents drop to haiku.
 
 ## Roles
 
@@ -70,6 +72,10 @@ max_parallel_implementers_per_session: 3
 
 ## Escalation
 
-1. A subagent that fails, or returns weak work, is retried **once** on the next tier up (`fast` → `standard` → `deep`).
-2. Record it in the retro with the `[tier]` tag: what failed, on which model, what fixed it.
-3. A second failure is not retried again: the worker reports it to the orchestrator, which counts it toward the task's two-failure limit.
+When work fails or comes back weak, climb one step at a time, in this order:
+
+1. **A way to check the work.** If it had no runnable check (a scoped test, a build, a script), give it one and retry on the same tier. A model that can check its own work does far better; often that's the whole fix.
+2. **More effort, for worker sessions.** When the orchestrator sends a failed round back to a worker, it first raises that session's effort one step (low → medium → high): desktop with `set_session_effort`, CLI with `resume`'s effort argument. Log it as `[escalate] T<n> effort <from> → <to>`. Above high, effort costs about as much as the next model, so move up a model instead. Subagents have no effort setting, so they skip this step.
+3. **The next model up.** A subagent that fails or returns weak work is retried **once** on the next tier up (`fast` → `standard` → `deep`). A worker task that fails a second time goes to the user, who can re-tier it to `deep`.
+
+Record each step in the retro with the `[tier]` tag: what failed, on which model and effort, and what fixed it. A subagent's second failure is not retried again: the worker reports it to the orchestrator, which counts it toward the task's two-failure limit.
