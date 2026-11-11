@@ -1,6 +1,6 @@
 {
   "name": "session-orchestrator",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Turns one Claude Code session into an orchestrator that splits work into PR-sized tasks, runs them in worker sessions with tiered parallel subagents, and learns from each worker's retro.",
   "author": {
     "name": "donVortex"

@@ -18,7 +18,7 @@
 
 ## Tier
 
-Pick from [model-tiers.md](model-tiers.md) by the hardest thing in the task. Schema changes, migrations and anything security-related are never `fast`.
+Pick from [model-tiers.md](model-tiers.md) by the hardest thing in the task. Migrations and performance work are `deep`, even with a clear spec: a clear spec doesn't make hard work easy. Other schema changes and anything security-related are never `fast`.
 
 ## Example
 

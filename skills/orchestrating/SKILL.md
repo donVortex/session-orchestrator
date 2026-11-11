@@ -136,7 +136,7 @@ Only for:
 | Review asks for changes | Confirmed `critical` or `important` findings only: `changes-requested`, send to the same worker. **Not** a failure. `minor` and `pre-existing` findings never send work back |
 | Review rounds reach the cap | After 3 rounds with a confirmed finding open, ask the user: rethink the approach, accept with the findings listed, or drop it ([rounds](references/reviews.md#rounds)) |
 | Base branch red after merges | Start nothing that depends on it; fix it as a `self` task and tell the user ([base check](references/reviews.md#check-the-base-branch-after-merges)) |
-| A round fails: the code is broken, tests or CI are red, the worker errors or ends without a report | Send it back once with what went wrong; a second failure → `failed`, and the user chooses: re-tier to `deep`, you take it as `self`, or drop it |
+| A round fails: the code is broken, tests or CI are red, the worker errors or ends without a report | Send it back once with what went wrong, at one effort step higher ([escalation](references/model-tiers.md#escalation)); a second failure → `failed`, and the user chooses: re-tier to `deep`, you take it as `self`, or drop it |
 | A round is lost to the environment (missing tool, permissions), not the work | Not a failure: fix or escalate the cause, then resume |
 | Worker changed files it doesn't own | Send the PR back; if the task truly needs them, re-split with the user |
 | Two PRs conflict | The later PR's worker rebases on the base branch |

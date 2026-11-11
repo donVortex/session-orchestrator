@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # CLI backend for session-orchestrator: runs a worker as headless `claude -p` in its own worktree.
 #   cli-worker.sh start  <task-id> <base-branch> <model> <effort> <brief-file>
-#   cli-worker.sh resume <task-id> <session-id> <message-file>
+#   cli-worker.sh resume <task-id> <session-id> <message-file> [effort]
 #   cli-worker.sh remove <task-id>
 # Run from anywhere inside the main checkout. Worktree: <repo-root>-wt/<task-id>, branch orch/<task-id>.
 # Stdout is claude's JSON result (with session_id); progress goes to stderr.
@@ -110,11 +110,15 @@ cmd_start() {
 }
 
 cmd_resume() {
-  [ $# -eq 3 ] || usage
+  [ $# -eq 3 ] || [ $# -eq 4 ] || usage
   locate "$1"
   message=$(abs_file "$3") || exit 2
   is_task_worktree || die 5 "no worktree for $1 at $dir"
-  run_claude "$message" --resume "$2"
+  if [ $# -eq 4 ]; then
+    run_claude "$message" --resume "$2" --effort "$4"
+  else
+    run_claude "$message" --resume "$2"
+  fi
 }
 
 cmd_remove() {

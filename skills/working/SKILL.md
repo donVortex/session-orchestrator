@@ -52,7 +52,7 @@ Two or more subtasks always use the batch loop.
 
 ## 4. Escalate
 
-A subagent that fails or returns weak work: retry once on the next tier up and note it as a `[tier]` retro point. A second failure: report `Status: failed` with what happened.
+A subagent that fails or returns weak work: if it had no runnable check (a scoped test or build), give it one and retry on the same tier; otherwise retry once on the next tier up ([order](../orchestrating/references/model-tiers.md#escalation)). Note it as a `[tier]` retro point. A second failure: report `Status: failed` with what happened.
 
 ## 5. Verify
 
