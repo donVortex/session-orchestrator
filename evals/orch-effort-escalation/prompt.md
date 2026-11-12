@@ -1,7 +1,7 @@
 ---
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
-tags: [orchestrator, tiers]
+tags: [orchestrator, tiers, escalation]
 ---
 
 First load the session-orchestrator:orchestrating skill with the Skill tool, as an orchestrator session does at its start.

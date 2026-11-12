@@ -46,7 +46,7 @@ assert_contains "$tiers" "2. **More effort, for worker sessions.**" "escalation 
 assert_contains "$tiers" "3. **The next model up.**" "escalation step 3: then the model"
 assert_contains "$tiers" '[escalate] T<n> effort <from> → <to>' "effort escalation logged"
 assert_contains "$orch" "one effort step higher" "failed round goes back with more effort"
-assert_contains "$cli" "resume <task-id> <session-id> <message-file> [effort]" "CLI resume takes an effort"
+assert_contains "$cli" "resume <task-id> <session-id> <message-file> [effort [model]]" "CLI resume takes an effort and a model"
 assert_contains "$worker" "give it one and retry on the same tier" "worker: a missing check is fixed before escalating"
 assert_contains "$splitting" "Migrations and performance work are \`deep\`" "migrations and performance work are deep"
 assert_contains "$readme" "### Which model to start the orchestrator on" "README: orchestrator model advice"

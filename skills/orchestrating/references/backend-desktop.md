@@ -39,7 +39,7 @@ Each worker's title starts with a symbol for its status, so the user can see the
 
 | Symbol | Set when |
 |---|---|
-| ⏳ | the worker starts, or resumes with a follow-up: review fixes, an answer, an effort raise |
+| ⏳ | the worker starts, or resumes with a follow-up: review fixes, an answer, an effort raise, a re-tier |
 | ❓ | it is blocked on a question, or stopped at the review round cap and needs the user to rethink |
 | ⛔ | the task failed: a second failed round, or an environment problem that stops it |
 | 🔀 | its PR is reviewed and the merge request has gone to the user |

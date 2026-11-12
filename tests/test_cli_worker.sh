@@ -144,6 +144,23 @@ assert_eq "high" "$(arg_after --effort)" "resume_with_effort: --effort passed"
 cw "$repo" resume T1 s-1 "$base/msg.txt"
 assert_eq "" "$(arg_after --effort)" "resume_without_effort: no --effort"
 
+# resume_with_model: a re-tier switches the model on the same conversation
+: > "$STUB_LOG"
+cw "$repo" resume T1 s-1 "$base/msg.txt" high opus
+assert_eq 0 "$code" "resume_with_model: exit 0"
+assert_eq "high" "$(arg_after --effort)" "resume_with_model: --effort passed"
+assert_eq "opus" "$(arg_after --model)" "resume_with_model: --model passed"
+assert_eq "s-1" "$(arg_after --resume)" "resume_with_model: same conversation"
+
+# resume_without_model
+: > "$STUB_LOG"
+cw "$repo" resume T1 s-1 "$base/msg.txt" high
+assert_eq "" "$(arg_after --model)" "resume_without_model: no --model"
+
+# resume_too_many_args
+cw "$repo" resume T1 s-1 "$base/msg.txt" high opus extra
+assert_eq 2 "$code" "resume_too_many_args: exit 2"
+
 # resume_message_starting_with_dash
 setup
 cw "$repo" start T1 main sonnet medium "$base/brief.md"
