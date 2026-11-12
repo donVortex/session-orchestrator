@@ -90,7 +90,7 @@ When the user chooses a re-tier after a task's second failure or at the review r
 - **Set the `deep` worker session values:** opus; effort medium for design and cross-cutting changes, high for bugs with an unknown cause, security and guarded work. Desktop: `set_session_model` with the full model id, then `set_session_effort`. CLI: `resume`'s effort and model arguments. Then send what went wrong in both rounds.
 - **Ledger:** the row's tier becomes `deep` and its status `running`, so the run doesn't wrap up early and the PR gets the `deep` review. In the follow-up, tell the worker its tier is now `deep`: its brief still names the old tier.
 - **The app's approval:** for a model or effort above this session's own, the app asks the user to approve it. Say so in one line before the call, so it is expected. If the user declines the re-tier's model, the task stays `failed`, and the user chooses between re-split, `self` and drop.
-- Log it as `[escalate] T<n> model <from> → <to> (you chose re-tier)`.
+- Log it as `[escalate] T<n> model <model>/<effort> → <model>/<effort> (you chose re-tier)`, e.g. `sonnet/high → opus/medium` for design work.
 - **The re-tiered round gets one try.** If it fails, the task is `failed` again, and the user chooses between re-split, `self` and drop.
 
-A task already `deep` can't be re-tiered: its options are re-split, `self` or drop.
+A task whose worker session already runs on opus can't be re-tiered: its options are re-split, `self` or drop. A `deep` task on sonnet (in lite mode, or when the user accepted a lower tier at the start) can still be re-tiered.

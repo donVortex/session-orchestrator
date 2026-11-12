@@ -45,7 +45,7 @@ A round is one review and the fix it asks for.
 - **Cap: 3 rounds.** When a `critical` or `important` finding is still open after the third review, stop sending the work back:
   - **worker, for its whole-diff review:** don't open the PR; report `Status: blocked` with the open findings and that the approach needs rethinking;
   - **worker, for a piece:** escalate it once ([escalation](model-tiers.md#escalation)); if it still doesn't converge, report `Status: blocked` with the open findings and that the approach needs rethinking;
-  - **orchestrator, for a PR:** ask the user, with the open findings: rethink the approach (re-split; re-tier to `deep` unless it already is, [how](model-tiers.md#re-tier); take it as `self`), accept the PR with the findings listed in its body, or drop it. Log it as `[ask-user]`.
+  - **orchestrator, for a PR:** ask the user, with the open findings: rethink the approach (re-split; re-tier to `deep` unless its session already runs on opus, [how](model-tiers.md#re-tier); take it as `self`), accept the PR with the findings listed in its body, or drop it. Log it as `[ask-user]`.
 - Log each round that sends work back as `[changes] T<n> round <k>: <count line>`.
 
 ## Risk tags
