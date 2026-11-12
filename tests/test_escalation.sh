@@ -29,6 +29,8 @@ assert_contains "$orch" "one try: if it fails, the task is \`failed\` again" "or
 
 assert_contains "$cli" "<message-file> [effort [model]]" "cli: resume takes a model"
 assert_contains "$cli" "The model only comes after an effort" "cli: model needs an effort"
+assert_contains "$cli" "A resume without an effort reuses the last one the task was given" "cli: effort kept across resumes"
+assert_not_contains "$cli" "raise it for this round" "cli: a raise is not for one round only"
 assert_contains "$script" "<message-file> [effort [model]]" "script: usage names the model"
 assert_contains "$d" "an effort raise, a re-tier" "desktop: re-tier sets working"
 

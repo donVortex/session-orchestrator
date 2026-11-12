@@ -132,6 +132,7 @@ assert_eq "$(toplevel "$repo-wt/T1")" "$(toplevel "$stub_pwd")" "resume_runs_in_
 assert_eq "s-1" "$(arg_after --resume)" "resume_runs_in_worktree: --resume id"
 assert_contains "$(cat "$STUB_LOG")" "STDIN=Answer: use 404" "resume_runs_in_worktree: message arrives on stdin"
 assert_contains "$(arg_after --add-dir)" "/.orchestration" "resume_runs_in_worktree: state dir added"
+assert_eq "medium" "$(arg_after --effort)" "resume_keeps_start_effort: start's effort re-sent"
 
 # resume_with_effort
 : > "$STUB_LOG"
@@ -139,10 +140,12 @@ cw "$repo" resume T1 s-1 "$base/msg.txt" high
 assert_eq 0 "$code" "resume_with_effort: exit 0"
 assert_eq "high" "$(arg_after --effort)" "resume_with_effort: --effort passed"
 
-# resume_without_effort
+# resume_keeps_raised_effort: claude -p falls back to its default effort on a plain resume,
+# so the launcher re-sends the last effort it was given for the task
 : > "$STUB_LOG"
 cw "$repo" resume T1 s-1 "$base/msg.txt"
-assert_eq "" "$(arg_after --effort)" "resume_without_effort: no --effort"
+assert_eq "high" "$(arg_after --effort)" "resume_keeps_raised_effort: last effort re-sent"
+assert_eq "" "$(arg_after --model)" "resume_keeps_raised_effort: no --model (the session keeps its model)"
 
 # resume_with_model: a re-tier switches the model on the same conversation
 : > "$STUB_LOG"
@@ -156,6 +159,20 @@ assert_eq "s-1" "$(arg_after --resume)" "resume_with_model: same conversation"
 : > "$STUB_LOG"
 cw "$repo" resume T1 s-1 "$base/msg.txt" high
 assert_eq "" "$(arg_after --model)" "resume_without_model: no --model"
+
+# resume_keeps_retier_effort
+: > "$STUB_LOG"
+cw "$repo" resume T1 s-1 "$base/msg.txt" medium opus
+: > "$STUB_LOG"
+cw "$repo" resume T1 s-1 "$base/msg.txt"
+assert_eq "medium" "$(arg_after --effort)" "resume_keeps_retier_effort: re-tier's effort re-sent"
+
+# resume_without_saved_effort: a task started by an older launcher has no saved effort
+rm -f "$repo/.orchestration/effort/T1"
+: > "$STUB_LOG"
+cw "$repo" resume T1 s-1 "$base/msg.txt"
+assert_eq 0 "$code" "resume_without_saved_effort: exit 0"
+assert_eq "" "$(arg_after --effort)" "resume_without_saved_effort: no --effort"
 
 # resume_too_many_args
 cw "$repo" resume T1 s-1 "$base/msg.txt" high opus extra
@@ -208,6 +225,7 @@ cw "$repo" remove T1
 assert_eq 0 "$code" "remove_deletes_worktree: exit 0"
 [ -e "$repo-wt/T1" ] && fail "remove_deletes_worktree: dir gone"
 git -C "$repo" show-ref --verify --quiet refs/heads/orch/T1 || fail "remove_deletes_worktree: branch kept"
+[ -e "$repo/.orchestration/effort/T1" ] && fail "remove_deletes_worktree: saved effort removed"
 
 # usage
 setup

@@ -31,6 +31,21 @@ locate() {
   root=$(dirname "$common")
   dir="$root-wt/$1"
   branch="orch/$1"
+  effort_file="$root/.orchestration/effort/$1"
+}
+
+# claude -p doesn't keep a session's effort: a resume without --effort runs at its default.
+# So the launcher saves the last effort it was given for a task and re-sends it on a plain resume.
+save_effort() {
+  mkdir -p "$(dirname "$effort_file")" && printf '%s
+' "$1" > "$effort_file" ||
+    echo "cli-worker: could not save the effort for later resumes" >&2
+}
+
+# Echoes the saved effort, or nothing (a task started by an older launcher has none).
+saved_effort() {
+  [ -r "$effort_file" ] || return 0
+  head -n 1 "$effort_file" | tr -d '' | grep -E '^[a-z]+$'
 }
 
 is_task_worktree() {
@@ -106,6 +121,7 @@ cmd_start() {
     git -C "$root" worktree add -b "$branch" "$dir" "$start" >&2 || die 1 "git worktree add failed"
   fi
 
+  save_effort "$effort"
   run_claude "$brief" --model "$model" --effort "$effort"
 }
 
@@ -114,12 +130,18 @@ cmd_resume() {
   locate "$1"
   message=$(abs_file "$3") || exit 2
   is_task_worktree || die 5 "no worktree for $1 at $dir"
+  [ $# -ge 4 ] && save_effort "$4"
   if [ $# -eq 5 ]; then
     run_claude "$message" --resume "$2" --effort "$4" --model "$5"
   elif [ $# -eq 4 ]; then
     run_claude "$message" --resume "$2" --effort "$4"
   else
-    run_claude "$message" --resume "$2"
+    effort=$(saved_effort)
+    if [ -n "$effort" ]; then
+      run_claude "$message" --resume "$2" --effort "$effort"
+    else
+      run_claude "$message" --resume "$2"
+    fi
   fi
 }
 
@@ -128,6 +150,7 @@ cmd_remove() {
   locate "$1"
   is_task_worktree || die 5 "no worktree for $1 at $dir"
   git -C "$root" worktree remove "$dir" >&2 || die 1 "git worktree remove failed (uncommitted changes in $dir?)"
+  rm -f "$effort_file"
 }
 
 command=${1:-}
