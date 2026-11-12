@@ -77,18 +77,19 @@ max_parallel_implementers_per_session: 3
 When work fails or comes back weak, climb one step at a time, in this order:
 
 1. **A way to check the work.** If it had no runnable check (a scoped test, a build, a script), give it one and retry on the same tier. A model that can check its own work does far better; often that's the whole fix.
-2. **More effort, for worker sessions.** When the orchestrator sends a failed round back to a worker, it first raises that session's effort one step (low → medium → high): desktop with `set_session_effort`, CLI with `resume`'s effort argument. Log it as `[escalate] T<n> effort <from> → <to>`. Above high, effort costs about as much as the next model, so move up a model instead. **Already at high** (a `deep` task on opus / high): there is no model above opus, so the one step left is `xhigh`; log it as `[escalate] T<n> effort high → xhigh`. Subagents have no effort setting, so they skip this step.
+2. **More effort, for worker sessions.** When the orchestrator sends a failed round back to a worker, it first raises that session's effort one step (low → medium → high): desktop with `set_session_effort`, CLI with `resume`'s effort argument. Log it as `[escalate] T<n> effort <from> → <to>`. Above high, effort costs about as much as the next model, so move up a model instead. **Already at high** (a `deep` task on opus / high): there is no model above opus, so the one step left is `xhigh`; log it as `[escalate] T<n> effort high → xhigh`. If that is above this session's own effort, the app asks the user to approve it: say so in one line first. If the user declines, send it back at `high` and log `[escalate] T<n> effort high (xhigh declined)`. Subagents have no effort setting, so they skip this step.
 3. **The next model up.** A subagent that fails or returns weak work is retried **once** on the next tier up (`fast` → `standard` → `deep`). A worker task that fails a second time goes to the user, who can re-tier it to `deep` ([how](#re-tier)).
 
 Record each step in the retro with the `[tier]` tag: what failed, on which model and effort, and what fixed it. A subagent's second failure is not retried again: the worker reports it to the orchestrator, which counts it toward the task's two-failure limit.
 
 ### Re-tier
 
-When the user chooses a re-tier after a task's second failure:
+When the user chooses a re-tier after a task's second failure or at the review round cap:
 
 - **Keep the same worker session.** Its worktree, its commits and the record of both failed rounds stay; a new session would have to find them all again.
 - **Set the `deep` worker session values:** opus; effort medium for design and cross-cutting changes, high for bugs with an unknown cause, security and guarded work. Desktop: `set_session_model` with the full model id, then `set_session_effort`. CLI: `resume`'s effort and model arguments. Then send what went wrong in both rounds.
-- **The app asks the user** to approve the more expensive model. It never sets a model above this session's own ([backend-desktop.md](backend-desktop.md)): if you run below opus, tell the user before trying, as at the start.
+- **Ledger:** the row's tier becomes `deep` and its status `running`, so the run doesn't wrap up early and the PR gets the `deep` review. In the follow-up, tell the worker its tier is now `deep`: its brief still names the old tier.
+- **The app's approval:** for a model or effort above this session's own, the app asks the user to approve it. Say so in one line before the call, so it is expected. If the user declines the re-tier's model, the task stays `failed`, and the user chooses between re-split, `self` and drop.
 - Log it as `[escalate] T<n> model <from> → <to> (you chose re-tier)`.
 - **The re-tiered round gets one try.** If it fails, the task is `failed` again, and the user chooses between re-split, `self` and drop.
 

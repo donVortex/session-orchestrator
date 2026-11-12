@@ -1,7 +1,7 @@
 ---
 max_turns: 8
 allowed_tools: [Read, Glob, Grep, Skill]
-tags: [worker, native-workers, tiers]
+tags: [worker, native-workers, tiers, escalation]
 ---
 
 You are a worker session started by session-orchestrator. Load the session-orchestrator:working skill and follow it.
