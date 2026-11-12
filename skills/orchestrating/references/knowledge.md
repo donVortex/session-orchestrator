@@ -42,12 +42,10 @@ One line, or a short block, ending with its source and date:
 
 ```markdown
 - **PHI never appears in logs.** Use `redact()` from `src/phi/redact.ts`. _(bootstrap, 2026-11-03)_
-- **Premiums are integer cents**, never floats. _(T2 / PR #42, 2026-11-10)_
+- **Premiums are integer cents**, never floats: the payment provider rejects fractions. _(T2 / PR #42, 2026-11-10)_
 ```
 
 A source is `bootstrap`, `user`, `T<n> / PR #<n>`, a raw-material path (`docs/research/interviews-2026-10.md`) for a need, or `expert view, declined by user` for an Out of scope entry.
-
-Sources: `bootstrap`, `user`, or `T<n> / PR #<n>`.
 
 ## Content rules
 
@@ -56,6 +54,8 @@ Apply to everything that goes into the repo or onto GitHub: entries, their sourc
 1. **No secrets, credentials, records or personal data, and no record identifiers** (patient, customer, account or claim numbers; code names like `redact()` or `src/phi/` are fine). State the rule, never the value: "MRNs may contain dashes", not "MRN 4471-882 failed". Drop such values wherever you find them, and tell the user what kind of value you left out ("an MRN"), without repeating it.
 2. **Don't copy `CLAUDE.md`.** If a rule is already there, refer to it (`see CLAUDE.md: <rule>`) instead of restating it, in every file. A checklist item for such a rule reads `Check CLAUDE.md: <rule>`; add only what `CLAUDE.md` doesn't say (e.g. "also in error messages").
 3. **Respect each file's own budget.** If a file has a budget header and an addition would push it over, the same proposal merges or removes entries in that file. Files without a header have no budget.
+4. **Only what Claude would otherwise get wrong.** An entry earns its place when a careful engineer new to this repo would likely miss it: a rule the code doesn't show, a gotcha, a term with a local meaning, a decision. Leave out what the code, file names or folder structure already show ("`src/api/` holds the routes") and what anyone does without being told ("write tests"). Every entry is read on every run and can pull against the task at hand, so a few sharp entries beat a complete list.
+5. **A rule says why**, in a few words: "integer cents: the payment provider rejects fractions". The reason lets a worker judge a case the rule didn't foresee, and lets a later run see when the rule stops applying. Take the reason from the source or the retros; when they give none, write the rule without one. Never invent a reason, and don't ask the user for one just to fill it in.
 
 ## Precedence
 
@@ -82,6 +82,16 @@ At intake, check what the entries name in backticks against the base branch: pat
 - tell the user in one line, and log `[event] stale entry: <entry, shortened> (<what's missing>)`;
 - never quote it into a brief as fact;
 - in the next knowledge diff, propose updating it (the new path or name, if this run found where it went) or removing it.
+
+## Pruning
+
+Knowledge that only grows turns into noise: entries Claude would follow anyway, rules that pull against each other, constraints that no longer fit. Each run records what it used, and the wrap-up prunes from that.
+
+- **At wrap-up, log** `[event] knowledge used: <entries, shortened>`: the entries this run quoted into a brief, followed at breakdown, or that a review finding relied on; `none` if it used none.
+- **Pruning candidates** are entries that no `knowledge used:` line names in the last 3 runs (this ledger and the archived ones that have the line; older runs don't count), and entries this run used whose content the task's code showed anyway.
+- **Put each candidate to the value test** ([content rule 4](#content-rules)). Propose removing one that fails, with the reason: what the code already shows, or what Claude does without being told. One that passes stays, without comment. A rule that passes but has no reason: propose adding it, if its source or the retros give one.
+- **Never remove an entry only for being unused:** an area the last runs didn't touch still has its rules. Never propose removing an entry about safety, data handling, money, regulation or destructive actions as unused or obvious; those change only by a [rule change](#rule-changes) or by the user.
+- A removal the user declines is logged as `[event] knowledge kept: <entry, shortened>`; don't propose it again while this or an archived ledger records that line. Git history keeps every removed entry.
 
 ## Reading from the base branch
 
@@ -122,7 +132,7 @@ GitHub's `head:` search can match more loosely than the prefix; the `--jq` filte
 - **More than one is open:** treat the newest as the knowledge PR (as above), and list the others to the user, suggesting they merge or close them. Never open another knowledge PR while any is open.
 - **None is open:** bootstrap.
 
-1. **Scan.** In one message, start parallel `orch-scout` subagents to read the README, `docs/`, `CLAUDE.md`, the folder structure, the test layout and the last 50 commits. Ask each for draft entries with `path:line` sources, and also for the project's **raw material** (research notes, data exports, fixtures, analytics docs) as pointers for the product knowledge.
+1. **Scan.** In one message, start parallel `orch-scout` subagents to read the README, `docs/`, `CLAUDE.md`, the folder structure, the test layout and the last 50 commits. Ask each for draft entries with `path:line` sources, only what the code doesn't already show ([content rules](#content-rules)), and also for the project's **raw material** (research notes, data exports, fixtures, analytics docs) as pointers for the product knowledge.
 2. **Interview.** Ask the user at most **5** questions, **one at a time** — each one thing to answer, never a bundle of sub-questions. Two of them are always the product questions, asked separately: *"Who uses this?"* and *"Whose professional eye matters most here?"* Pick the rest from: rules that aren't written down; risky or regulated areas; terms with a specific meaning here; what reviewers must always check; work that has gone wrong before.
 3. **Draft.** Fill `README.md` and the five files from the templates (`product.md` from the product answers and the scouts' raw material), applying the content rules. Remove a template heading that ends up with no entries (e.g. an unused `## When touching <area>`), except calibration's `## Recipes`, `## Learned defaults` and `## Pre-flight`, and product's `## Out of scope`, which stay for workflow learning to fill. Also offer the [project-rules skill](#the-project-rules-skill) as part of the same PR; the user may decline it.
 4. **Approve.** Show the drafts and ask the user to approve or edit them. Write nothing to the repo before they do.
@@ -165,7 +175,7 @@ Only the orchestrator reads `.claude/orchestrator/`. Sessions that don't orchest
 
 ## Knowledge diff at wrap-up
 
-1. Group the retros by tag; `[domain]` points are knowledge candidates, and so are repeated `[brief]`, `[split]` and `[tier]` patterns, plus contradictions recorded at intake, plus the `rule change` and `stale entry` events, plus the `[expert]` lines (each decline becomes an Out of scope entry, taken from the saved view in `.orchestration/expert/`) and the open checks, plus the workflow findings from the [counts](workflow-learning.md#findings-to-proposals) (recipes, learned defaults, pre-flight checks), plus the [project-rules skill](#the-project-rules-skill) if it's missing and was never declined.
+1. Group the retros by tag; `[domain]` points are knowledge candidates, and so are repeated `[brief]`, `[split]` and `[tier]` patterns, plus contradictions recorded at intake, plus the `rule change` and `stale entry` events, plus the `[expert]` lines (each decline becomes an Out of scope entry, taken from the saved view in `.orchestration/expert/`) and the open checks, plus the workflow findings from the [counts](workflow-learning.md#findings-to-proposals) (recipes, learned defaults, pre-flight checks), plus the [project-rules skill](#the-project-rules-skill) if it's missing and was never declined, plus the pruning candidates ([pruning](#pruning)).
 2. Find an open knowledge PR (same `gh pr list` as in Bootstrap). If one is open, read its branch's files: you will draft against them, not against the base branch. If more than one is open, use the newest and list the others to the user, suggesting they merge or close them.
 3. Draft the **knowledge diff**: additions, edits and removals, each in the existing file whose purpose fits (see The project owns it), with its source and a one-line reason. A changed rule, an entry this run made untrue and a stale entry are edits of the existing entry, shown as old → new, never a second entry ([rule changes](#rule-changes)). Apply the content rules. For files with a budget header, show the line count against it.
 4. Ask the user to approve or edit the diff. Change nothing before they do.
@@ -189,6 +199,7 @@ Project knowledge never leaves the project. Plugin edits are separate and exist 
 | A file with a budget header would go over it | Propose merges or removals in the same diff |
 | Knowledge contradicts `CLAUDE.md` or the code | Flag it, record it in the ledger, follow `CLAUDE.md` or the code, fix it in the next diff |
 | The goal changes a project rule | Show `Changes rule: old → new` on the plan, quote only the new rule, edit the entry in place at wrap-up |
+| An entry is unused in the last 3 runs, or restates the code | Put it to the value test; propose removal only if it fails, never for a safety, data, money or regulatory rule ([pruning](#pruning)) |
 | An entry names a path or function that no longer exists | Flag it as stale, don't quote it as fact, update or remove it in the next diff |
 | User declines the bootstrap | Run without knowledge; ask once, in one line, at the next fresh orchestration |
 | A drafted entry, reason or PR text contains a secret, record identifier or personal data | Drop the value, tell the user what kind of value you left out |

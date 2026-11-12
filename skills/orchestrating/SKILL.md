@@ -111,6 +111,7 @@ When every task is `merged`, `failed` or `dropped`:
 3. **Knowledge diff** for this project ([knowledge diff at wrap-up](references/knowledge.md#knowledge-diff-at-wrap-up)): additions, edits and removals, each with its source (`T<n> / PR #<n>`). If the project has no `.claude/skills/project-rules/` and never declined it, offer it as an optional extra file ([project-rules skill](references/knowledge.md#the-project-rules-skill)).
    - **In the project's own files and headings.** Entries go into the existing file whose purpose fits; never create a template file or rename, reformat or add budgets on your own. If nothing fits, ask.
    - **Budgets only where a file has its own budget header**; a file without one is never trimmed for length.
+   - **Prune by value, not length.** Log `[event] knowledge used: …` and put the [pruning candidates](references/knowledge.md#pruning) to the value test: an entry stays only if Claude would otherwise get it wrong. Removals go in the diff with their reason.
    - **No secrets, record identifiers or personal data** in entries, reasons, PR text or commit messages: state the rule, never the value, and tell the user what kind of value you left out.
    - **An open knowledge PR is extended, not duplicated:** draft against its branch's files and apply the changes there as edits, never whole-file writes. Otherwise open a new `orch/knowledge-<date>` PR.
 4. **Plugin lessons depend on the mode:**
