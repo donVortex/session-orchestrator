@@ -1,12 +1,12 @@
 <!-- budget: 100 lines -->
 # Codebase map
 
-Where things live, and how a typical feature flows through the code.
+What the folder structure doesn't tell you: where things live when it's not where you'd look, and how a typical feature flows through the code.
 
 ## Areas
 
 <!-- One area per entry. Example:
-- **`src/claims/`** — claim intake and adjudication; owns the `claims` table. _(bootstrap, 2026-11-03)_
+- **`src/legacy/` is frozen**: read-only while `src/v2/` replaces it; new code goes to `src/v2/`. _(bootstrap, 2026-11-03)_
 -->
 
 ## Feature flows

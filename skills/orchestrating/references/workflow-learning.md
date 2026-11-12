@@ -32,6 +32,7 @@ Every line in the ledger's Events list starts with one of these tags:
 - `[event] base check: green @ <sha>` and `[failed] base red after merging T<n>, T<m>` — after merges ([reviews.md](reviews.md#check-the-base-branch-after-merges));
 - `[event] rule change: <old> → <new>` — at the approval gate, per project rule the goal changes ([knowledge.md](knowledge.md#rule-changes));
 - `[event] stale entry: <entry, shortened> (<what's missing>)` — at intake ([knowledge.md](knowledge.md#stale-entries));
+- `[event] knowledge used: <entries, shortened>` — at wrap-up, and `[event] knowledge kept: <entry, shortened>` per removal the user declined ([knowledge.md](knowledge.md#pruning));
 - `[event] skills: overlap <name> (<stage>); fit <names>` — at intake, from the skills look ([coexistence.md](coexistence.md#intake-plan-and-briefs)).
 
 Add the task id after the tag when an event belongs to one task: `[failed] T2 tests red on the PR head`.
