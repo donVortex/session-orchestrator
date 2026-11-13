@@ -60,6 +60,7 @@ Don't resume an old session across an update: its history holds the older instru
    Or without a goal (`/session-orchestrator:orchestrate`) to let it learn the project first.
 3. **Project setup (first run only):** scouts read the repo, then it asks you up to 5 questions about the domain, one at a time, and shows you the drafted knowledge. Nothing is written until you approve; then it opens a knowledge PR for you to merge.
 4. **Approve the plan:** it shows the tasks as a table (what each does, which files it owns, its model tier, where it runs). Approve it or ask for changes. Nothing starts before you approve.
+   - **Show what good looks like (optional):** for a goal with a visible result (a screen, a report, copy, an API's shapes), it offers to take 1–3 examples, or examples of what you don't want: pasted, linked, a screenshot or a file. It shows what it took from them (e.g. "one table, no popups, totals visible") for you to correct, and workers and reviews get those properties, never the example or its data.
 5. **Work runs:**
    - **Desktop app:** each task gets its own worker session, listed in the sidebar as `T<n> · <task>`. You can open one to watch it; you don't have to.
    - **CLI:** workers run headless in their own git worktrees ([permissions](#cli-workers-and-permissions)).
