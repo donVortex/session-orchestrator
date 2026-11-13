@@ -41,6 +41,7 @@ Other skills and plugins work inside this workflow, judged by what they would do
 - If `.orchestration/ledger.md` exists and its status isn't `done`: **resume**. Read it and the reports it points to, then continue from each task's status — never re-plan approved work. A ledger written by an older plugin version gets [these defaults](references/ledger.md#a-ledger-from-an-older-version). Ready tasks start; open PRs get reviewed.
 - If it exists and says `done`: archive that orchestration first ([ledger.md](references/ledger.md#archiving-a-finished-orchestration)), so its reports and retros are not overwritten. Then start fresh.
 - Otherwise: clarify the goal with the user, then read the repo. **No goal given and no project knowledge yet** (`.claude/orchestrator/` missing, no knowledge PR open): don't ask for a goal first — start the bootstrap below right away, and ask for the goal once the drafts are approved (you may list backlog items as candidates then). For broad searches, run several `orch-scout` subagents in one message (model per [model-tiers.md](references/model-tiers.md)).
+- **What good looks like** ([examples.md](references/examples.md)): when the goal has a visible result (a screen, copy, a report, an API's shapes), offer one optional line asking for 1–3 examples of what good looks like, or of what the user doesn't want. It goes in the goal clarification or the approval message, never a stop of its own. Read the examples as properties, not a template.
 - Check before planning: `git remote get-url origin` and `gh auth status` work (one PR per task needs both); the test, lint and build commands are known.
 - Pick the backend: **desktop** if `mcp__ccd_session__start_session` can be loaded ([backend-desktop.md](references/backend-desktop.md)); else **cli** if `claude --version` works ([backend-cli.md](references/backend-cli.md)); else stop and tell the user what's missing.
 - Set up `.orchestration/` in the main checkout per [ledger.md](references/ledger.md) — not in your own worktree, if you run in one. A fresh orchestration numbers its tasks on from the project's earlier runs ([task ids](references/ledger.md#task-ids)), never from `T1` again.
@@ -69,6 +70,7 @@ Show the breakdown as a table — `| id | task | owns | depends | tier | risk | 
 - `Following recipe: <name>` for each task that matches a recipe;
 - `Assumed from project knowledge: <default>` for each **Learned default** you rely on. Never assume one that decides safety, data handling, money or a destructive action ([what counts](references/workflow-learning.md#guardrails)), or contradicts `CLAUDE.md`, a project rule or the goal — ask or flag it instead.
 - `Changes rule: <old entry> → <new rule>` for each project rule the goal changes; approving the plan confirms the change.
+- `Good looks like: <properties> (from <examples>)` when the user gave examples ([reading them](references/examples.md#reading-them)); approving the plan approves the reading.
 - `Other workflow skills: <name> (<used for>; <replaced steps>)` — only when something overlaps (from the skills look). When a `Skill:` entry in the project's knowledge covers it, show it as `Assumed from project knowledge: <entry>` instead — never one that drops the review, the checklist, tests or a project rule (flag it instead).
 
 Log each of these lines as `[event] T<n> following recipe: <name>`, `[event] assumed default: <default>` and `[event] rule change: <old> → <new>`; if the user overrides a default or the `Other workflow skills` line, log `[event] user overrode default: <default> → <choice>` ([why](references/workflow-learning.md#event-kinds)).
@@ -88,7 +90,7 @@ On every event, update the ledger first ([ledger.md](references/ledger.md)), and
 ## 6. Review
 
 For each report with a PR:
-1. Read the diff against the brief, including its Project rules and Review checklist sections (and the project's `REVIEW.md`, if it has one). `gh pr diff <n> --name-only` lists only owned files. Check the risk tag against the diff and raise it if the diff touches a high-risk path ([risk tags](references/reviews.md#risk-tags)).
+1. Read the diff against the brief, including its Project rules, Good looks like properties and Review checklist sections (and the project's `REVIEW.md`, if it has one). `gh pr diff <n> --name-only` lists only owned files. Check the risk tag against the diff and raise it if the diff touches a high-risk path ([risk tags](references/reviews.md#risk-tags)).
 2. Check CI with `gh pr checks <n>`. `no checks reported` (exit 1) means the repo has no CI: run the test and lint commands yourself on the PR head in a temporary detached worktree, then remove it:
    ```bash
    git fetch origin <branch> && git worktree add --detach "$root-wt/review-T<n>" FETCH_HEAD
