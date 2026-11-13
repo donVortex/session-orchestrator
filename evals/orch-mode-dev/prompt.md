@@ -4,6 +4,8 @@ allowed_tools: [Read, Glob, Grep, Skill]
 tags: [orchestrator, mode]
 ---
 
+This session started with the note `[session-orchestrator] development mode: this is the plugin's development checkout, so wrap-ups may propose plugin edits.`
+
 First load the session-orchestrator:orchestrating skill with the Skill tool, as an orchestrator session does at its start. You are in a project repo and the only task of this orchestration is merged (T1 → PR #40), so it's time for the wrap-up.
 
 - No knowledge PR is open; `.claude/orchestrator/` on `main` has room in every file.

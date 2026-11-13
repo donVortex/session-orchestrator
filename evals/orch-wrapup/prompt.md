@@ -4,6 +4,8 @@ allowed_tools: [Read, Glob, Grep, Skill]
 tags: [orchestrator]
 ---
 
+This session started with the note `[session-orchestrator] development mode: this is the plugin's development checkout, so wrap-ups may propose plugin edits.`
+
 Use the session-orchestrator:orchestrating skill. Every task in this orchestration is now merged (T1–T4, PRs #12–#15), so it is time for the wrap-up. Here is `.orchestration/retros.md`:
 
 ```markdown
