@@ -55,7 +55,7 @@ A task's branch is `orch/T<n>`. If that name is already taken (locally or on `or
 
 ```markdown
 # Orchestration: <goal>
-Started: <date> · Backend: desktop|cli · Base branch: <branch> · Mode: full|lite · Status: planning|running|wrap-up|done
+Started: <date> · Backend: desktop|cli · Base branch: <branch> · Mode: full|lite · Audience: engineering|designer · Status: planning|running|wrap-up|done
 
 | id | task | owns (files/globs) | depends | tier | risk | placement | session/run | branch | PR | status |
 |----|------|--------------------|---------|------|------|-----------|-------------|--------|----|--------|
@@ -89,6 +89,7 @@ Every Events line starts with a kind tag after the time; the tags and what each 
 | `pr-open` | report received, PR not yet reviewed |
 | `in-review` | you are reviewing |
 | `changes-requested` | fixes sent back to the worker |
+| `awaiting-owner` | designer mode only: your review passed, waiting for an engineer's approving review ([designer-mode.md](designer-mode.md#waiting-for-the-engineer)) |
 | `reviewed` | ready for the user to merge |
 | `merged` | the user merged it |
 

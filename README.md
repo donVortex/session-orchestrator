@@ -169,6 +169,21 @@ The orchestrator plans, briefs workers and reviews their PRs; it keeps the model
 
 Worker sessions and subagents get their models from the task tiers, whatever you pick here: Haiku only for searching and reading, Sonnet for well-scoped code, Opus for design, hard bugs and security.
 
+## Designer mode
+
+For people who don't read code, such as product designers, working in the same repo as the engineers who review it. **Engineering mode is the default and doesn't change**: designer mode is only on for the people who switch it on.
+
+**Turning it on** is per person, never per project, because designers and engineers share the repo:
+- **Always, for you:** add the line `session-orchestrator: designer mode` to your own `~/.claude/CLAUDE.md`. It stays on your machine; engineers' runs never see it.
+- **One run:** `/session-orchestrator:orchestrate designer: <goal>`, or say "designer". Say "engineering" to switch back.
+
+**What changes for you:**
+- **Who owns what** comes from the repo's `CODEOWNERS`. On your first run you say which engineer-owned areas must never change in your runs (**fixed**); the rest may change with the owner's review (**guarded**). Your answer is saved in `.claude/orchestrator/designer.md`, which only designer runs read.
+- **Work is split by who reviews it.** A change in an engineer's area becomes its own small PR for that engineer, with a description written for them. Your part builds against the agreed shape (e.g. "orders get an `estimatedDelivery` date") at the same time, and merges after it.
+- **Fixed areas get a request, not a change:** the plan shows a drafted issue for the owner, which you post (or say "post it").
+- **The plan leads with what users will see.** UI PRs start with a "What users will see" section, with screenshots or a preview link when the worker can make them.
+- **Every PR waits for an engineer's approval** after the orchestrator's own review: it tells you who it's waiting on, brings their requested changes back to the worker, and asks you to merge once they approve. It never merges.
+
 ## Project knowledge
 
 Each project keeps what the orchestrator has learned about it in `.claude/orchestrator/`, committed to the project's repo: domain rules and glossary, who your users are and what they need, a codebase map, a review checklist, and tier and split calibration. A healthcare team's orchestrator becomes expert in their healthcare product; an insurtech team's in theirs.

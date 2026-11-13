@@ -29,7 +29,7 @@ A new file's first line states its budget: `<!-- budget: N lines -->`. Starter f
 
 The knowledge belongs to the project, not to the plugin. Plugin updates never change it. Once the folder exists, its own files are the layout:
 
-- **Read every file in the folder**, whatever its name, headings or extra files. Map each to the purpose it serves (rules, map, checklist, product, calibration) by its content, not its name.
+- **Read every file in the folder** (except `designer.md`, which only [designer mode](designer-mode.md#who-owns-what) reads), whatever its name, headings or extra files. Map each to the purpose it serves (rules, map, checklist, product, calibration) by its content, not its name.
 - **A file's budget is the one in its own first line.** A file without a budget header has no budget: never apply the table's numbers to it, and never trim it for length.
 - **Add entries to the existing file whose purpose fits**, under its existing headings. If no file fits, say so and ask the user whether to add one. Never create a template file in an existing folder on your own.
 - **Never migrate.** Don't rename, reformat, restructure, re-template or add budget headers to existing knowledge, and don't propose it, even if the plugin's templates have changed. A layout change happens only when the user asks for it.
