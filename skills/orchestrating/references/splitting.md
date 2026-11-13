@@ -8,6 +8,15 @@
 4. **Tests travel with their code.** A task owns the test files for the code it changes.
 5. **Docs follow what they document.** A docs task depends on the task whose behaviour it describes, or is folded into it.
 
+## Visual work
+
+When a goal's acceptance is how something looks (a redesign, a new visual style), not only what it does:
+- The first task is a **mockup**: static, no app code, of every screen the goal changes, in each theme the app has and at phone width.
+- **The look gate:** the user approves the mockup's look before any UI code task starts. Put it in the breakdown, so it's an expected stop, not a surprise.
+- The approved mockup is the contract. Later tasks match it, and their PRs show same-scale side-by-sides with the mockup and a table of measured sizes (CSS px, with the devicePixelRatio).
+
+A goal that only uses the app's existing look (a new page in the current style) skips it.
+
 ## Placement
 
 | Placement | When |

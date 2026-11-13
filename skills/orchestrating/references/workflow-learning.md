@@ -16,11 +16,22 @@ Every line in the ledger's Events list starts with one of these tags:
 | `[changes]` | rework | review sends work back as changes requested |
 | `[escalate]` | rework | a tier escalation, or you take a task over as `self` |
 | `[worker-q]` | rework | a worker blocks with a question to you |
+| `[correction]` | attention | the user points out a mistake in your or a worker's output, unprompted. At wrap-up, each one becomes a proposed brief rule or checklist item |
 | `[env]` | — (feeds pre-flight) | a round lost to the environment, not the work: missing tool or login, permissions, an untrusted folder, a stale branch. Not a failure, not rework. |
 | `[expert]` | — | an expert view ran, and each recommendation the user declined ([expert-view.md](expert-view.md#adopt-and-decline)) |
 | `[event]` | — | everything else: started, report received, merge requested, merged, archived |
 
-**Expected stops are `[event]`, not `[approval]`:** the one breakdown approval, each merge request, and the knowledge-diff approval.
+**Expected stops are `[event]`, not `[approval]`:** the one breakdown approval, each merge request, the knowledge-diff approval, and the look gate of a visual goal.
+
+### Which tag
+
+| Situation | Tag |
+|---|---|
+| Work sent back after review | `[changes]` |
+| A worker's question you answer | `[worker-q]` |
+| The goal, the plan and merge asks | `[event]` |
+| A transient API error, or another round lost to the environment | `[env]` |
+| The user corrects output, unprompted | `[correction]` |
 
 **Lines the learning depends on**, all `[event]`, written with these exact prefixes so a resumed or later run can read them:
 - `[event] pre-flight: <what you asked or checked up front>` — an up-front pre-flight ask is planned, not an interruption;

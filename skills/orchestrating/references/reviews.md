@@ -13,7 +13,7 @@ Each finding has a severity:
 | `minor` | worth fixing but changes no behaviour: naming, readability, a small gap in a test |
 
 - **`pre-existing`** is added to any finding whose problem is already on the base branch, so this change didn't introduce it. Check the base version of the file or `git blame` before tagging it. It is never the author's job to fix.
-- **Evidence:** every finding names `path:line` and what goes wrong, concretely. A finding without evidence is dropped.
+- **Evidence:** every finding names `path:line` and what goes wrong, concretely. A finding without evidence is dropped. The same goes for what you tell the user: every check you state names its evidence from this turn (the command and its output, or the measurement); a check you didn't run is "not checked".
 - **Don't report** style points the project's linter or checklist doesn't ask for, diagnostics, or cleanup outside the change.
 - **At most 3 `minor` findings** per review (the most useful ones), unless the project's checklist sets another cap.
 - **Name the class:** when the same mistake appears in several places, one finding lists every place ("unchecked `findUser()` result: `a.ts:12`, `b.ts:40`, `c.ts:7`"), so the fix covers all of them.
@@ -73,6 +73,13 @@ Each PR is tested on its own; after merges, check that they work together, which
 - **How:** if the base branch has CI, read its latest run for the merge commit (`gh run list --branch <base> --limit 1 --json headSha,status,conclusion`). Otherwise fetch the base and run the test, lint and build commands in a temporary detached worktree, exactly as in the review step, then remove it.
 - **Green:** log `[event] base check: green @ <sha>`, and start the unblocked tasks.
 - **Red:** log `[failed] base red after merging T<n>, T<m>`. Start nothing that depends on it. Find which change broke it, fix it as a `self` task (its risk set by its own diff), and tell the user; ask them only when the cause isn't clear.
+
+## Check a parallel batch before asking to merge
+
+When several PRs that ran in parallel are reviewed and ready together, check them together before the merge ask, so a clash shows up before the merges, not after.
+- Merge them, in the order you'll ask the user to, onto the freshly fetched base in a temporary detached worktree; run the test, lint and build commands there; record the tree hash (`git rev-parse HEAD^{tree}`); remove the worktree.
+- **Green:** say in the merge ask that the batch was tested together, with the tree hash. **A conflict or a red run:** handle it like a review finding for the PR that causes it, before you ask.
+- After the user merges them, if `git rev-parse origin/<base>^{tree}` equals the tested tree, log `[event] base check: green @ <sha> (tree == tested <tree>)` without re-running; otherwise run the [base check](#check-the-base-branch-after-merges) as usual.
 
 ## The project's own review rules
 

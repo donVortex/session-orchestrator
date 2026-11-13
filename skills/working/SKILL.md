@@ -76,7 +76,7 @@ Run the full test, lint and build commands and read the output. If your worktree
 
 Write the report in [report-format.md](report-format.md) to the brief's report path. On the desktop backend, read your own context fill first with `mcp__ccd_session_mgmt__get_usage` (`session_id: "self"`) for its Work line; if the tool isn't there or reports it unavailable, write `n/a`. When the brief names "the shared notes folder your session instructions name" instead of a path, use that folder. Then end your turn with one line: `T<n> done, PR <url>, report at <path>`.
 
-The report path is outside your worktree. If the write is refused, don't route around the refusal with another tool: end your turn with the full report in your final message, then the line `T<n> done, PR <url>, report in final message`. The orchestrator saves it.
+Every file the report or PR points to (screenshots, scripts, tables) goes beside the report (on desktop, in `<notes>/T<n>/`), never in the main checkout. The report path is outside your worktree. If the write is refused, try the shared notes folder your session instructions name; if that is refused too, end your turn with the full report in your final message, then the line `T<n> done, PR <url>, report in final message`. The orchestrator saves it. Write there only with the tools that are allowed, never with Bash, node or another tool around a refusal.
 
 Review fixes from the orchestrator arrive in this same conversation: answer each finding, either fixed (in a commit) or not fixed with a reason (intentional, out of scope); fix on the same branch, push, re-verify, and rewrite the report (add new retro points; keep the old ones).
 
@@ -92,6 +92,9 @@ Review fixes from the orchestrator arrive in this same conversation: answer each
 | Implementation written before a red test run | Delete it, run the test, see it fail, then implement |
 | Skipping the whole-diff review | No path has zero reviews, however small the change |
 | The brief requires exact source text (escapes like `̀`, exact strings) | Grep the file for that text before committing; file-writing tools can turn escapes into the literal characters |
+| A non-ASCII character or a backslash escape written through the shell | Write it with the Edit tool, or `String.fromCharCode` in code; never a shell heredoc, a Python heredoc or `sed` |
+| Reporting while a dev or preview server you started is still running | Stop it and check its port is free; `TaskStop` can leave it listening |
+| On Windows, Git Bash rewrites `key=/path` arguments | Run such scripts with `MSYS_NO_PATHCONV=1` |
 | Changed a test, lint or build script and only saw it pass | Show it failing on a deliberately bad input too |
 | Guessing on an unclear brief | Ask (step 1) |
 | Retro like "brief could be clearer" | Say exactly what was missing, tagged |

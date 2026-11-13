@@ -30,7 +30,7 @@ Start independent ready tasks in the same turn, up to `max_parallel_workers`.
 - The app wakes you when a worker ends a turn. The wake-up note is truncated: read the full report (copied to `.orchestration/reports/T<n>.md`, see below).
 - A worker with a question writes its report with `Status: blocked` and a `## Question`, then ends its turn, which wakes you. Answer with `SendMessage` to its `local_…` id if you can; if only the user can decide, ask the user, then forward their answer quoting their words.
 - Review fixes go back with `SendMessage` to the same worker.
-- Liveness: `list_sessions {"linked": true}` or `get_session`. A worker that ended its turn without a report, or errored, counts as a failure round.
+- Liveness: `list_sessions {"linked": true}` or `get_session`. A worker that ended its turn without a report, or errored, counts as a failure round, unless the error was a transient API error (a 403 challenge, 429, 5xx, overloaded): that's `[env]`, resumed once ([failures](../SKILL.md#failures)).
 - Never poll or sleep; wait for the app's wake-up.
 
 ## Status in the title
@@ -45,6 +45,7 @@ Each worker's title starts with a symbol for its status, so the user can see the
 | 🔀 | its PR is reviewed and the merge request has gone to the user |
 | ✅ | its PR is merged |
 
+- After each start, including a card the user started after a refused start, read the title back with `get_session`; if it has no status symbol, rename it now.
 - Rename only when the status changes, with the same event that updates the ledger: `<symbol> T<n> · <short task>`, replacing a leading symbol and keeping the rest.
 - **Only titles you wrote.** Rename a worker only while its title still matches the form you wrote: an optional status symbol, then `T<n> · `. If the user renamed it, leave it alone for the rest of the run.
 - **If a rename is refused** or the app asks the user to approve it, stop renaming that session for the run and log `[event] T<n> title: left as is (<why>)`. Never retry.
@@ -56,12 +57,12 @@ Each worker's title starts with a symbol for its status, so the user can see the
 
 The app blocks workers from writing outside their worktree, so the main checkout's `.orchestration/reports/` is closed to them. The app gives the sessions you start a **shared notes folder** that you and they can both read and write; each worker's session instructions name it. Point the brief's Report path there: `<notes>/T<n>-report.md` (the PR body goes beside it). Until you know the folder's absolute path, write the Report path as "the shared notes folder your session instructions name, file `T<n>-report.md`"; the worker's last line names the path it used, so use that absolute path from the next brief on.
 
-When a report arrives, copy it to `$root/.orchestration/reports/T<n>.md` and work from that copy (copy it again after each fix round). A worker that has no notes folder, or whose write is refused, ends with the full report in its final message: save that to `reports/T<n>.md` yourself.
+When a report arrives, copy it to `$root/.orchestration/reports/T<n>.md`, and the task's files folder `<notes>/T<n>/` to `$root/.orchestration/reports/T<n>/`, and work from those copies (copy them again after each fix round). A worker that has no notes folder, or whose write is refused, ends with the full report in its final message: save that to `reports/T<n>.md` yourself.
 
 ## When the app refuses a start
 
 The app may refuse `start_session` on a turn it triggered itself (not one started by the user's message). Then:
-1. Propose each refused start as a card: `start_session` with `initiation: "own_initiative"` and the same brief.
+1. Propose each refused start as a card: `start_session` with `initiation: "own_initiative"`, the same brief and the same `⏳ T<n> · <short task>` title.
 2. Tell the user in one line that T<n> is waiting for them to click Start.
 3. Ledger: `blocked` with the event `needs start click`.
 
