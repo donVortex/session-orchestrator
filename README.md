@@ -2,6 +2,8 @@
 
 A Claude Code plugin that turns the session you talk to into an **orchestrator**. It plans the work with you, splits it into PR-sized tasks, and runs them in **worker sessions** (desktop app sessions, or headless `claude -p` runs). Workers write their task themselves, test-first, use subagents only where they pay off, get one fresh review of the whole change, open one PR per task, and report back with a short retro. The orchestrator does critical tasks itself, reviews every PR, and leaves merging to you. Each project it works on builds up its own knowledge, so it gets better at that project with every feature.
 
+**Not a coder?** Product designers working in the engineers' repo can switch on [designer mode](#designer-mode): plans in terms of what users will see, and changes to engineer-owned code in their own PRs for those engineers to review. Engineering mode stays the default.
+
 **Works in Claude Code**: the desktop app's Code tab and the `claude` CLI. It needs a local git checkout and starts other Claude Code sessions, so it doesn't run in claude.ai chat or cloud sessions.
 
 ## Install
@@ -78,6 +80,7 @@ Don't resume an old session across an update: its history holds the older instru
 
 - **Just describe the feature** in any new session in that project ("add CSV export"): once a project has `.claude/orchestrator/`, it plans and delegates without the command. Questions, explanations, reviews and small one-file fixes stay normal, quick work.
 - **Pick the mode** that fits the run: full or lite ([Modes](#modes-full-and-lite)).
+- **Designers:** turn on [designer mode](#designer-mode) for yourself. Engineers' runs don't change.
 - **Pick up where you left off:** the run's state lives in `.orchestration/ledger.md`. When the orchestrator's context fills up or you resume its session, the plan is loaded back automatically. If a run is unfinished, a new session there continues it on its own; if it doesn't, say "continue the orchestration" (or run `/session-orchestrator:orchestrate`).
 - **Task numbers keep counting** across runs (T1–T8, then T9…), so sessions in the sidebar never share a number.
 
