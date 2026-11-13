@@ -24,7 +24,7 @@ Canonical brief: `<$root>/.orchestration/briefs/T<n>.md`. The app may deliver `@
 - Risk: low | normal | high — <why, in a few words> ([risk tags](reviews.md#risk-tags)); goes into the PR body with How to revert
 - Mode: full | lite — lite: no `deep` subtasks except guarded work (security, authentication, money, deleting data, migrations); one combined review per delegated piece ([lite mode](model-tiers.md#lite-mode))
 - Orchestrator: desktop | CLI mode
-- Report path: CLI mode: `<$root>/.orchestration/reports/T<n>.md` (absolute; `$root` as resolved in ledger.md). Desktop: `<notes>/T<n>-report.md` in the app's shared notes folder ([backend-desktop.md](backend-desktop.md#reports-and-permissions)). It is outside your worktree: if the write is refused, put the full report in your final message instead, and the orchestrator saves it.
+- Report path: CLI mode: `<$root>/.orchestration/reports/T<n>.md` (absolute; `$root` as resolved in ledger.md). Desktop: `<notes>/T<n>-report.md` in the app's shared notes folder ([backend-desktop.md](backend-desktop.md#reports-and-permissions)). The report and every file it points to (screenshots, scripts, tables) go there, the files in `<notes>/T<n>/`; never in the main checkout, not even images. It is outside your worktree: if the write is refused, put the full report in your final message instead, and the orchestrator saves it.
 - Subtasks (files, tier hint, dependencies), plus any `Worker plan:` entries for these kinds and areas:
   - A. <what> — <files> — <tier> — depends on: none
   - B. <what> — <files> — <tier> — depends on: A
@@ -46,5 +46,7 @@ Report in the format of the working skill's report-format.md, then send: `T<n> d
 | Owned files don't overlap any task that can run at the same time | See [splitting.md](splitting.md) |
 | Report path: CLI → absolute, in the main checkout's `.orchestration/reports/`; desktop → the app's shared notes folder | Workers run in their own worktrees, and the desktop app blocks their writes to the main checkout |
 | The brief names its canonical file path | The desktop app rewrites `@` in prompts |
+| **Shared brief files** (a common file several briefs include) pass the same checks | A wrong path in a shared file reaches every worker |
+| Every size taken from a screenshot or a live page is in CSS px with the devicePixelRatio it was measured at (`1280×900 @1.5`): screenshot px divided by the DPR, text sizes too | A screenshot taken at 150% display scaling, read as CSS px, ships everything 1.5× too big |
 | Project rules quote the `domain.md` entries for this task's area | Workers can't follow rules they weren't given |
 | A dependent change of a few lines (a re-export, a barrel line) is folded into the subtask it depends on | The worker writes it with the piece it belongs to, instead of a separate piece with its own commit and test run |

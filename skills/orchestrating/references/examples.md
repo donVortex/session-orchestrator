@@ -16,6 +16,7 @@ Read examples as properties, never a template. A worker given an example copies 
 
 - For each example, write down what makes it good (or bad, for a counter-example) as short, checkable properties: "one table, no modal dialogs", "errors say what to do next", "amounts right-aligned, two decimals", "summary line before any detail".
 - Leave out what is only the example's own: its content, data, product name or branding. Those aren't the user's taste; they're another product's.
+- Screenshots: know their devicePixelRatio before you read any size from them (ask, or measure it on the page); CSS px are screenshot px divided by the DPR.
 - Describe a format in words ("short dates, amounts with currency and two decimals"), never with the example's own values as a sample.
 - When two examples disagree on something, say so and ask in the same message, or leave that property out.
 - Exact text the user wants ("the button says *Send refund*") is not an example: it's a value of the goal and goes into the brief's Goal as it is.

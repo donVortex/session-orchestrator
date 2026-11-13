@@ -263,7 +263,7 @@ On Windows, workers use Git Bash for shell commands (the PowerShell tool is turn
 **Hooks.** Three short scripts run when a session starts (`SessionStart`). They only read local files and print a note into the session:
 - `hooks/project-default.sh` (new or cleared session): if the project has `.claude/orchestrator/`, tells the session the project uses the orchestrator;
 - `hooks/ledger-context.sh` (after compaction or resume): if a run is in progress, prints its plan from `.orchestration/ledger.md`;
-- `hooks/plugin-mode.sh` (every start): prints the development-mode note, only in the plugin's own development checkout.
+- `hooks/plugin-mode.sh` (every start): only when the plugin runs from its development checkout. It prints the development-mode note in the plugin's own project, and a report-only note in any other project, where wrap-ups only report plugin lessons and never edit the plugin. Installs from GitHub print nothing.
 
 **Commands it runs** (Claude runs them through its normal tools, with your usual permission prompts):
 - `git`: fetch, worktrees, branches, commits, and pushes to `orch/*` branches. Never a force push, never to your base branch;

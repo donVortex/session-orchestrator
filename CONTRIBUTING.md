@@ -15,7 +15,9 @@ This file is for working on the plugin itself. To use it, see the [README](READM
    claude plugin marketplace add "$PWD"
    claude plugin install session-orchestrator@session-orchestrator --scope user
    ```
-3. Restart Claude Code. Because the plugin now loads from a checkout with the marker, sessions start with the note `[session-orchestrator] development mode`. In that mode, wrap-ups may also propose edits to the plugin; installs from GitHub never do.
+3. Restart Claude Code. Because the plugin now loads from a checkout with the marker, sessions in this repo start with the note `[session-orchestrator] development mode`, and wrap-ups there may also propose edits to the plugin; installs from GitHub never do.
+
+   Sessions in **other projects** that use this checkout start with `[session-orchestrator] report-only mode`. Their wrap-ups only report plugin lessons, saved to that project's `.orchestration/plugin-proposals.md`, and never edit, commit or open PRs in the plugin, even when the user approves. Bring the proposals to a session in this repo, which judges them.
 
 Changes go through pull requests. Bump `version` in `.claude-plugin/plugin.json` (and the check in `tests/test_manifest.sh`) for every release, so installed copies pick up the update.
 
