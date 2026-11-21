@@ -71,6 +71,7 @@ Don't resume an old session across an update: its history holds the older instru
 6. **Reviews and merging:** each task ends in one pull request. The orchestrator reviews it (diff, tests, CI).
    - Each finding is `critical`, `important` or `minor`, with the file and line. A finding that was already on the base branch is tagged `pre-existing` and never becomes the worker's job.
    - Before an `important` finding goes back to the worker, a fresh reviewer double-checks it, so false alarms don't cost a round. `minor` findings are listed, not sent back.
+   - **PRs that change what users see** also get a UI/UX review on Sonnet: the result against your "good looks like" points and any approved mockup, empty and error states, phone width and themes, copy and basic accessibility. It doesn't reopen a look you already approved, and anything its screenshots don't show is listed as not checked.
    - After 3 rounds with a problem still open, it asks you how to proceed instead of looping.
    - Clean PRs are batched and you're asked to merge them, grouped by risk (`low`, `normal`, `high`). For `high`-risk PRs (security, money, data deletion, migrations, CI files) it tells you which files to read yourself. **You merge; it never does.**
    - After merges it runs the tests on the updated base branch, then starts the tasks that were waiting on them.
