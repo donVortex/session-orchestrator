@@ -5,8 +5,8 @@ Who this product is for, what they need, what we decided not to do, and whose pr
 
 ## Users
 
-<!-- Who uses it, in what situation, at what level. Example:
-- **Beginners training at home**, 2–3 sessions a week, no equipment beyond dumbbells. _(user, 2026-11-12)_
+<!-- 2–4 personas: goal, context, constraints, what frustrates them, and the source (your understanding, client conversation <date>, usage data: <what>). Composites, never a real person's name. The user panel asks them (panel.md). Example:
+- **Beginner training at home**: wants to get stronger without a gym. 2–3 sessions a week, dumbbells only, mostly on the phone. Skips a week now and then. Frustrated when a plan assumes equipment they don't have. _(your understanding)_
 -->
 
 ## Needs

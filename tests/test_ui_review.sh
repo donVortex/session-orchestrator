@@ -30,7 +30,7 @@ assert_contains "$rev" '"not checked"' "checks: unseen visuals are not checked"
 
 # The specialist has the mode
 assert_contains "$spec" "**UI review mode**" "specialist: UI review mode"
-assert_contains "$spec" "five modes" "specialist: mode count"
+assert_contains "$spec" "six modes" "specialist: mode count"
 
 # Workers provide what it needs
 assert_contains "$brief" "screenshots of each screen it changes" "brief: screenshots for UI tasks"
