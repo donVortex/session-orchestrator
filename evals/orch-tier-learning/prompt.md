@@ -24,6 +24,8 @@ T2 (rework 1):
 | A | admin table UI wiring in `web/admin/` | standard | first try | nothing |
 | B | refund state machine in `src/orders/` | standard | escalated to deep | minor |
 
+T2's retro: `[tier] B's refund transitions were beyond sonnet: it missed the partial-refund branch twice although the brief listed every transition. Opus got it on the first try.`
+
 - The archived report of the previous orchestration (`.orchestration/archive/2026-10-28-import/reports/T1.md`) has:
 
 | Subtask | Kind | Tier | Outcome | Review found |

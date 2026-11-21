@@ -27,7 +27,7 @@ A goal that only uses the app's existing look (a new page in the current style) 
 
 ## Tier
 
-Pick from [model-tiers.md](model-tiers.md) by the hardest thing in the task. Migrations and performance work are `deep`, even with a clear spec: a clear spec doesn't make hard work easy. Other schema changes and anything security-related are never `fast`.
+Pick from [model-tiers.md](model-tiers.md) by most of its work, not its hardest piece: a hard piece inside gets its own `deep` tier hint. Data-changing migrations and performance work are `deep`, even with a clear spec: a clear spec doesn't make hard work easy. An additive migration (a new table or column) is `standard`, with `high` risk. Visual work is `standard` ([why](model-tiers.md#tiers)). Other schema changes and anything security-related are never `fast`.
 
 ## Example
 

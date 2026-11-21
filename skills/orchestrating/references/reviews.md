@@ -58,6 +58,7 @@ Every task has a risk tag, and the change sets it, not the author:
 | `normal` | ordinary product changes |
 | `high` | guarded work (security, authentication, money, deleting data, migrations), CI and workflow files, build, deploy and dependency changes, and every path the project's review checklist lists as sensitive |
 
+- The risk tag sets the review, not the build tier: a `high` task can be built on `standard` ([guarded work](model-tiers.md#tiers)).
 - Set it at breakdown. At review, check it again against the actual diff and raise it when the diff touches a high-risk path; never lower it.
 - **Merge requests group PRs by risk**, highest first:
   - `high`: one PR at a time, with "read this diff yourself, especially <files>", because the reviews don't replace your reading of a high-risk change;

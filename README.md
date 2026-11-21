@@ -170,7 +170,7 @@ The orchestrator plans, briefs workers and reviews their PRs; it keeps the model
 - **Fable 5.2:** big migrations or refactors, architecture work, and runs with many tasks at once. It's the model best at leading many sessions, at about twice Opus's price.
 - **Sonnet 5.5:** lite runs and small, clear goals.
 
-Worker sessions and subagents get their models from the task tiers, whatever you pick here: Haiku only for searching and reading, Sonnet for well-scoped code, Opus for design, hard bugs and security.
+Worker sessions and subagents get their models from the task tiers, whatever you pick here: Haiku only for searching and reading, Sonnet for well-scoped code, UI and styling work, Opus for software design, hard bugs, security and money logic. A task's tier follows most of its work, so one hard piece gets Opus on its own instead of the whole task. The plan says which tasks run on Opus and why (`Opus: 1 of 4 tasks (T3)`); say "standard for T3" to change one. High-risk work keeps the Opus review whatever its tier.
 
 ## Designer mode
 
