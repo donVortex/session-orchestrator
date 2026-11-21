@@ -43,6 +43,7 @@ For projects and runs where speed matters more than depth: a simple codebase, a 
 | Worker reviews | one whole-diff review; per-piece reviews for delegated pieces | one whole-diff review; one combined review (spec and quality in one pass) per delegated piece, never below sonnet |
 | Verifying findings | every `critical` or `important` finding, before it goes back | only for guarded work ([reviews.md](reviews.md#verify-before-sending-work-back)) |
 | `orch-specialist` review of the PR | every `deep` task | only guarded work (below) |
+| UI/UX review | every PR that changes what users see | only when the goal had a look gate or Good looks like properties; otherwise your own diff read covers it |
 | Expert view | at planning, for goals that touch the product's field | only on request |
 | Knowledge bootstrap | when the project has none | no bootstrap; at wrap-up, say in one line that a full run would set up project knowledge |
 

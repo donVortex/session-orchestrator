@@ -48,6 +48,23 @@ A round is one review and the fix it asks for.
   - **orchestrator, for a PR:** ask the user, with the open findings: rethink the approach (re-split; re-tier to `deep` unless its session already runs on opus, [how](model-tiers.md#re-tier); take it as `self`), accept the PR with the findings listed in its body, or drop it. Log it as `[ask-user]`.
 - Log each round that sends work back as `[changes] T<n> round <k>: <count line>`.
 
+## UI/UX review
+
+A code review reads the diff; nobody looks at the result the way its users will. So a PR that changes what users see (screens, layout and styles, user-facing copy, emails and notifications people read) also gets a UI/UX review: one `orch-specialist` in UI review mode, on sonnet, never opus (visual work isn't `deep`, [tiers](model-tiers.md#tiers)). Start it in parallel with the PR's other review, in the same message. It runs never for a backend-only diff.
+
+**Give it:** the brief's Goal, Acceptance and Good looks like properties; the approved mockup, when the goal had a look gate ([visual work](splitting.md#visual-work)); the PR's screenshots or preview link (from the report's files, `reports/T<n>/`); the base branch's version of each screen it changes; and the checklist's UI sections, plus the project's design notes if it has them (a `DESIGN.md`).
+
+**It checks:**
+- the result against the Good looks like properties and the approved mockup, compared at the same scale (CSS px, [examples](examples.md#reading-them));
+- empty, loading and error states, long or missing data, many items;
+- phone width, and each theme the app has;
+- consistency with the app's existing components and patterns;
+- copy: the project's terms, and errors that say what to do next;
+- basic accessibility: labels, keyboard focus, text contrast, touch target size;
+- for a rebuild: every action the old screen had is still there, at every width.
+
+**Its findings** follow [the usual rules](#findings), with the screenshot or `path:line` as evidence. A user who can't do the task, a broken state, a break from the approved mockup or a Good looks like property, or a control people can't reach is `important`; polish is `minor`. Taste the user already approved is not a finding: the mockup and the properties settle the look. A visual check it can't see (no screenshot of that state or width) is written as "not checked", never passed, and goes into the PR body's Verification as `still to do`. Its `critical` and `important` findings are verified like any others ([verify](#verify-before-sending-work-back)), on sonnet.
+
 ## Risk tags
 
 Every task has a risk tag, and the change sets it, not the author:
