@@ -61,7 +61,8 @@ A code review reads the diff; nobody looks at the result the way its users will.
 - consistency with the app's existing components and patterns;
 - copy: the project's terms, and errors that say what to do next;
 - basic accessibility: labels, keyboard focus, text contrast, touch target size;
-- for a rebuild: every action the old screen had is still there, at every width.
+- for a rebuild: every action the old screen had is still there, at every width;
+- when the product knowledge has personas, it also walks the screens as each persona and reports where one would get stuck ([panel](panel.md#in-the-uiux-review)).
 
 **Its findings** follow [the usual rules](#findings), with the screenshot or `path:line` as evidence. A user who can't do the task, a broken state, a break from the approved mockup or a Good looks like property, or a control people can't reach is `important`; polish is `minor`. Taste the user already approved is not a finding: the mockup and the properties settle the look. A visual check it can't see (no screenshot of that state or width) is written as "not checked", never passed, and goes into the PR body's Verification as `still to do`. Its `critical` and `important` findings are verified like any others ([verify](#verify-before-sending-work-back)), on sonnet.
 

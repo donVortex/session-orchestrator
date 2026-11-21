@@ -19,6 +19,7 @@ Every line in the ledger's Events list starts with one of these tags:
 | `[correction]` | attention | the user points out a mistake in your or a worker's output, unprompted. At wrap-up, each one becomes a proposed brief rule or checklist item |
 | `[env]` | — (feeds pre-flight) | a round lost to the environment, not the work: missing tool or login, permissions, an untrusted folder, a stale branch. Not a failure, not rework. |
 | `[expert]` | — | an expert view ran, and each recommendation the user declined ([expert-view.md](expert-view.md#adopt-and-decline)) |
+| `[panel]` | — | the user panel ran, and each item the user declined ([panel.md](panel.md#adopt-and-decline)) |
 | `[event]` | — | everything else: started, report received, merge requested, merged, archived |
 
 **Expected stops are `[event]`, not `[approval]`:** the one breakdown approval, each merge request, the knowledge-diff approval, and the look gate of a visual goal.

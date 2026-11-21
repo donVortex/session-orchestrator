@@ -30,7 +30,7 @@ assert_contains "$ev" 'Expert view: failed (<why>) — say "expert view" to retr
 assert_contains "$ev" "Workers never call" "workers don't call it"
 assert_contains "$spec" "**Expert mode**" "specialist: expert mode"
 assert_contains "$spec" "references/expert-view.md" "specialist points to expert-view.md"
-assert_contains "$spec" "five modes" "specialist: five modes"
+assert_contains "$spec" "six modes" "specialist: six modes"
 
 k=$(cat skills/orchestrating/references/knowledge.md 2>/dev/null)
 p=$(cat skills/orchestrating/references/knowledge-templates/product.md 2>/dev/null)

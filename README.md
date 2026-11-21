@@ -219,6 +219,12 @@ You adopt or decline each recommendation. Adopted ones change the plan, or go to
 - **Asking for it:** say "expert view" at any time, about the plan, a task or PR, or a question, or name the professional ("what would a physio say about T4?").
 - **Projects set up before v0.7.0:** the first time a goal touches the product, the orchestrator offers once to start `product.md` with two questions. Decline and it doesn't ask again.
 
+### Personas and the user panel
+
+`product.md` keeps 2–4 **personas**: the people who use or pay for the product, a few lines each, with where each comes from (`your understanding`, `client conversation, <date>`, or `usage data`). They come from your answer to "who uses this?", from a draft the orchestrator makes from the code the first time you ask the panel, from notes you paste ("add a persona: …"), and from your corrections during runs. Always composites, never a real person's name.
+
+Say **"ask the panel"** about the plan, a task or PR, screens or a question ("what would the client say about this pricing?"). Each persona walks through it and says where they'd get stuck or give up; you adopt or decline each item, like the expert view. It runs on Sonnet, only when you ask, and it's labelled synthetic: it helps you find problems early, and real conversations and data outrank it. The UI/UX review also walks the screens as each persona.
+
 ## Workflow learning
 
 Besides the domain, each project's orchestrator learns **how work goes best there**, aiming at fewer interruptions for you and less rework, with the same output.
